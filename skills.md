@@ -38,6 +38,7 @@ Instalar: `npx skills add <dono/repo>`.
 | `editonny` | Edição de vídeo | [soumatheusgomes/editonny](https://github.com/soumatheusgomes/editonny) | a conferir | ✅ | | |
 | `untangle-codebase` | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
 | `claude-shorts` | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
+| `hallmark` | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
 
 ## Sem origem conhecida (sem cópia aqui)
 
