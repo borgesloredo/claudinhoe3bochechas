@@ -40,6 +40,7 @@ Instalar: `npx skills add <dono/repo>`.
 | `claude-shorts` | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
 | `hallmark` | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
 | `security-audit` | Auditoria de segurança de app, API e código, com relatório | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
+| `vercel-react-best-practices` | 72 regras de performance para React e Next.js | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | a conferir | | | ✅ |
 
 ## Sem origem conhecida (sem cópia aqui)
 
