@@ -41,6 +41,7 @@ Instalar: `npx skills add <dono/repo>`.
 | `hallmark` | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
 | `security-audit` | Auditoria de segurança de app, API e código, com relatório | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
 | `vercel-react-best-practices` | 72 regras de performance para React e Next.js | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | a conferir | | | ✅ |
+| `first-customer-finder` | Acha leads que reclamam em público e rascunha a abordagem | [Kappaemme-git/codex-first-customer-finder-skill](https://github.com/Kappaemme-git/codex-first-customer-finder-skill) | MIT | | | ✅ |
 
 ## Sem origem conhecida (sem cópia aqui)
 
