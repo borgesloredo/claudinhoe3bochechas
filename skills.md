@@ -36,7 +36,6 @@ Instalar: `npx skills add <dono/repo>`.
 | `motion-design` | Princípios de motion design | [LottieFiles/motion-design-skill](https://github.com/LottieFiles/motion-design-skill) | MIT | ✅ | | |
 | `superset` | Paradev/Superset: agentes e workspaces | [paradevai/paradev](https://github.com/paradevai/paradev) | MIT | ✅ | | |
 | `editonny` | Edição de vídeo | [soumatheusgomes/editonny](https://github.com/soumatheusgomes/editonny) | a conferir | ✅ | | |
-| `untangle-codebase` | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
 | `claude-shorts` | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
 | `hallmark` | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
 | `security-audit` | Auditoria de segurança de app, API e código, com relatório | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
@@ -61,3 +60,11 @@ O Matheus usa estas, mas não lembra de onde vieram e a licença é desconhecida
 | `founder-plan` | Plano de negócio compilado | ✅ | | |
 | `founder-pricing` | Preço que o comprador paga | ✅ | | |
 | `storytelling` | Narrativa, roteiro e personagens | ✅ | | |
+
+## Pacotes ZIP (Lucas)
+
+Baixe o `.zip`, descompacte em `~/.claude/skills/` e reabra o Claude Code. Cada zip foi auditado e testado pelo Klaus antes de subir.
+
+| Skill | Área | O que faz | Origem | Licença | Matheus | Arthur | Lucas |
+|---|---|---|---|---|:-:|:-:|:-:|
+| [`untangle-codebase`](zip/dev/untangle-codebase.zip) | dev | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
