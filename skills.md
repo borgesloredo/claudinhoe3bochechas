@@ -36,7 +36,6 @@ Instalar: `npx skills add <dono/repo>`.
 | `motion-design` | Princípios de motion design | [LottieFiles/motion-design-skill](https://github.com/LottieFiles/motion-design-skill) | MIT | ✅ | | |
 | `superset` | Paradev/Superset: agentes e workspaces | [paradevai/paradev](https://github.com/paradevai/paradev) | MIT | ✅ | | |
 | `editonny` | Edição de vídeo | [soumatheusgomes/editonny](https://github.com/soumatheusgomes/editonny) | a conferir | ✅ | | |
-| `claude-shorts` | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
 | `hallmark` | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
 | `security-audit` | Auditoria de segurança de app, API e código, com relatório | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
 | `vercel-react-best-practices` | 72 regras de performance para React e Next.js | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | a conferir | | | ✅ |
@@ -68,3 +67,4 @@ Baixe o `.zip`, descompacte em `~/.claude/skills/` e reabra o Claude Code. Cada 
 | Skill | Área | O que faz | Origem | Licença | Matheus | Arthur | Lucas |
 |---|---|---|---|---|:-:|:-:|:-:|
 | [`untangle-codebase`](zip/dev/untangle-codebase.zip) | dev | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
+| [`claude-shorts`](zip/video/claude-shorts.zip) | video | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
