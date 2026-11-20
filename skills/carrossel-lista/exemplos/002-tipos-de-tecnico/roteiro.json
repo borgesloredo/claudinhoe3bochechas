@@ -1,0 +1,112 @@
+{
+  "id": "002",
+  "formato": "F2",
+  "tipo": "info",
+  "tom": "comico",
+  "titulo_capa": "Qual desses técnicos de som é você? (o nº 3 existe em todo lugar)",
+  "imagens": [
+    {
+      "ref": "IMG1",
+      "uso": "capa",
+      "prompt": "A sweet grandmother with silver hair and round glasses wears big studio headphones over her knitted shawl, sitting at a generic unbranded mixing console with knitting needles and yarn resting next to the faders, looking at the camera with a mischievous smile, warm stage lights behind her, waist-up framing, lower third dark and clean for a title."
+    },
+    {
+      "ref": "IMG2",
+      "uso": "fundo",
+      "prompt": "Dark live venue control area with a generic unbranded mixing console softly lit by small channel lights, blurred stage lights in the background, same warm palette as IMG1, no people, large calm dark area for text."
+    },
+    {
+      "ref": "IMG3",
+      "uso": "tipo 1",
+      "prompt": "A sound technician with many arms like a cartoon blur touching every knob of a generic unbranded mixing console at once during a live show, frantic focused face, motion blur on hands, same warm palette and venue as IMG1, upper part of the frame darker and calm."
+    },
+    {
+      "ref": "IMG4",
+      "uso": "tipo 2",
+      "prompt": "An empty chair in front of a generic unbranded mixing console during a live event, a half-eaten sandwich and a cup of coffee left on the desk, headphones hanging on the chair, stage lights glowing in the distance, same warm palette as IMG1, calm dark area at the top."
+    },
+    {
+      "ref": "IMG5",
+      "uso": "tipo 3",
+      "prompt": "A proud sound technician pointing at a generic unbranded mixing console whose level meters glow entirely red, wearing sunglasses indoors and a confident grin, smoke-like haze around the desk, same warm palette as IMG1, dark calm area at the top of the frame."
+    },
+    {
+      "ref": "IMG6",
+      "uso": "tipo 4",
+      "prompt": "A serene sound technician with closed eyes and large closed headphones sitting like a meditating monk at a generic unbranded mixing console, while behind him the blurred audience covers their ears, same warm palette as IMG1, dark calm area at the top."
+    }
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "imagem": "IMG1",
+      "titulo": "Qual desses técnicos de som *é você?*",
+      "texto": "O nº 3 existe em todo lugar",
+      "grafico": null
+    },
+    {
+      "n": 2,
+      "imagem": "IMG3",
+      "titulo": "O Polvo do Botão",
+      "texto": "Mexe em tudo durante o evento, a mix nunca fica parada um minuto. Frase típica: “Só vou dar uma mexidinha no EQ.”",
+      "grafico": null,
+      "rotulo": "Tipo 1"
+    },
+    {
+      "n": 3,
+      "imagem": "IMG4",
+      "titulo": "O Fantasma",
+      "texto": "Liga tudo, solta o primeiro fader e some. Só volta quando a microfonia chama. Frase típica: “Tá no automático, relaxa.”",
+      "grafico": null,
+      "rotulo": "Tipo 2"
+    },
+    {
+      "n": 4,
+      "imagem": "IMG5",
+      "titulo": "O Vermelho é Potência",
+      "texto": "Ganho no talo em todos os canais, porque luz vermelha “é som forte”. Frase típica: “Se acendeu, é porque tá bom.”",
+      "grafico": null,
+      "rotulo": "Tipo 3"
+    },
+    {
+      "n": 5,
+      "imagem": "IMG6",
+      "titulo": "O Monge do Fone",
+      "texto": "Mixa o evento inteiro de fone fechado e nunca escuta a sala. Frase típica: “No meu fone tá perfeito.”",
+      "grafico": null,
+      "rotulo": "Tipo 4"
+    },
+    {
+      "n": 6,
+      "imagem": "IMG2",
+      "titulo": "O Rei do Eco",
+      "texto": "Reverb em tudo: na voz, na bateria e até no aviso do estacionamento. Frase típica: “Coloquei só um pouquinho.”",
+      "grafico": "Ícone de microfone com ondas concêntricas exageradas saindo dele.",
+      "rotulo": "Tipo 5"
+    },
+    {
+      "n": 7,
+      "imagem": "IMG2",
+      "titulo": "O Calmo da Prancheta",
+      "texto": "Chegou cedo, passou o som, salvou a cena e anotou tudo. Frase típica: “Tá salvo, pode começar.” É esse que você quer ser.",
+      "grafico": "Ícone de prancheta com checklist todo marcado.",
+      "rotulo": "Tipo 6"
+    },
+    {
+      "n": 8,
+      "imagem": "IMG2",
+      "titulo": "Comenta o número que é você",
+      "texto": "E marque aquele amigo que é o nº 3. Salve para rir de novo depois do próximo evento.",
+      "grafico": null
+    }
+  ],
+  "legenda": "Qual desses técnicos de som é você?\nDo Polvo do Botão ao Calmo da Prancheta: 6 tipos que todo mundo já viu atrás de uma mesa.\nComenta o seu número e marca o amigo que é o nº 3 (você sabe quem é).",
+  "hashtags": [
+    "#somaovivo",
+    "#tecnicodesom",
+    "#mesadesom",
+    "#humordetecnico",
+    "#mixagem",
+    "#audio"
+  ]
+}

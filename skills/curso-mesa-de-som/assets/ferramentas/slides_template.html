@@ -1,0 +1,1492 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curso Behringer e Midas</title>
+<link rel="stylesheet" href="lib/dist/reset.css">
+<link rel="stylesheet" href="lib/dist/reveal.css">
+<style>
+/* === FONTES (arquivos locais, funcionam offline) === */
+@font-face { font-family: "Barlow Condensed"; src: url(fonts/barlow-condensed-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url(fonts/barlow-condensed-latin-800-normal.woff2) format("woff2"); font-weight: 800; font-display: block; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Barlow"; src: url(fonts/barlow-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url(fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url(fonts/jetbrains-mono-latin-700-normal.woff2) format("woff2"); font-weight: 700; font-display: block; }
+
+/* === TOKENS (ver DESIGN.md) === */
+:root {
+  --bg-0: #060708; --bg-1: #0b0e11; --bg-2: #12161b; --bg-3: #1a2027;
+  --line: #28313b; --line-2: #3a4552;
+  --ink: #eef2f5; --ink-2: #b4bdc7; --ink-3: #8a95a1;
+  --accent: #ff9a2e;
+  /* LED: só com o sentido de medidor (ok / atenção / clip-erro-barrado) */
+  --led-green: #2fe07b; --led-yellow: #ffd23f; --led-red: #ff4b3e;
+  /* fitas de nome (família) e luz de serviço (cromo): fora da paleta de LED */
+  --x32: #46c2ff; --xair: #e8d6b4; --lamp: #ffe2b8;
+  --f-display: "Barlow Condensed", "Avenir Next Condensed", "DIN Condensed", sans-serif;
+  --f-body: "Barlow", "Avenir Next", "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* === PALCO: fundo, luz de palco e névoa === */
+html, body, body.reveal-viewport {
+  background:
+    radial-gradient(ellipse 55% 65% at 74% -10%, rgba(255, 190, 110, .13), transparent 62%),
+    radial-gradient(ellipse 45% 35% at 8% 112%, rgba(120, 150, 190, .07), transparent 70%),
+    linear-gradient(180deg, #0b0e11 0%, #07080a 100%);
+  background-color: var(--bg-0);
+}
+.haze { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.haze i { position: absolute; border-radius: 50%; will-change: transform; }
+.haze i:nth-child(1) { width: 70vw; height: 70vw; right: -18vw; top: -40vw; background: radial-gradient(closest-side, rgba(255, 176, 90, .09), transparent); }
+.haze i:nth-child(2) { width: 60vw; height: 60vw; left: -22vw; bottom: -38vw; background: radial-gradient(closest-side, rgba(70, 194, 255, .05), transparent); }
+.reveal { z-index: 1; font-family: var(--f-body); font-size: 28px; color: var(--ink); }
+
+/* === CROMO: régua de progresso + número, DENTRO do palco 1280×720 (escala junto com o slide) === */
+.chrome { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; pointer-events: none; z-index: 20; }
+.rail { position: absolute; left: 22px; top: 86px; bottom: 86px; width: 8px; display: flex; flex-direction: column-reverse; gap: 3px; }
+.rail i { flex: 1; background: #1c232b; border-radius: 1px; position: relative; }
+.rail i b { position: absolute; inset: 0; border-radius: 1px; opacity: 0; background: var(--lamp); box-shadow: 0 0 8px rgba(255, 226, 184, .55); }
+.chrome .num { position: absolute; left: 14px; bottom: 26px; font: 500 18px/1 var(--f-mono); color: var(--ink-3); letter-spacing: .08em; }
+.is-cover .chrome { opacity: 0; } .is-cover .chrome .home { pointer-events: none; }
+.chrome { transition: opacity .3s; }
+/* na capa as setas do reveal saem (o banco de faders sangra o canto inferior direito); teclado e clique continuam */
+.is-cover .reveal .controls { opacity: 0; pointer-events: none; }
+
+/* === BASE DOS SLIDES (palco fixo 1280×720, escalado pelo reveal) === */
+.reveal .slides { text-align: left; }
+.reveal .slides section:not(:has(> section)) { box-sizing: border-box; width: 1280px; height: 720px; padding: 44px 64px 60px 76px; }   /* base em 660: o contador (y 676) e as setas ficam fora da área útil */
+/* o reveal esconde (display:none inline) os slides longe do atual; os layouts abaixo usam display !important, então isto vence */
+.reveal .slides section[style*="display: none"] { display: none !important; }
+.reveal .slides section .fragment { transition: none; }
+.reveal h1, .reveal h2, .reveal h3 { margin: 0; font-family: var(--f-display); font-weight: 800; color: var(--ink); letter-spacing: -.005em; text-transform: none; text-shadow: none; }
+.reveal p { margin: 0; }
+.reveal b, .reveal strong { font-weight: 600; color: #fff; }
+.reveal a { color: var(--accent); text-decoration: none; border-bottom: 2px solid rgba(255, 154, 46, .4); }
+.reveal .controls { color: var(--ink-3); right: 2px; bottom: 2px; transform: scale(.6); transform-origin: 100% 100%; opacity: .7; }   /* no canto, abaixo da base de 660 */
+/* ícone de seta (→ não existe no subset latin das fontes) */
+.arr { display: inline-block; width: .8em; height: .8em; vertical-align: -.06em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+/* esqueleto "ghost": bullets e linhas de tabela ainda não revelados ficam a 0,2 (a turma vê a estrutura, não o texto) */
+.reveal .slides section .pts li.fragment:not(.visible), .reveal .slides section .lead-line.fragment:not(.visible), .reveal .slides section .pt.fragment:not(.visible),
+.reveal .slides section .cena.fragment:not(.visible), .reveal .slides section .ask.fragment:not(.visible),
+.reveal .slides section .hk-lead.fragment:not(.visible), .reveal .slides section .acts.fragment:not(.visible) { opacity: .2; visibility: inherit; }
+.reveal .slides section .tbl .trow.fragment { visibility: inherit; opacity: 1; }
+.ln-mask { padding-bottom: .06em; margin-bottom: -.06em; }
+
+/* rótulos mono (kicker, capítulo) */
+.kick, .kicker, .clabel { font: 500 18px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); display: flex; gap: 14px; align-items: center; }
+.pb { padding: 6px 10px 5px; border: 1.5px solid currentColor; border-radius: 3px; letter-spacing: .08em; }
+/* selo de parte: forma, não cor. Parte 1 (manual) = selo cheio; Parte 2 (cursos) = selo vazado tracejado */
+.pm { color: var(--bg-0); background: var(--ink-2); border-color: var(--ink-2); } .pc { color: var(--ink-2); border-style: dashed; }
+.kicker .chips, .kicker .legend { margin-left: auto; text-transform: none; letter-spacing: 0; }
+
+/* chips = fitas de nome (scribble strips) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 700 18px/1 var(--f-mono); letter-spacing: .02em; padding: 7px 11px 6px; border-radius: 3px; border: 1.5px solid; }
+.chip.all { color: var(--accent); border-color: rgba(255, 154, 46, .55); background: rgba(255, 154, 46, .08); }
+.chip.xa { color: var(--xair); border-color: rgba(232, 214, 180, .5); background: rgba(232, 214, 180, .07); }
+.chip.xm { color: var(--x32); border-color: rgba(70, 194, 255, .5); background: rgba(70, 194, 255, .07); }
+
+/* listas com marcador = traço de escala de fader (neutro, sem cor de LED) */
+.pts { list-style: none; margin: 0; padding: 0; }
+.pts li { position: relative; padding-left: 30px; font-size: 28px; line-height: 1.3; margin: 0 0 16px; color: var(--ink-2); }
+.pts li::before { content: ""; position: absolute; left: 0; top: .62em; width: 16px; height: 3px; border-radius: 1px; background: var(--ink-3); }
+.pts li b { color: var(--ink); }
+.body.roomy .pts li { font-size: 32px; margin-bottom: 10px; } .body.roomy2 .pts li { font-size: 36px; margin-bottom: 14px; }   /* passada final: com bullets curtos, a letra cresce antes do espaço (o gap de 14 já separa) */
+
+/* === CAPA === */
+.cover { position: relative; }
+.cover .cv-top { width: 820px; }
+.cover .kick { color: var(--accent); }
+.cover h1 { font-size: 76px; line-height: .98; margin: 18px 0 18px; }
+.cover h1 .hl { color: var(--accent); }
+.cover .csub { font-size: 30px; line-height: 1.3; color: var(--ink-2); max-width: 780px; }
+.cover .cv-meta { position: absolute; right: 64px; top: 64px; width: 300px; display: grid; gap: 18px; justify-items: start; }
+.cover .cfoot { font: 500 18px/1.2 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); border-left: 2px solid var(--line-2); padding-left: 14px; }   /* rodada 4: um rótulo só; o parágrafo foi para as notas */
+.cover .console { position: absolute; left: 0; bottom: 0; width: 1280px; height: 300px; }
+
+/* === ABERTURA DE CAPÍTULO === */
+.opener, .fecha { display: grid !important; grid-template-columns: 1fr 430px; column-gap: 40px; position: relative; }
+.opener .op-main, .fecha .op-main { display: flex; flex-direction: column; justify-content: center; gap: 22px; padding-bottom: 90px; position: relative; z-index: 2; }
+.opener .clabel, .fecha .clabel { color: var(--accent); display: block; letter-spacing: .1em; line-height: 1.35; }   /* rótulo longo quebra como texto, não em colunas */
+.opener .clabel .act, .fecha .clabel .act { color: var(--ink-3); }
+.opener h2 { font-size: 112px; line-height: .92; }
+.opprev { display: grid; gap: 14px; max-width: 720px; } .opprev .chips { gap: 10px; } .opprev .chip { font-size: 22px; padding: 9px 14px 8px; }   /* rodada 4: prévia nos capítulos de consulta */
+.cena, .ask { font-size: 28px; line-height: 1.35; border-radius: 6px; padding: 18px 24px; color: var(--ink-2); max-width: 720px; }
+.cena { background: rgba(26, 32, 39, .85); border-left: 4px solid var(--accent); }
+.ask { border: 1.5px dashed rgba(255, 154, 46, .6); background: rgba(255, 154, 46, .05); }
+.cena strong:first-child, .ask strong:first-child { color: var(--accent); }
+.op-side { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-bottom: 90px; position: relative; z-index: 2; }
+.bignum { position: relative; font: 800 380px/.8 var(--f-display); letter-spacing: -.02em; }
+.bignum .n-dim { color: transparent; -webkit-text-stroke: 2px var(--line-2); display: block; }
+.bignum .n-lit { position: absolute; inset: 0; overflow: hidden; }
+.bignum .n-lit span { display: block; color: transparent; -webkit-background-clip: text; background-clip: text;
+  background-image: repeating-linear-gradient(180deg, transparent 0 11px, rgba(6, 7, 8, .72) 11px 15px),
+                    linear-gradient(0deg, var(--led-green) 0 70%, var(--led-yellow) 70% 100%); }  /* medidor em nível nominal: verde + folga amarela, nunca vermelho */
+.bignum::before { content: ""; position: absolute; inset: 10% -10% 0; background: radial-gradient(closest-side, rgba(47, 224, 123, .16), transparent); z-index: -1; }
+.actbar { list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 80px); gap: 6px; }
+.actbar li { font: 600 20px/1 var(--f-display); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.actbar li i { display: block; height: 10px; margin-bottom: 10px; border-radius: 2px; background: #1c232b; position: relative; }
+.actbar li i b { position: absolute; inset: 0; border-radius: 2px; opacity: 0; }
+.actbar li.done i b { background: var(--lamp); box-shadow: 0 0 8px rgba(255, 226, 184, .45); }
+.actbar li.on i b { background: var(--accent); box-shadow: 0 0 12px rgba(255, 154, 46, .8); }
+.actbar li.on { color: var(--accent); }
+.opener .sigline, .fecha .sigline { position: absolute; left: 0; bottom: 0; width: 1280px; height: 170px; z-index: 1; }
+
+/* === TÓPICO: régua de título + corpo em colunas === */
+.th .kicker { margin-bottom: 14px; }
+.th h3 { font-size: 56px; line-height: .98; }
+.th .chips { margin-top: 16px; }
+.topic.diag { display: grid !important; grid-template-columns: 510px 1fr; grid-template-rows: minmax(0, 1fr); column-gap: 36px; }
+.topic.diag .lc { display: flex; flex-direction: column; }
+.topic.diag .body { margin-top: 28px; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }   /* rodada 6: corpo ancorado logo abaixo dos selos; o vão não cai entre título e texto */   /* rodada 5: coluna curta fica centrada, sem 1/3 do slide vazio embaixo */   /* o corpo começa logo abaixo dos chips: nada de vão aberto pelo justify */
+.topic.diag .body .pts { flex: none; display: flex; flex-direction: column; gap: 14px; padding-bottom: 0; }
+.topic.diag .body .pts li { margin: 0; }
+.topic.diag .viz { align-self: center; }
+/* checklist P46/P55: slide largo (0 ou 1 bullet): título e frase em cima, diagrama na largura toda */
+.topic.diag.dwide { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); row-gap: 20px; }
+.topic.diag.dwide .body { margin-top: 18px; flex: none; }
+.topic.diag.dwide .viz.vz3 { height: auto; max-height: 100%; width: 100%; align-self: center; }
+.topic.diag.dwide .vz3 .vscreen { flex: none; }
+.topic.diag.dwide .vz3 .vscreen svg { height: auto; max-height: 376px; }   /* rodada 2 (motion): 360 px deixa o título no mesmo 56 px dos outros tópicos */   /* rodada 5: o painel encolhe até o desenho (fit) e fica centrado */
+.topic.diag .viz svg, .topic.tab .viz svg, .quiz .viz svg { width: 100%; height: 100%; display: block; }
+.topic.tab { display: grid !important; grid-template-columns: 590px 1fr; grid-template-rows: auto minmax(0, 1fr); column-gap: 40px; }
+.topic.tab .th { grid-column: 1 / -1; margin-bottom: 24px; }
+.topic.tab .th h3 { font-size: 62px; }
+.topic.tab .lc { display: flex; flex-direction: column; gap: 18px; }
+.lead-line { font-size: 28px; line-height: 1.32; color: var(--ink-2); }
+.tbl { display: grid; grid-template-columns: 1fr 186px; border-top: 1px solid var(--line-2); }
+.tbl .thd { font: 500 18px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); padding: 12px 0 10px; border-bottom: 1px solid var(--line-2); }
+.tbl .trow { display: contents; }
+.tbl .trow > div { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 28px; line-height: 1.22; color: var(--ink); }
+.tbl .trow .hz { font: 700 28px/1.22 var(--f-mono); color: var(--accent); }
+.tbl .trow small { display: block; font: 400 20px/1.3 var(--f-body); color: var(--ink-3); margin-top: 4px; }
+.tbl .trow.fragment { display: contents; }
+.tbl .trow:not(.visible) > div { opacity: .2; }
+
+/* === QUIZ === */
+.quiz { display: grid !important; grid-template-columns: 540px 1fr; grid-template-rows: auto minmax(0, 1fr); column-gap: 36px; }
+.quiz.gatequiz { grid-template-columns: 620px 1fr; }
+.quiz .th { grid-column: 1; margin-bottom: 26px; }
+.quiz .viz { grid-column: 2; grid-row: 1 / span 2; }
+.quiz .th .kicker { color: var(--accent); }
+.quiz h3 { font-size: 72px; line-height: .95; }
+.quiz .opts { display: grid; gap: 14px; align-content: start; }
+.quiz .opts button { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 52px 1fr 34px; align-items: center; gap: 18px; min-height: 92px; padding: 14px 18px; border-radius: 8px;
+  background: var(--bg-2); border: 2px solid var(--line-2); font: 400 28px/1.25 var(--f-body); color: var(--ink); will-change: transform; }
+.quiz .opts button:hover, .quiz .opts button:focus-visible { border-color: var(--accent); }
+.quiz .opts.locked button { cursor: default; }
+.quiz .opts.locked button:not(.ok):not(.bad):hover { border-color: var(--line-2); }
+.quiz .reset { margin-top: 14px; font: 500 18px/1 var(--f-mono); color: var(--ink-3); letter-spacing: .06em; }
+.quiz .opts button .k { width: 52px; height: 52px; border-radius: 6px; display: grid; place-items: center; font: 700 24px/1 var(--f-mono); color: var(--ink-2); background: var(--bg-3); border: 2px solid var(--line-2); }
+.quiz .opts button svg { width: 34px; height: 34px; }
+.quiz .opts button svg path { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.quiz .opts button.ok { border-color: var(--led-green); background: rgba(47, 224, 123, .08); }
+.quiz .opts button.ok .k { background: var(--led-green); border-color: var(--led-green); color: #04140a; box-shadow: 0 0 16px rgba(47, 224, 123, .7); }
+.quiz .opts button.bad { border-color: var(--led-red); background: rgba(255, 75, 62, .08); }
+.quiz .opts button.bad .k { background: var(--led-red); border-color: var(--led-red); color: #1a0402; box-shadow: 0 0 16px rgba(255, 75, 62, .7); }
+.quiz .fb { margin-top: 20px; font-size: 28px; line-height: 1.3; color: var(--ink-2); border-left: 4px solid var(--led-green); padding: 4px 0 4px 18px; }
+
+/* === INTERATIVO: caminho do sinal === */
+.interactive { display: flex !important; flex-direction: column; }
+.interactive .th h3 { font-size: 62px; }
+.explorer .th h3 { font-size: 56px; }
+.interactive .legend { font: 400 18px/1.3 var(--f-body); color: var(--ink-3); display: flex; gap: 18px; }
+.interactive .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 7px; border: 2px solid var(--c); vertical-align: -1px; }
+.interactive .legend span.hint { color: var(--ink-2); }
+.interactive .legend span.hint::before { display: none; }
+.interactive .legend span.dvl { color: var(--accent); } .interactive .legend span.dvl::before { display: none; }
+.interactive .legend .dvl .dvi { width: 20px; height: 20px; vertical-align: -4px; margin-right: 6px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.flowfig .dvk path { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.sfpanel .dvb { display: flex; width: fit-content; margin-bottom: 8px; }   /* caminho do sinal: bloco com abordagens divergentes */
+.interactive .legend .hint svg { width: 17px; height: 17px; vertical-align: -3px; margin-right: 6px; fill: var(--ink-2); }
+.flowfig { margin-top: 10px; height: 344px; }
+.flowfig svg { width: 1140px; height: 344px; display: block; overflow: visible; }
+.blk { cursor: pointer; outline: none; }
+.blk rect.box { fill: var(--bg-2); stroke: var(--line-2); stroke-width: 2; }
+.blk.err rect.box { stroke: var(--accent); }
+.blk.x32 rect.box { stroke: var(--x32); }
+.blk.send rect.box { stroke: var(--ink-3); stroke-dasharray: 7 5; }
+.blk text { font: 700 26px/1 var(--f-display); letter-spacing: .05em; text-transform: uppercase; fill: var(--ink); }
+.blk.send text { font-size: 24px; text-transform: none; letter-spacing: .02em; }
+.blk rect.halo { fill: none; stroke: var(--accent); stroke-width: 6; opacity: 0; }
+.blk.on rect.box { fill: #221a10; }
+.blk:focus-visible rect.box, .blk:hover rect.box { stroke-width: 3.5; }
+.blk circle.led0 { fill: #222a33; } .blk circle.led1 { fill: var(--led-green); opacity: 0; }
+.sfpanel { margin-top: auto; min-height: 128px; box-sizing: border-box; background: rgba(18, 22, 27, .9); border: 1.5px solid var(--line-2); border-left: 4px solid var(--accent); border-radius: 8px; padding: 20px 26px; font-size: 28px; line-height: 1.35; color: var(--ink-2); }
+.sfpanel .in { display: block; }
+
+/* === SVG: classes compartilhadas dos diagramas === */
+svg text { font-family: var(--f-body); }
+.t-mono { font-family: var(--f-mono); font-weight: 500; font-size: 18px; fill: var(--ink-3); letter-spacing: .06em; }
+.t-monob { font-family: var(--f-mono); font-weight: 700; font-size: 20px; fill: var(--ink-2); letter-spacing: .1em; }
+.t-lbl { font-family: var(--f-display); font-weight: 600; font-size: 22px; fill: var(--ink-2); letter-spacing: .03em; }
+.t-ink { font-size: 20px; fill: var(--ink-2); }
+.t-red { fill: var(--led-red); } .t-acc { fill: var(--accent); } .t-grn { fill: var(--led-green); }
+.housing { fill: var(--bg-2); stroke: var(--line); stroke-width: 1.5; }
+.screen { fill: var(--bg-1); stroke: #1f262e; stroke-width: 1; }
+.gridl { stroke: #1f262e; stroke-width: 1.2; }
+.axis { stroke: var(--line-2); stroke-width: 2; }
+.ref { stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 6 5; fill: none; }
+
+/* === CARCAÇA DE 3 FAIXAS (topic diag com SVG do slides_viz.py) ===
+   .viz.vz3 = 634×616: .vh (título do diagrama, tirado do .vt) / .vscreen (o SVG, "contain") / .vsteps (uma tecla por fragment) */
+.viz.vz3 { display: flex; flex-direction: column; box-sizing: border-box; height: 616px; padding: 0 12px 12px; background: var(--bg-2); border: 1.5px solid var(--line); border-radius: 14px; }
+.vz3 .vh { height: 54px; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 6px; }
+.vz3 .vt { font: 600 22px/1.1 var(--f-display); letter-spacing: .03em; color: var(--ink-2); }
+.vz3 .vcount { font: 700 18px/1 var(--f-mono); letter-spacing: .1em; color: var(--accent); white-space: nowrap; }
+.vz3 .vscreen { flex: 1; min-height: 0; position: relative; box-sizing: border-box; padding: 8px; border-radius: 8px; border: 1px solid #1f262e;
+  background: radial-gradient(rgba(255, 255, 255, .03) 1px, transparent 1.3px) 0 0 / 14px 14px, var(--bg-1); }
+.vz3 .vscreen svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.vz3 .vsteps { flex: none; list-style: none; margin: 12px 0 0; padding: 0; height: 84px; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px; }
+.vz3 .vsteps.legend { display: none; }
+.vz3 .vsteps li { position: relative; box-sizing: border-box; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: 10px; padding: 10px 12px; border-radius: 6px; background: #0e1216; border: 1.5px solid var(--line-2); }
+.vz3 .vsteps li i { width: 10px; height: 10px; border-radius: 50%; background: #1c232b; align-self: center; will-change: transform; }
+.vz3 .vsteps li b { font: 700 20px/1 var(--f-mono); color: var(--ink-3); }
+.vz3 .vsteps li span { grid-column: 1 / -1; align-self: end; font: 600 20px/1.05 var(--f-display); letter-spacing: .02em; color: var(--ink-3); }
+.vz3 .vsteps li.seen i { background: var(--lamp); box-shadow: 0 0 8px rgba(255, 226, 184, .5); }
+.vz3 .vsteps li.seen span, .vz3 .vsteps li.seen b { color: var(--ink-2); }
+.vz3 .vsteps li.on { border-color: var(--accent); background: #1a140d; }
+.vz3 .vsteps li.on i { background: var(--accent); box-shadow: 0 0 12px rgba(255, 154, 46, .85); }
+.vz3 .vsteps li.on b { color: var(--accent); } .vz3 .vsteps li.on span { color: var(--ink); }
+
+/* === MAPA DE CLASSES DO slides_viz.py PARA OS TOKENS (svg.dg) ===
+   Cor = papel do bloco no diagrama. Verde/amarelo/vermelho só onde o sentido é de medidor (zg/zy/zr, barras de RTA, ✓, barrado). */
+.dg text { font-family: var(--f-body); font-size: 15px; fill: var(--ink-2); }
+.dg text.b { font-weight: 600; fill: var(--ink); }
+.dg text.sm { font-size: 14px; fill: var(--ink-3); }
+.dg text.lbl { font-size: 14px; font-weight: 600; fill: var(--accent); }
+.dg text.lblr { font-size: 14px; font-weight: 600; fill: #ff8a80; } .dg text.lblr2 { font-size: 15px; font-weight: 600; fill: #ff8a80; }
+.dg text.zl { font: 700 14px var(--f-mono); letter-spacing: .12em; fill: var(--ink-3); }
+.dg text.tw { fill: var(--ink); }
+.dg text.xr { font-size: 20px; font-weight: 700; fill: var(--led-red); }
+.dg text.ok { font-size: 22px; font-weight: 700; fill: var(--led-green); }
+.dg text.ico { font: 700 14px var(--f-mono); letter-spacing: .1em; fill: var(--accent); }
+.dg text.vt { display: none; }
+.dg .sym { font-family: -apple-system, "Apple Symbols", "Segoe UI Symbol", sans-serif; }
+.dg .sym.ar { font-size: 1.3em; baseline-shift: .06em; }   /* rodada 3: a seta da fonte de símbolos saía com metade da altura das maiúsculas, como subscrito */
+.dg .bx { fill: var(--bg-2); stroke: var(--line-2); stroke-width: 1.6; }
+.dg .bxo { fill: rgba(255, 154, 46, .12); stroke: var(--accent); stroke-width: 2; }
+.dg .bxg { fill: var(--bg-2); stroke: var(--ink-2); stroke-width: 1.6; stroke-dasharray: 6 4; }
+.dg .bxb { fill: var(--bg-3); stroke: var(--ink); stroke-width: 2; }
+.dg .bxr { fill: rgba(255, 75, 62, .1); stroke: var(--led-red); stroke-width: 1.8; }
+.dg .bxd { fill: #05070a; stroke: var(--ink-3); stroke-width: 1.6; }
+.dg .fam-xa { stroke: var(--xair); stroke-dasharray: none; } .dg .fam-xm { stroke: var(--x32); }
+.dg .panel { fill: rgba(255, 255, 255, .025); stroke: var(--line); stroke-width: 1.4; }
+.dg .zone { fill: rgba(232, 214, 180, .04); stroke: var(--line-2); stroke-width: 1.4; stroke-dasharray: 6 4; }
+.dg .frame { fill: none; stroke: var(--line-2); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.dg .ln, .dg .ln2 { stroke: var(--ink-3); stroke-width: 2; fill: none; marker-end: url(#ah); }
+.dg .ln2 { marker-start: url(#ah); }
+.dg .lnd, .dg .lnd2 { stroke: var(--ink-3); stroke-width: 1.8; fill: none; stroke-dasharray: 5 4; marker-end: url(#ah); }
+.dg .lnd2 { marker-start: url(#ah); }
+.dg .lnx { stroke: var(--led-red); stroke-width: 1.8; fill: none; stroke-dasharray: 5 4; marker-end: url(#ahr); }
+.dg .ctl { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 4 3; } .dg .ctl.red { stroke: var(--led-red); }   /* rodada 4: sem fill, o path do colchete pintava um bloco preto (32/2) */
+.dg .sep { stroke: #4a5664; stroke-width: 1.4; stroke-dasharray: 3 3; }
+.dg .grid { stroke: #1f262e; stroke-width: 1.2; } .dg .axis { stroke: var(--line-2); stroke-width: 2; } .dg .tick { stroke: var(--ink-3); }
+.dg .curve { fill: none; stroke: var(--accent); stroke-width: 3.2; stroke-linejoin: round; }
+.dg .curve2 { fill: none; stroke: var(--ink-3); stroke-width: 1.8; stroke-dasharray: 5 4; }
+.dg .curve3 { fill: none; stroke: var(--ink); stroke-width: 2.4; } .dg .curve4 { fill: none; stroke: var(--led-red); stroke-width: 2.4; }
+.dg .thr { stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 6 5; }
+.dg .dot { fill: var(--accent); } .dg .track { fill: #05070a; stroke: var(--line-2); } .dg .cap { fill: #c9d1d9; } .dg .capo { fill: var(--accent); } .dg .capd { fill: var(--ink-2); }
+.dg .zg { fill: var(--led-green); } .dg .zy { fill: var(--led-yellow); } .dg .zr { fill: var(--led-red); } .dg .zgr { fill: #1c232b; }
+.dg .mk { fill: none; stroke: var(--ink-2); stroke-width: 2; } .dg .mk2 { fill: rgba(255, 154, 46, .3); stroke: var(--accent); }
+.dg .bar, .dg .bara { fill: var(--led-green); fill-opacity: .85; } .dg .barr { fill: var(--led-red); } .dg .barb { fill: var(--ink-3); fill-opacity: .6; }
+.dg .wedge { fill: var(--bg-3); stroke: var(--ink-3); stroke-width: 1.6; } .dg .person { fill: rgba(232, 214, 180, .08); stroke: var(--ink-2); stroke-width: 1.6; }
+.dg .knob { fill: var(--bg-3); stroke: var(--ink-3); stroke-width: 1.6; } .dg .needle { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+/* revisão 2: classes dos diagramas por assunto (slides_viz.py) e das figuras refeitas */
+/* rodada 4: nós grandes (28 px na tela num painel de ~530 px): 1ª linha bb, demais bs; b2 = cartão de 2 linhas */
+.dg text.bb { font-size: 21px; font-weight: 700; fill: var(--ink); } .dg text.bs { font-size: 16px; fill: var(--ink-2); } .dg text.b2 { font-size: 16px; font-weight: 600; fill: var(--ink); }
+.dg text.zlc { font: 700 13px var(--f-mono); letter-spacing: .02em; fill: var(--ink-3); }
+.dg text.mid { font: 700 22px var(--f-display); fill: var(--accent); }
+.dg text.qm { font: 700 24px var(--f-mono); fill: var(--accent); }   /* quiz: "?" no lugar do rótulo que entrega a resposta */
+.dg text.num { font: 700 15px var(--f-mono); fill: var(--accent); }
+.dg text.tiny { font-size: 13.5px; fill: var(--ink-2); }
+.dg text.mono { font: 500 13.5px var(--f-mono); fill: var(--lamp); }
+.dg text.icod { font: 700 14px var(--f-mono); letter-spacing: .1em; fill: var(--ink-3); }
+.dg text.sib { font-size: 11px; fill: var(--ink-3); } .dg text.sibn { font-size: 13px; font-weight: 600; fill: var(--ink); } .dg text.sibh { font-size: 13px; font-weight: 600; fill: var(--ink); }
+.dg .frame.red { stroke: var(--led-red); stroke-width: 1.8; }
+.dg .blue { fill: var(--x32); fill-opacity: .9; } .dg .mute { fill: var(--led-red); }
+.dg .dotc { fill: var(--accent); } .dg .phone { fill: var(--bg-3); stroke: var(--ink-3); stroke-width: 1.4; }
+.dg .pat { fill: rgba(255, 154, 46, .1); stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
+/* rodada 3: destaque do passo atual (data-only), fitas coloridas por família (scribble strip), zonas do medidor */
+.dg .hl { fill: rgba(255, 154, 46, .07); stroke: var(--accent); stroke-width: 3; }
+.dg .scA { fill: rgba(255, 154, 46, .22); stroke: var(--accent); stroke-width: 2; } .dg .scB { fill: rgba(70, 194, 255, .2); stroke: var(--x32); stroke-width: 2; }
+.dg .scC { fill: rgba(47, 224, 123, .18); stroke: var(--led-green); stroke-width: 2; } .dg .scD { fill: rgba(196, 140, 255, .2); stroke: #c48cff; stroke-width: 2; }
+.dg .icA { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; } .dg .icB { fill: none; stroke: var(--x32); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dg .icC { fill: none; stroke: var(--led-green); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; } .dg .icD { fill: none; stroke: #c48cff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dg .zlow { fill: #2a323b; } .dg text.lt { fill: #e6e9ee; } .dg text.big { font: 800 40px var(--f-display); fill: var(--accent); }
+.dg .sum { fill: var(--bg-3); stroke: var(--ink-2); stroke-width: 2; }
+.dg .touch { fill: rgba(255, 226, 184, .25); stroke: var(--lamp); stroke-width: 2; }
+.dg .ln0 { stroke: var(--ink-3); stroke-width: 3; stroke-linecap: round; }
+
+/* === AGENDA: banco de canais (até 8 itens; acima disso, a lista .chlist do sumário) === */
+.agenda { display: flex !important; flex-direction: column; }
+.agenda .kicker { color: var(--accent); }
+.agenda .kicker .ag-count { margin-left: auto; color: var(--ink-3); letter-spacing: .08em; }
+.agenda h3 { font-size: 64px; line-height: .96; margin: 14px 0 24px; }
+.strips { flex: 1; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 10px; min-height: 0; }
+.strip { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 14px 14px 16px; border-radius: 8px; background: var(--bg-2); border: 1.5px solid var(--line) !important; color: var(--ink) !important; will-change: transform; }
+.strip:hover, .strip:focus-visible { border-color: var(--accent) !important; outline: none; }
+.strip .tn { align-self: stretch; text-align: center; font: 700 20px/1 var(--f-mono); padding: 8px 0 7px; border-radius: 3px; color: var(--ink-3); border: 1.5px solid var(--line-2); background: #0e1216; }
+.strip.lit .tn { color: var(--lamp); border-color: rgba(255, 226, 184, .55); background: rgba(255, 226, 184, .07); }
+.strip .pb { align-self: flex-start; font: 500 16px/1 var(--f-mono); text-transform: uppercase; }
+.strip .st { font-size: 28px; line-height: 1.18; color: var(--ink); }
+.strip .fd { flex: 1; min-height: 120px; position: relative; margin-top: 4px;
+  background: repeating-linear-gradient(180deg, var(--line-2) 0 2px, transparent 2px 26px) 18px 0 / 14px 100% no-repeat; }
+.strip .fd::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; margin-left: -3px; border-radius: 3px; background: #05070a; border: 1px solid #222a33; }
+.strip .fd .cap { position: absolute; left: 50%; top: var(--p); width: 44px; height: 26px; margin: -13px 0 0 -22px; border-radius: 3px; background: linear-gradient(#e9edf1, #9aa4ae); box-shadow: 0 3px 0 #05070a; will-change: transform; }
+.strip .fd .cap::after { content: ""; position: absolute; left: 4px; right: 4px; top: 11px; height: 3px; background: #0b0e11; }
+.strip:hover .fd .cap, .strip:focus-visible .fd .cap { background: var(--accent); }
+.strip .fd .led { position: absolute; right: 2px; top: 0; width: 8px; height: 8px; border-radius: 50%; background: #1c232b; }
+.strip.lit .fd .led { background: var(--lamp); box-shadow: 0 0 8px rgba(255, 226, 184, .6); }
+
+/* === LISTA DE CANAIS (sumário; agenda com mais de 8 itens) === */
+.toc { display: flex !important; flex-direction: column; }
+.toc .kicker { color: var(--accent); }
+.toc .kicker .tc-hint { margin-left: auto; color: var(--ink-3); text-transform: none; letter-spacing: .02em; font-family: var(--f-body); }
+.toc h2 { font-size: 64px; line-height: .96; margin: 12px 0 18px; }
+.chlist { flex: 1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; min-height: 0; }
+.chlist .col { display: flex; flex-direction: column; }
+.chlist .actl { font: 500 18px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); padding: 10px 0 8px; border-bottom: 1px solid var(--line-2); }
+.chlist .actl:not(:first-child) { margin-top: 12px; }
+.chlist a { display: grid; grid-template-columns: 64px 1fr; align-items: center; column-gap: 16px; min-height: 58px; border-bottom: 1px solid var(--line) !important; font-size: 28px; line-height: 1.12; color: var(--ink) !important; will-change: transform; }
+.chlist a:hover, .chlist a:focus-visible { color: var(--accent) !important; outline: none; }
+.chlist .tn { text-align: center; font: 700 26px/1 var(--f-mono); padding: 7px 0 6px; border-radius: 3px; color: var(--ink-3); border: 1.5px solid var(--line-2); background: #0e1216; }
+.chlist a.lit .tn { color: var(--lamp); border-color: rgba(255, 226, 184, .55); background: rgba(255, 226, 184, .07); }
+
+/* === FIGURA === */
+.figslide { display: flex !important; flex-direction: column; }
+.figslide .kicker .chips { margin-left: auto; }
+.figslide h3 { font-size: 56px; line-height: .98; margin: 10px 0 18px; }
+.figbox { flex: 1; min-height: 0; margin-bottom: 24px; display: flex; flex-direction: column; box-sizing: border-box; padding: 12px 12px 0; border-radius: 14px; background: var(--bg-2); border: 1.5px solid var(--line); cursor: zoom-in; outline: none; }
+.figbox:focus-visible { border-color: var(--accent); }
+.figbox .fscreen { flex: 1; min-height: 0; padding: 14px; border-radius: 8px; border: 1px solid #1f262e; background: radial-gradient(rgba(255, 255, 255, .03) 1px, transparent 1.3px) 0 0 / 14px 14px, var(--bg-1); }
+.figbox .fscreen svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.figbox .ffoot { min-height: 58px; padding-top: 6px; padding-bottom: 6px; box-sizing: border-box; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 6px; }
+.figbox .figcap { font-size: 28px; line-height: 1.15; color: var(--ink-2); white-space: nowrap; }   /* 1 linha: o gerador escreve a legenda curta (FIGCAP); a completa está nas notas */
+.figbox .zoomhint { font: 500 18px/1 var(--f-mono); color: var(--ink-3); white-space: nowrap; }
+.figbox.zoom { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; margin: 0; z-index: 30; border-radius: 0; cursor: zoom-out; }
+.figbox.zoom .zoomhint::after { content: " · Esc fecha"; }
+
+/* === FECHAMENTO (espelho da abertura) === */
+.fecha .fbox p { font-size: 36px; line-height: 1.28; color: var(--ink); max-width: 700px; }
+.fecha .fbox strong { color: var(--accent); }
+.nextcap { align-self: flex-start; display: inline-flex; align-items: center; gap: 14px; height: 72px; padding: 0 28px; border-radius: 6px; font: 700 28px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; color: var(--bg-0) !important; background: var(--accent); border: 0 !important; will-change: transform; }
+.nextcap .arr { width: 26px; height: 26px; stroke-width: 2.6; }
+.fecha .nx { text-align: right; margin-top: 18px; }
+.fecha .nx .nx-k { font: 500 18px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.fecha .nx .nx-t { font: 600 30px/1.1 var(--f-display); color: var(--ink-2); margin-top: 10px; max-width: 430px; }
+.fecha .bignum .n-dim { -webkit-text-stroke-color: #55606c; }
+.fecha .actend + .bignum { font-size: 330px; }   /* com o aviso de fim de ato, o numeral encolhe e a régua de atos não encosta nas setas */
+
+/* === ABERTURA DO CURSO (hook) === */
+.hook { display: grid !important; grid-template-columns: 1fr 470px; grid-template-rows: 1fr auto; column-gap: 40px; row-gap: 18px; }
+.hook .hk-txt { display: flex; flex-direction: column; gap: 16px; }
+.hook .kick { font: 500 18px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.hook h2 { font-size: 84px; line-height: .92; }
+.hook p.big { font-size: 30px; line-height: 1.25; color: var(--ink); }
+.hook .hk-side { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.hook .hk-rta { flex: 1; min-height: 0; }
+.hook .hk-rta svg { width: 100%; height: 100%; display: block; }
+.hook .hk-lead { font-size: 28px; line-height: 1.3; color: var(--ink-2); }
+.hook .acts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.hook .acts > div { background: var(--bg-2); border: 1.5px solid var(--line); border-top: 3px solid var(--lamp); border-radius: 6px; padding: 12px 14px 12px; }
+.hook .acts .ak { display: block; font: 500 18px/1.1 var(--f-mono); letter-spacing: 0; text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.hook .acts b { display: block; font: 700 28px/1.05 var(--f-display); color: var(--ink); letter-spacing: .01em; }
+.hook .acts small { display: block; font-size: 20px; line-height: 1.25; color: var(--ink-3); margin-top: 6px; }
+
+/* === GLOSSÁRIO: visor + matriz de teclas === */
+.gloss { display: grid !important; grid-template-columns: 470px 1fr; column-gap: 36px; }
+.gloss .lc { display: flex; flex-direction: column; }
+.gvisor { flex: 1; margin-top: 26px; display: flex; flex-direction: column; justify-content: center; gap: 18px; padding: 26px 28px; border-radius: 14px; border: 1.5px solid var(--line); background: radial-gradient(rgba(255, 255, 255, .03) 1px, transparent 1.3px) 0 0 / 14px 14px, var(--bg-1); box-shadow: inset 0 0 0 6px var(--bg-2); }
+.gvisor .gv-k { font: 500 18px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.gvisor .gv-t { font: 800 44px/1 var(--f-display); color: var(--accent); }
+.gvisor .gv-d { font-size: 32px; line-height: 1.3; color: var(--ink); }
+.gkeys { display: grid; grid-template-columns: repeat(var(--cols), 1fr); grid-auto-rows: 1fr; gap: 12px; }
+.gkeys .gterm { all: unset; box-sizing: border-box; cursor: pointer; position: relative; display: flex; align-items: flex-end; padding: 16px 18px; border-radius: 8px; background: linear-gradient(180deg, #171c22, #0f1317); border: 2px solid var(--line-2); box-shadow: 0 4px 0 #05070a; font: 600 26px/1.05 var(--f-display); letter-spacing: .02em; color: var(--ink); will-change: transform; }
+.gkeys .gterm::before { content: ""; position: absolute; left: 18px; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: #1c232b; }
+.gkeys .gterm:hover, .gkeys .gterm:focus-visible { border-color: var(--accent); }
+.gkeys .gterm.on { border-color: var(--accent); background: linear-gradient(180deg, #2a1c0e, #17110a); }
+.gkeys .gterm.on::before { background: var(--accent); box-shadow: 0 0 12px rgba(255, 154, 46, .9); }
+
+/* === COMO USAR: amostras reais + explicação === */
+.howto { display: flex !important; flex-direction: column; }
+.howto h2 { font-size: 64px; line-height: .96; margin: 14px 0 18px; }
+.hlegend { flex: 1; display: grid; grid-template-rows: repeat(7, 1fr); border-top: 1px solid var(--line-2); }
+.hlegend .lg { display: grid; grid-template-columns: 290px 1fr; align-items: center; column-gap: 30px; border-bottom: 1px solid var(--line); }
+.hlegend .lg > div { font-size: 28px; line-height: 1.18; color: var(--ink-2); }
+.hlegend .lg > div b { color: var(--ink); }
+.hlegend .sw { justify-self: start; will-change: transform; }
+.hlegend .sw.pb { font: 500 18px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; }
+.hlegend .nc { font: 500 20px/1 var(--f-mono); color: var(--ink-3); border-bottom: 2px dotted var(--ink-3); padding-bottom: 3px; }
+.hlegend .warn svg { width: 40px; height: 40px; }
+.hlegend .mini-cena { font-size: 20px; padding: 8px 14px; border-radius: 6px; background: rgba(26, 32, 39, .85); border-left: 4px solid var(--accent); color: var(--ink-2); }
+.hlegend .mini-cena strong { color: var(--accent); }
+.hlegend .tbox { font: 600 24px/1 var(--f-display); padding: 8px 16px; border: 2px solid var(--accent); border-radius: 6px; color: var(--ink); background: rgba(255, 154, 46, .06); }
+.howto .kicker { color: var(--accent); }
+
+/* === QUIZ: veredito na explicação === */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.quiz .fb .vd { font-weight: 600; } .quiz .fb .vd.bad { color: #ff8a80; } .quiz .fb .vd.good { color: var(--led-green); }
+
+/* === DECK COMPLETO: peças que o gerador usa além das amostras === */
+/* atalho para o sumário, dentro do cromo (escala junto com o slide) */
+.chrome .home { position: absolute; left: 14px; top: 26px; width: 26px; height: 26px; pointer-events: auto; border: 0 !important; color: var(--ink-3); }
+.chrome .home svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; fill: none; }
+.chrome .home:hover, .chrome .home:focus-visible { color: var(--accent); outline: none; }
+/* corpo dos tópicos: além dos bullets, parágrafo, termo, tabela e fluxo em texto */
+.topic .body > * + * { margin-top: 14px; }
+.topic.diag .body .pts + * { margin-top: 0; } .topic.diag .body .pts + .tscroll { margin-top: 18px; }   /* rodada 2 (2.1.7): a última linha do bullet encostava no filete da tabela */
+.body .pt { font-size: 28px; line-height: 1.3; color: var(--ink-2); }
+.body .pt b { color: var(--ink); }
+.term, .note { font-size: 28px; line-height: 1.28; color: var(--ink-2); padding: 12px 16px; border-radius: 6px; }
+.term { border: 1.5px solid rgba(255, 154, 46, .55); border-left: 4px solid var(--accent); background: rgba(255, 154, 46, .06); }
+.note { border-left: 4px solid var(--ink-3); background: rgba(26, 32, 39, .85); }
+.term b { color: var(--accent); }
+.tscroll { overflow: auto; }
+table.mini { width: 100%; border-collapse: collapse; border-top: 1px solid var(--line-2); }
+table.mini th { font: 500 18px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 10px 12px 8px 0; border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
+table.mini td { font-size: 28px; line-height: 1.18; color: var(--ink); padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.mini td + td { color: var(--ink-2); }
+.tscroll.rolar::after { content: "role a tabela para ver todas as linhas"; display: block; position: sticky; bottom: 0; font: 500 18px/1.4 var(--f-mono); color: var(--ink-3); background: var(--bg-0); }
+.body .figcap { font-size: 20px; line-height: 1.3; color: var(--ink-3); }
+.body pre.flow { margin: 0; white-space: pre-wrap; font: 500 19px/1.4 var(--f-mono); color: var(--ink-2); background: var(--bg-1); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+/* quiz genérico: o diagrama do tema na carcaça; a explicação entra no rodapé da carcaça */
+.quiz .lc { display: flex; flex-direction: column; }
+.quiz .viz.vz3 { height: 616px; }
+.vz3 .vfoot { flex: none; margin-top: 12px; min-height: 108px; box-sizing: border-box; padding: 14px 16px 16px; border-radius: 6px; background: #0e1216; border: 1.5px solid var(--line-2); display: flex; align-items: center; }
+.vz3 .vfoot .fbph { font: 500 21px/1.3 var(--f-mono); letter-spacing: .04em; color: var(--ink-3); display: flex; align-items: center; gap: 14px; }
+.vz3 .vfoot .fbph::before { content: '?'; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px dashed var(--line-2); display: grid; place-items: center; font: 700 22px/1 var(--f-mono); color: var(--accent); }
+.vz3 .vfoot .fb { margin: 0; border: 0; padding: 0; font-size: 28px; line-height: 1.28; }
+.vz3 .vfoot .fb:not([hidden]) + .fbph { display: none; }
+.quiz .opts button > span:nth-child(2) { min-width: 0; }
+/* explorador de mesas */
+.explorer .exsel { margin-top: 18px; display: grid; gap: 10px; }
+.explorer .exrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.explorer .fl { width: 190px; font: 500 18px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.explorer .exm { all: unset; box-sizing: border-box; cursor: pointer; font: 700 20px/1 var(--f-mono); padding: 9px 14px 8px; border-radius: 3px; border: 1.5px solid; will-change: transform; }
+.explorer .exm.xa { color: var(--xair); border-color: rgba(232, 214, 180, .5); background: rgba(232, 214, 180, .06); }
+.explorer .exm.xm { color: var(--x32); border-color: rgba(70, 194, 255, .5); background: rgba(70, 194, 255, .06); }
+.explorer .exm:hover, .explorer .exm:focus-visible { border-color: var(--accent); }
+.explorer .exm.on { color: var(--bg-0); background: var(--accent); border-color: var(--accent); }
+.expanel { flex: 1; min-height: 0; margin-top: 16px; margin-bottom: 24px; padding: 16px 22px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: radial-gradient(rgba(255, 255, 255, .03) 1px, transparent 1.3px) 0 0 / 14px 14px, var(--bg-1); box-shadow: inset 0 0 0 6px var(--bg-2); display: flex; flex-direction: column; }
+.expanel .exhead { display: flex; align-items: baseline; gap: 18px; padding: 4px 4px 10px; border-bottom: 1px solid var(--line-2); }
+.expanel .ex-t { font: 800 34px/1 var(--f-display); color: var(--accent); }
+.expanel .ex-k { font: 500 18px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.exgrid { flex: 1; min-height: 0; margin: 0; display: grid; grid-template-columns: repeat(var(--c, 4), 1fr); grid-auto-flow: row; align-content: space-evenly; column-gap: 18px; overflow-y: auto; }   /* rola dentro do painel se uma ficha crescer */
+.exgrid > div { padding: 5px 4px 4px; border-bottom: 1px solid #1a2027; }
+.exgrid dt { font: 400 18px/1.15 var(--f-body); color: var(--ink-3); }
+.exgrid dd { margin: 2px 0 0; font: 600 28px/1.04 var(--f-display); color: var(--ink); letter-spacing: 0; }
+/* fechamento: fim de ato e o "FIM" do capítulo 24 */
+.actend { align-self: stretch; margin-bottom: 26px; font: 600 28px/1.2 var(--f-display); letter-spacing: .02em; color: var(--lamp); border: 1.5px dashed rgba(255, 226, 184, .6); border-radius: 6px; padding: 12px 16px; background: rgba(255, 226, 184, .05); text-align: right; }
+.bignum.fim { font-size: 220px; }
+.op-side .bignum { text-align: right; }
+/* agenda com muitos itens: a lista de canais, com o número da seção */
+.agenda .chlist a { grid-template-columns: 104px 1fr; min-height: 52px; }
+.chlist a { min-height: 54px; line-height: 1.08; }
+.toc h2 { font-size: 56px; }
+.agenda .chlist.one { grid-template-columns: 1fr; }
+.agenda .chlist a { flex: 1 1 auto; max-height: 92px; }   /* poucos itens: as linhas crescem e ocupam a altura */
+.agenda .chlist .tn { font-size: 22px; }
+.agenda .chlist.c3 { grid-template-columns: repeat(3, 1fr); column-gap: 28px; }
+.agenda .chlist.c3 a { grid-template-columns: 88px 1fr; column-gap: 12px; } .agenda .chlist.c3 .tn { font-size: 20px; }   /* agenda longa num slide só: mais largura para o título */
+.agenda .chlist .col { justify-content: flex-start; }
+/* agenda com 2 ou 3 itens: lista numerada à esquerda, mini-figura do tema do capítulo à direita (sem trilho de fader vazio) */
+.agfew { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 600px; column-gap: 36px; }
+.agfew .chlist a { min-height: 104px; max-height: none; flex: none; font-size: 30px; }
+.agfew:not(.many) .chlist .col { height: 100%; } .agfew:not(.many) .chlist a { flex: 1 1 0; max-height: 200px; }   /* pendência 4.1 */
+.agfew.many .chlist a { min-height: min-content; flex: 1 1 0; max-height: 92px; font-size: 28px; padding: 6px 0; }   /* rodada 4: até 6 linhas dividem a altura */
+.agenda .chlist.tall a { flex: 1 1 0; min-height: min-content; max-height: 116px; padding: 6px 0; } .agenda .chlist.tall .col { justify-content: flex-start; }   /* rodada 4: as linhas dividem a altura útil (5 linhas cabem até 660) */
+.nw { white-space: nowrap; }
+.reveal h2, .reveal h3 { text-wrap: balance; }   /* rodada 3: nada de palavra sozinha na 2ª linha do título */
+.agfew .viz.vz3 { height: auto; min-height: 0; }
+.agfew .vz3 .vsteps { display: none; }
+/* letra mínima de 18 px na tela: figuras (figText, no preparo), RTA da abertura, HPF, medidores, selo do canal da agenda */
+.rtahook .t-mono, .rtahook .t-monob, .rtahook .t-lbl { font-size: 25px; }
+.hpf .t-mono, .gate .t-mono { font-size: 20px; } .hpf .t-mono { font-size: 21px; } .hpf .t-ink { font-size: 22px; }
+.strip .pb { font-size: 18px !important; }
+/* encerramento: o mesmo RTA, com o corte estreito */
+.hook .notch { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+/* slide de continuação: o título diz "(continuação)" */
+.topic.cont .th h3 { color: var(--ink-2); }
+
+
+/* === ENXUGAMENTO (out/2026) === */
+/* passos: pontos no cabeçalho do diagrama (sem rótulo de texto; a tela do diagrama ganha a altura que era da bandeja) */
+.vz3 .vh .vsteps { height: auto; margin: 0; display: flex; gap: 8px; grid-auto-flow: unset; flex: none; }
+.vz3 .vh .vsteps li { padding: 0; border: 0; background: none; display: block; }
+.vz3 .vh .vsteps li i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #1c232b; border: 1.5px solid var(--line-2); box-sizing: border-box; }
+.vz3 .vh .vsteps li.seen i { background: var(--lamp); border-color: var(--lamp); }
+.vz3 .vh .vsteps li.on i { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(255, 154, 46, .85); }
+.topic .vz3 .vcount { display: none; }
+/* origem de cada bullet: livro = manual, faders = na prática */
+.si { width: 24px; height: 24px; fill: none; stroke: var(--ink-3); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pts li:has(> .si) { padding-left: 38px; } .pts li:has(> .si)::before { display: none; }
+.pts li > .si, .pt > .si { position: absolute; left: 0; top: .2em; }
+.pt:has(> .si), .lead-line:has(> .si) { position: relative; padding-left: 38px; }
+.lead-line > .si { position: absolute; left: 0; top: .2em; }
+.tbl small .dvb { display: flex; width: fit-content; margin: 6px 0 4px; }
+.tbl .divg .dvo { display: inline-flex; margin-right: 28px; }   /* s6-2-1: as duas opções na mesma linha, com o mesmo peso */
+/* === SELO "ABORDAGENS DIVERGENTES": um ponto com mais de um jeito correto (README de tools/bespoke, seção 8) ===
+   âmbar (--accent), ícone de bifurcação; todas as opções lado a lado, cada uma com a sua letra, sem marcar a "certa" */
+.dvb { display: inline-flex; align-items: center; gap: 8px; font: 700 18px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+  border: 1.5px solid rgba(255, 154, 46, .6); background: rgba(255, 154, 46, .08); border-radius: 4px; padding: 5px 10px 4px 7px; white-space: nowrap; }
+.dvb .dvi { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.pts li.divg { padding: 12px 16px 14px 18px; border-left: 4px solid var(--accent); background: rgba(255, 154, 46, .05); border-radius: 0 8px 8px 0; }
+.pts li.divg::before { display: none; }
+.divg .dvt { display: block; margin-top: 10px; color: var(--ink); font-weight: 600; }
+.divg .dvo { display: flex; gap: 12px; align-items: baseline; margin-top: 6px; color: var(--ink-2); }
+.divg .dvo i { flex: none; font: 700 18px/1 var(--f-mono); font-style: normal; color: var(--accent); border: 1.5px solid rgba(255, 154, 46, .5); border-radius: 3px; padding: 4px 7px 3px; }
+/* N24 (rodada 4 de neutralidade): selo compacto no tópico. Selo, assunto e opções correm na mesma linha e quebram por opção inteira
+   ("A · …  B · …"); o detalhe de cada abordagem fica no bloco .divn das notas. Nada de slide de continuação por causa do selo. */
+.pts li.divg { padding: 8px 14px 10px 16px; line-height: 1.25; }
+.pts li.divg .dvb { vertical-align: 3px; margin-right: 12px; }
+.pts li.divg .dvt { display: inline-block; max-width: 100%; margin: 0 10px 0 0; }
+.pts li.divg .dvt::after { content: ":"; }
+.pts li.divg .dvo { display: inline-block; max-width: 100%; margin: 4px 22px 0 0; }
+.pts li.divg .dvo i { display: inline-block; margin-right: 8px; vertical-align: 3px; }
+/* N24: tópico que passaria da margem fica mais justo (entrelinha e vão menores) antes de pensar em continuação; a letra não muda (28 px) */
+.topic.diag .body.tight { margin-top: 18px; } .topic.diag .body.tight .pts { gap: 8px; } .body.tight .pts li { line-height: 1.22; } .body.tight .pts li.divg { padding: 6px 12px 8px 14px; }
+.howto .hlegend .lg:has(.dvb) { grid-template-columns: 340px 1fr; } .howto .hlegend .dvb { padding: 7px 10px 6px 8px; } .howto .hlegend .dvb .dvi { width: 26px; height: 26px; }
+/* === FECHAMENTO DO CAP. 26: o próximo passo (site e telefone em destaque) === */
+.pitch.cta { gap: 22px; }
+.pitch.cta h2 { font-size: 72px; max-width: 840px; }
+.pitch.cta p.ctatext { font-size: 30px; line-height: 1.32; color: var(--ink-2); max-width: 860px; }
+.ctaband { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; max-width: 1080px; margin-top: 6px; }
+.ctacard { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 24px 26px 26px; border-radius: 8px; background: var(--bg-2); border: 1.5px solid var(--line-2); border-top: 3px solid var(--accent); will-change: transform; }
+.ctacard .ck { font: 500 18px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.ctacard b { font: 800 58px/1 var(--f-display); letter-spacing: .01em; color: var(--ink); white-space: nowrap; }
+.pitch.cta .nextcap { margin-top: 4px; }
+/* abertura do capítulo: linha-promessa e selo de troca de ato */
+.opener .promise { font-size: 32px; line-height: 1.3; color: var(--ink-2); max-width: 700px; }
+.opener .actend { align-self: flex-end; text-align: right; max-width: 400px; margin-bottom: 18px; }
+.opener .actend + .bignum { font-size: 320px; }
+/* fim do capítulo: botão para o próximo */
+.nextcap { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 22px; border-radius: 6px; font: 700 24px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; color: var(--bg-0) !important; background: var(--accent); border: 0 !important; }
+.topic > .nextcap, .gloss > .nextcap { position: absolute; right: 110px; bottom: 10px; height: 44px; font-size: 20px; z-index: 5; }
+/* quiz sem diagrama: largura cheia */
+.quiz.wide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+.quiz.wide .th { grid-column: 1; margin-bottom: 22px; }
+.quiz.wide h3 { font-size: 60px; max-width: 1080px; }
+.quiz.wide .opts { max-width: 1080px; }
+.quiz.wide .opts button { min-height: 108px; padding-top: 22px; padding-bottom: 22px; }   /* rodada 6: alternativas mais altas, sem 180 px vazios antes do rodapé */
+.quiz.wide .fb { max-width: 1080px; }
+.quiz .qfoot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 6px; }
+.quiz .qfoot .reset { margin: 0; }
+.quiz.bspq .qfoot .reset { flex: none; white-space: nowrap; } .quiz.bspq .qfoot { gap: 16px; } .quiz.bspq .nextcap { flex: 0 1 auto; min-width: 0; line-height: 1.05; padding: 0 18px; gap: 10px; }   /* rodada 3: a dica nunca quebra; o botão cede o espaço e o nome longo do próximo capítulo quebra em 2 linhas dentro dos 56 px */
+.quiz.gatequiz .qfoot { flex-direction: row; align-items: center; gap: 16px; }   /* rodada 5: rodapé numa linha só, como nos outros quizzes; o feedback não empurra o botão para fora */
+.quiz.gatequiz .opts button { min-height: 60px; }
+.quiz.gatequiz .qfoot .reset, .quiz.gatequiz .nextcap { white-space: nowrap; }   /* checklist P47 */
+/* abertura e encerramento do curso (proposta) */
+.pitch { display: flex !important; flex-direction: column; gap: 18px; }
+.pitch .kick { color: var(--accent); }
+.pitch h2 { font-size: 80px; line-height: .94; max-width: 1080px; }
+.pitch p.big { font-size: 28px; line-height: 1.3; color: var(--ink-2); max-width: 1060px; }
+.pitch .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 6px; }
+.pitch .acts.six { grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+.pitch .acts > div { background: var(--bg-2); border: 1.5px solid var(--line); border-top: 3px solid var(--lamp); border-radius: 6px; padding: 14px 16px; }
+.pitch .acts .ico { width: 34px; height: 34px; fill: none; stroke: var(--lamp); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 10px; }
+.pitch .acts .ak { display: block; font: 500 18px/1.1 var(--f-mono); text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px; }
+.pitch .acts b { display: block; font: 700 30px/1.05 var(--f-display); color: var(--ink); }
+.pitch .acts small { display: block; font-size: 22px; line-height: 1.25; color: var(--ink-2); margin-top: 8px; }
+.pitch .pfoot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.pitch .band { font: 500 22px/1 var(--f-mono); color: var(--ink-2); letter-spacing: .04em; } .pitch .band b { color: var(--ink); }
+.pitch .seal { font: 700 20px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border: 1.5px solid rgba(255, 154, 46, .6); border-radius: 4px; padding: 10px 14px; }
+.pitch.end { justify-content: center; gap: 28px; padding-bottom: 90px; }
+.pitch.end h2 { font-size: 72px; }
+.pitch.end .acts > div { padding: 18px 18px 20px; }
+.pitch.end .acts small { font-size: 28px; line-height: 1.25; color: var(--ink); }   /* rodada 6: corpo >= 28 px */
+.pitch.end p.big { font-size: 30px; }
+/* rodada 6: 24.2.1, sete erros e o conserto. Linha = fragment; entra vermelha e, meio segundo depois, o conserto acende em verde e o erro apaga riscado */
+.topic.errfix { display: flex !important; flex-direction: column; }
+.errfix .th { margin-bottom: 18px; }
+.errfix .eftbl { flex: 1; display: grid; grid-template-rows: auto repeat(7, 1fr); row-gap: 8px; }
+.errfix .efh { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; font: 500 18px/1 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); padding: 0 18px 4px 62px; }
+.errfix .efrow { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; align-items: stretch; }
+.errfix .efrow > div { display: flex; align-items: center; gap: 14px; font-size: 28px; line-height: 1.12; padding: 4px 18px; border-radius: 6px; }
+.errfix .bad { color: #ffb3ab; background: rgba(255, 75, 62, .09); border-left: 4px solid var(--led-red); }
+.errfix .fix { color: var(--ink); background: rgba(47, 224, 123, .07); border-left: 4px solid var(--led-green); }
+.errfix .efx { font-family: -apple-system, "Apple Symbols", "Segoe UI Symbol", sans-serif; font-size: 26px; flex: none; width: 24px; }
+.errfix .bad .efx { color: var(--led-red); } .errfix .fix .efx { color: var(--led-green); }
+.errfix .efrow.visible .fix { animation: efOn .45s .5s both; }
+.errfix .efrow.visible .bad { animation: efOff .45s .5s both; }
+@keyframes efOn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+@keyframes efOff { from { color: #ffb3ab; } to { color: #f0a49b; } }   /* checklist P61: sem riscado; o erro fica legível, marcado pelo ✕ e pela cor */
+.errfix .efc { margin-left: auto; flex: none; font: 500 18px/1 var(--f-mono); letter-spacing: .04em; color: var(--ink-3); white-space: nowrap; }   /* checklist P16: capítulo de cada linha */
+@media (prefers-reduced-motion: reduce) { .errfix .efrow.visible .fix, .errfix .efrow.visible .bad { animation-duration: .01s; animation-delay: 0s; } }
+/* sumário: uma coluna por ato */
+.chlist.c4 { flex: none; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 26px; }
+.chlist.c4 .col { display: flex; flex-direction: column; }
+.chlist.c4 a, .tocrow a { grid-template-columns: 50px 1fr; column-gap: 12px; min-height: 44px; font-size: 28px; line-height: 1; padding: 3px 0; }
+.chlist.c4 .tn, .tocrow .tn { font-size: 20px; padding: 5px 0 4px; }
+.chlist.c4 .actl, .tocrow .actl { font-size: 18px; letter-spacing: .06em; white-space: nowrap; padding: 6px 0 6px; }
+.tocrow { flex: none; margin-top: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 20px; }
+.tocrow a { font-size: 28px; }
+.tocrow .actl { margin-top: 0 !important; }
+.toc h2 { margin-bottom: 6px; font-size: 48px; }
+/* como usar */
+.hlegend.six, .howto .hlegend { grid-template-rows: repeat(5, 1fr); }
+.howto .hlegend .lg { grid-template-columns: 280px 1fr; align-items: center; }
+.howto .hlegend { grid-template-rows: repeat(6, 1fr); } .hlegend .sw.wsym { font-size: 44px; line-height: 1; color: var(--accent); padding-left: 4px; }   /* N15: ⚠ = confira na sua mesa */
+.howto .si2 { display: inline-flex; align-items: center; gap: 10px; font: 500 20px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.howto .si2 .si { width: 32px; height: 32px; stroke: var(--ink-2); }
+.hnames { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.hnames p { font-size: 28px; line-height: 1.2; color: var(--ink-2); background: var(--bg-2); border: 1.5px solid var(--line); border-radius: 6px; padding: 10px 14px; }
+/* glossário: três abas, um slide */
+.gtabs { display: flex; gap: 10px; margin-top: 22px; }
+.gtab { all: unset; cursor: pointer; font: 700 20px/1 var(--f-mono); letter-spacing: .06em; padding: 10px 14px 9px; border-radius: 4px; border: 1.5px solid var(--line-2); color: var(--ink-2); }
+.gtab.on { color: var(--bg-0); background: var(--accent); border-color: var(--accent); }
+.gtab:hover, .gtab:focus-visible { border-color: var(--accent); }
+.gkeys .gterm[hidden] { display: none; }
+.gloss .gvisor { margin-top: 18px; flex: none; }   /* checklist P60: o visor tem a altura da definição, alinhado ao topo */
+.gloss .gkeys { height: 616px; grid-auto-rows: minmax(0, 1fr); gap: 10px; }
+.gloss .gkeys .gterm { padding: 12px 12px; font-size: 22px; }
+.gloss .gkeys .gterm::before { left: 12px; top: 12px; width: 10px; height: 10px; }
+
+/* === SOB MEDIDA FORA DO TÓPICO (tools/bespoke/README.md) === */
+.quiz.bspq { grid-template-columns: 620px 1fr; }
+.quiz.bspq .th { margin-bottom: 10px; } .quiz.bspq .opts { gap: 6px; } .quiz.bspq .opts button { min-height: 66px; padding: 9px 18px; } .quiz.bspq .fb { margin-top: 10px; }   /* motion total: 26 px a menos, o rodapé respondido não desce até o contador */   /* coluna de 620: a explicação longa cabe acima do rodapé */
+.op-side.has-bsp .bignum { font-size: 240px; }
+.op-bsp { width: 430px; margin-top: 18px; } .op-bsp svg { display: block; width: 100%; height: auto; overflow: visible; }
+.op-side.has-bsp .actbar { margin-top: 18px; }
+.bsp-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; } .bsp-layer svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* === REDUÇÃO DE MOVIMENTO === */
+@media (prefers-reduced-motion: reduce) {
+  .haze i { will-change: auto; }
+}
+</style>
+</head>
+<body>
+<!--DEFS-->
+<div class="haze" aria-hidden="true"><i></i><i></i></div>
+<div class="reveal"><div class="slides">
+<div class="chrome"><div class="rail" aria-hidden="true"></div><div class="num" aria-hidden="true"></div><a class="home" href="#/sumario" aria-label="Ir para o sumário" title="Sumário"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 7h18M4 13h18M4 19h18"/></svg></a></div>
+<!--SLIDES-->
+</div></div>
+<script src="lib/dist/reveal.js"></script>
+<script src="lib/plugin/notes/notes.js"></script>
+<script src="lib/gsap/gsap.min.js"></script>
+<script src="lib/gsap/SplitText.min.js"></script>
+<script src="lib/gsap/DrawSVGPlugin.min.js"></script>
+<script src="lib/gsap/MotionPathPlugin.min.js"></script>
+<script src="lib/gsap/CustomEase.min.js"></script>
+<script src="lib/gsap/Flip.min.js"></script>
+<script>
+/* =========================================================
+   MOTION: GSAP disparado pelos eventos do reveal
+   Cada <section data-anim="tipo"> ganha a SUA instância: Object.create(CTRL[tipo]).
+   Todo estado (this.*) mora na instância: 25 quizzes ou 2 interativos não se misturam.
+   slidechanged -> leave(slide anterior) + enter(slide, tl)
+   fragmentshown/hidden -> step(slide, f)   (step monta o estado só a partir de f)
+   ids dentro de SVG gerado levam o sufixo da instância (this.uid) para não colidir.
+   ========================================================= */
+gsap.registerPlugin(SplitText, DrawSVGPlugin, MotionPathPlugin, CustomEase, Flip);
+CustomEase.create('stage', '0.16,1,0.3,1');   // entradas: chega rápido, pousa suave
+CustomEase.create('fader', '0.65,0,0.35,1');  // movimento físico (fader, varredura)
+gsap.defaults({ ease: 'stage', duration: 0.6 });
+gsap.config({ nullTargetWarn: false });   // rise()/ignite() recebem listas vazias em slides sem chips, reset etc.
+let RM = false;   // prefers-reduced-motion
+gsap.matchMedia().add('(prefers-reduced-motion: reduce)', () => { RM = true; return () => { RM = false; }; });
+
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+/* diagramas sob medida (tools/bespoke/<id>.js, contrato em tools/bespoke/README.md): bespoke('s9-1-1', { init, enter, step, leave }) */
+const BESPOKE = {}, bespoke = (id, o) => { BESPOKE[id] = o; };
+/* sob medida em slide que não é diag (cap-N, quiz-N, capa, sumário, interativos…): o orquestrador chama init/enter/step/leave/answer/reset.
+   O diag continua chamando o seu (continuação, faixas). x.svg = o SVG sob medida, ou o SVG próprio do slide (.viz, .console, .flowfig). */
+const bxs = new Map();
+function bxOf(s) {
+  const o = s.dataset.anim !== 'diag' && BESPOKE[s.id]; if (!o) return null;
+  let b = bxs.get(s);
+  if (!b) bxs.set(s, b = { o, x: { s, svg: $('.bsp svg', s) || $('.viz svg, .console, .flowfig svg', s), uid: inst.get(s)?.uid, cont: false, type: s.dataset.anim } });
+  if (!b.x.ok) { b.x.ok = 1; o.init?.(b.x); }   // 1ª vez com o slide visível (getBBox)
+  return b;
+}
+const emit = (s, type, detail = {}) => s.dispatchEvent(new CustomEvent(type, { detail }));   // slide:enter, slide:leave, fragment:shown/hidden, quiz:answered, quiz:reset
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (tag, a, parent) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent && parent.appendChild(e); return e; };
+const C = { green: '#2fe07b', yellow: '#ffd23f', red: '#ff4b3e', acc: '#ff9a2e', x32: '#46c2ff', xair: '#e8d6b4', dim: '#1c232b', bg1: '#0b0e11', bg2: '#12161b' };
+const ARR = '<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg>';   // "→" não existe no subset latin
+
+/* coluna de LEDs com "obturador": acender = scaleY do obturador (só transform) */
+function ledMeter(parent, x, top, w, n, pitch, h, zone, cover) {
+  const g = mk('g', {}, parent);
+  for (let i = 0; i < n; i++) mk('rect', { x, y: top + i * pitch, width: w, height: h, rx: 1.5, fill: zone(i) }, g);
+  const sh = mk('rect', { x: x - 1, y: top - 1, width: w + 2, height: n * pitch + 1, fill: cover, 'fill-opacity': .86 }, g);
+  gsap.set(sh, { transformOrigin: '50% 0%', scaleY: 1 });
+  return sh;
+}
+
+/* títulos: SplitText em linhas com máscara (uso moderado: só títulos) */
+const splits = new Map();
+function titleIn(el) {
+  if (!el) return gsap.timeline();
+  let s = splits.get(el);
+  if (!s) { s = SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: 'ln', aria: 'auto' }); splits.set(el, s); $$('.ln', el).forEach(l => l.parentElement.classList.add('ln-mask')); }
+  return gsap.timeline().fromTo(s.lines, { yPercent: 135 }, { yPercent: 0, duration: .6, stagger: .06, ease: 'stage' }, 0)
+    .fromTo(s.lines, { opacity: 0 }, { opacity: 1, duration: .3, stagger: .06, ease: 'power1.in' }, .05);   // rodada 3: 110 deixava o topo das letras da linha seguinte aparecer embaixo da máscara
+}
+const rise = (t, d = 18) => gsap.fromTo(t, { autoAlpha: 0, y: d }, { autoAlpha: 1, y: 0, duration: .4, stagger: .05 });
+/* corpo: bullets e linhas de tabela entram juntos; fragment ainda não mostrado pousa em 0,2 (esqueleto "ghost") */
+const GHOST = '.pts li, .pt, .lead-line, .cena, .ask, .hk-lead, .acts';   // fragments que ficam em 0,2 antes de acender (mesma lista do CSS)
+const dimOf = el => { const fr = el.closest('.fragment'); return fr && !fr.classList.contains('visible') ? .2 : 1; };
+function bodyIn(s, tl, at) {
+  const els = $$(GHOST + ', .tbl .thd, .tbl .trow > div', s);
+  if (els.length) tl.fromTo(els, { autoAlpha: 0, y: 12 }, { autoAlpha: (i, el) => dimOf(el), y: 0, duration: .35, stagger: { amount: Math.min(.2, els.length * .03) } }, at);
+}
+
+/* ---------- PADRÃO: slide sem controlador próprio ---------- */
+const base = {
+  enter(s, tl) { tl.add(rise($$('.kicker, .kick, .clabel', s), 12), 0).add(titleIn($('h2, h3', s)), .04); bodyIn(s, tl, .2); }
+};
+
+/* ---------- CAPA: banco de faders ---------- */
+const cover = {
+  init(s) {
+    const svg = $('.console', s), u = this.uid;
+    mk('defs', {}, svg).innerHTML = `<linearGradient id="cg-${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#161b21"/><stop offset="1" stop-color="#0a0d10"/></linearGradient><linearGradient id="capg-${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9edf1"/><stop offset="1" stop-color="#9aa4ae"/></linearGradient>`;
+    mk('rect', { x: 0, y: 0, width: 1280, height: 300, fill: `url(#cg-${u})` }, svg);
+    mk('line', { x1: 0, y1: .75, x2: 1280, y2: .75, stroke: 'rgba(255,255,255,.10)', 'stroke-width': 1.5 }, svg);
+    const CAPS = [83, 52.3, 52.8, 75, 84.7, 71.7, 63.4, 83.6, 115.8, 123, 97.7, 71.5, 71.9, 86.1, 82.4, 57.9];  // posições da capa original
+    // fitas de nome: laranja = marca, fita crepe = X AIR/M AIR, azul = X32/M32, branco = retornos (nenhuma cor de LED)
+    const STRIP = [C.acc, C.acc, C.acc, C.acc, C.xair, C.xair, C.xair, C.xair, C.x32, C.x32, C.x32, C.x32, '#d7dde3', '#d7dde3', '#d7dde3', '#d7dde3'];
+    this.caps = []; this.shut = []; this.strips = [];
+    CAPS.forEach((v, i) => {
+      const x0 = i * 80, col = STRIP[i];
+      if (i) mk('line', { x1: x0, y1: 10, x2: x0, y2: 300, stroke: '#1b2229', 'stroke-width': 1 }, svg);
+      const st = mk('g', {}, svg);
+      mk('rect', { x: x0 + 12, y: 14, width: 56, height: 30, rx: 3, fill: col, 'fill-opacity': .12, stroke: col, 'stroke-opacity': .55, 'stroke-width': 1.5 }, st);
+      mk('text', { x: x0 + 40, y: 36, 'text-anchor': 'middle', class: 't-monob', style: `fill:${col}` }, st).textContent = i + 1;
+      this.strips.push(st);
+      for (let k = 0; k <= 8; k++) mk('line', { x1: x0 + 18, y1: 62 + k * 28, x2: x0 + (k % 4 ? 24 : 28), y2: 62 + k * 28, stroke: '#3a4552', 'stroke-width': 1.5 }, svg);
+      mk('rect', { x: x0 + 36, y: 62, width: 6, height: 224, rx: 3, fill: '#05070a', stroke: '#222a33' }, svg);
+      this.shut.push(ledMeter(svg, x0 + 58, 62, 8, 16, 14, 10.5, j => j < 2 ? C.red : j < 5 ? C.yellow : C.green, '#0e1216'));
+      const capY = 62 + (v - 30) / 120 * 200, hot = i === 3 || i === 9;
+      const cap = mk('g', {}, svg);
+      mk('rect', { x: x0 + 21, y: capY, width: 36, height: 24, rx: 3, fill: hot ? C.acc : `url(#capg-${u})` }, cap);
+      mk('line', { x1: x0 + 24, y1: capY + 12, x2: x0 + 54, y2: capY + 12, stroke: '#0b0e11', 'stroke-width': 2.5 }, cap);
+      cap.dataset.drop = 262 - capY;
+      this.caps.push(cap);
+    });
+  },
+  enter(s, tl) {
+    tl.add(rise($('.kick', s), 12), 0)
+      .add(titleIn($('h1', s)), .04)
+      .add(rise($('.csub', s)), .45)
+      .add(rise($$('.cv-meta > *', s)), .6)
+      .fromTo($('.console', s), { y: 40, autoAlpha: .4 }, { y: 0, autoAlpha: 1, duration: .8 }, 0)
+      .fromTo(this.caps, { y: (i, el) => +el.dataset.drop }, { y: 0, duration: 1.1, ease: 'fader', stagger: { each: .04 } }, .45)
+      .fromTo(this.strips, { autoAlpha: .15 }, { autoAlpha: 1, duration: .25, stagger: .04 }, .45)
+      .add(() => { if (Reveal.getCurrentSlide() === s) this.live(); }, 1.2);
+  },
+  live() {   // ambiente: medidores "tocando" — balística de medidor (sobe rápido, desce devagar)
+    if (RM) { gsap.set(this.shut, { scaleY: i => [.55, .3, .32, .5, .6, .45, .4, .55, .75, .8, .62, .45, .45, .58, .55, .35][i] }); return; }
+    this.shut.forEach((sh, i) => {
+      const hot = i === 3 || i === 9, tl = gsap.timeline({ repeat: -1, repeatRefresh: true });
+      tl.to(sh, { scaleY: () => gsap.utils.random(hot ? .12 : .3, hot ? .4 : .7), duration: () => gsap.utils.random(.07, .16), ease: 'power2.out' })
+        .to(sh, { scaleY: () => gsap.utils.random(.55, .85), duration: () => gsap.utils.random(.35, .7), ease: 'power1.in' });
+      loops.push(tl);
+    });
+  }
+};
+
+/* ---------- ABERTURA DE CAPÍTULO ---------- */
+const opener = {
+  init(s) {
+    const p = $('.sig', s); let d = 'M140 96';   // pendência 0.9: a onda começa depois do contador "N / total"
+    for (let x = 140; x <= 1290; x += 5) {
+      const env = 4 + 46 * Math.exp(-(((x - 860) / 120) ** 2)) + 28 * Math.exp(-(((x - 1080) / 70) ** 2)) + 10 * Math.exp(-(((x - 560) / 90) ** 2));
+      d += ` L${x} ${(96 + env * Math.sin(x * .11) * Math.sin(x * .023 + 1)).toFixed(1)}`;
+    }
+    p.setAttribute('d', d);
+    const act = +s.dataset.act;
+    $$('.actbar li', s).forEach((li, i) => li.classList.add(i + 1 < act ? 'done' : i + 1 === act ? 'on' : 'off'));
+  },
+  enter(s, tl) {
+    const lit = $('.n-lit', s), inner = $('.n-lit span', s), sig = $('.sig', s);
+    gsap.set($$('.sigdot,.sighalo', s), { autoAlpha: 0 });   // escondido antes do 1º quadro: só acende já no trajeto
+    tl.add(rise($('.clabel', s), 12), 0)
+      .add(titleIn($('h2', s)), .04)
+      .add(rise($('.op-main .chips', s), 12), .4)
+      .fromTo($('.n-dim', s), { autoAlpha: .4, scale: 1.03 }, { autoAlpha: 1, scale: 1, duration: .7, transformOrigin: '100% 100%' }, 0)
+      .fromTo(lit, { yPercent: 100 }, { yPercent: 0, duration: 1.2, ease: 'power3.out' }, .35)
+      .fromTo(inner, { yPercent: -100 }, { yPercent: 0, duration: 1.2, ease: 'power3.out' }, '<')
+      .fromTo($$('.actbar li:not(.off) b', s), { autoAlpha: 0 }, { autoAlpha: 1, duration: .2, stagger: .18, ease: 'power1.out' }, .9)
+      .fromTo($$('.actbar li', s), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .05 }, .7)
+      .fromTo(sig, { drawSVG: '0%' }, { drawSVG: '100%', duration: 1.8, ease: 'power2.inOut' }, .2)
+      .to($$('.sigdot,.sighalo', s), { motionPath: { path: sig, align: sig, alignOrigin: [.5, .5] }, duration: 1.8, ease: 'power2.inOut', immediateRender: false }, .2)
+      .set($$('.sigdot,.sighalo', s), { autoAlpha: 1 }, .22)   // antes: fromTo autoAlpha 1 deixava o ponto no canto 0,0 até 0,2 s
+      .to($$('.sigdot,.sighalo', s), { autoAlpha: 0, duration: .4 }, 2);
+    bodyIn(s, tl, .25);
+  }
+};
+
+/* ---------- LOW CUT / HPF ---------- */
+const hpf = {
+  X0: 70, X1: 490, Y0: 160, YDB: 11,
+  FC: { '-1': 100, 0: 100, 1: 30, 2: 100, 3: 100 }, BAND: { 1: [20, 40], 2: [92, 108], 3: [80, 120] },
+  target(f) { return f >= 4 ? 170 : this.FC[f]; },   // fc de cada fragment (4 = 'Método': termina em 170)
+  fx(f) { return this.X0 + (this.X1 - this.X0) * Math.log10(f / 20) / 3; },
+  init(s) {
+    const svg = $('.hpf', s), { X0, X1, Y0, YDB } = this, clipId = `plot-${this.uid}`;
+    mk('rect', { x: 1, y: 1, width: 512, height: 528, rx: 14, class: 'housing' }, svg);   // pendência 1.1: a legenda desce para baixo do eixo
+    mk('defs', {}, svg).innerHTML = `<clipPath id="${clipId}"><rect x="${X0}" y="120" width="${X1 - X0}" height="${24 * YDB + 41}"/></clipPath>`;
+    for (let k = 0; k <= 4; k++) mk('line', { x1: X0, y1: Y0 + k * 6 * YDB, x2: X1, y2: Y0 + k * 6 * YDB, class: 'gridl' }, svg);
+    [[20, '20'], [100, '100'], [1000, '1k'], [10000, '10k']].forEach(([f, t]) => {
+      mk('line', { x1: this.fx(f), y1: Y0 + 24 * YDB, x2: this.fx(f), y2: Y0 + 24 * YDB + 8, class: 'axis' }, svg);
+      mk('text', { x: this.fx(f), y: Y0 + 24 * YDB + 32, 'text-anchor': f === 20 ? 'start' : 'middle', class: 't-mono' }, svg).textContent = t;
+    });
+    mk('line', { x1: X0, y1: Y0 + 24 * YDB, x2: X1, y2: Y0 + 24 * YDB, class: 'axis' }, svg);
+    mk('line', { x1: X0, y1: 120, x2: X0, y2: Y0 + 24 * YDB, class: 'axis' }, svg);
+    mk('text', { x: X0 - 12, y: Y0 + 6, 'text-anchor': 'end', class: 't-mono' }, svg).textContent = '0';
+    mk('text', { x: 26, y: 130, class: 't-mono' }, svg).textContent = 'nível';
+    mk('text', { x: X1 - 24, y: 480, 'text-anchor': 'end', class: 't-mono' }, svg).textContent = 'frequência (Hz)';
+    mk('path', { d: `M${X1 - 18} 474 h16 m-6 -6 l6 6 l-6 6`, fill: 'none', stroke: '#8a95a1', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    // banda da linha ativa da tabela
+    this.band = mk('rect', { x: 0, y: 122, width: 10, height: 24 * YDB + 38, fill: C.acc, 'fill-opacity': .14, stroke: C.acc, 'stroke-opacity': .5 }, svg);
+    gsap.set(this.band, { autoAlpha: 0 });
+    // curva HPF de 2ª ordem calculada para fc = 100 Hz; mudar fc = deslocar em x (eixo log)
+    let d = '';
+    for (let x = X0 - 420; x <= X1 + 420; x += 3) {
+      const f = 20 * 10 ** (3 * (x - X0) / (X1 - X0)), g = -10 * Math.log10(1 + (100 / f) ** 4);
+      d += (d ? ' L' : 'M') + x + ' ' + Math.min(Y0 + 26 * YDB, Y0 - g * YDB).toFixed(1);
+    }
+    const area = d + ` L${X1 + 420} ${Y0} L${X0 - 420} ${Y0} Z`;
+    const clip = mk('g', { 'clip-path': `url(#${clipId})` }, svg);
+    this.g = mk('g', {}, clip);
+    this.area = mk('path', { d: area, fill: C.red, 'fill-opacity': .16 }, this.g);
+    this.curve = mk('path', { d, fill: 'none', stroke: C.acc, 'stroke-width': 4, 'stroke-linejoin': 'round' }, this.g);
+    this.dot = mk('circle', { cx: this.fx(100), cy: Y0 + 3 * YDB, r: 8, fill: C.acc, stroke: C.bg1, 'stroke-width': 3 }, this.g);
+    // legenda + visor
+    this.leg = mk('g', {}, svg);
+    mk('rect', { x: 26, y: 28, width: 16, height: 16, rx: 2, fill: C.red, 'fill-opacity': .45 }, this.leg);
+    mk('text', { x: 52, y: 43, class: 't-lbl', style: 'font-weight:600;fill:#eef2f5' }, this.leg).textContent = 'graves cortados';
+    mk('text', { x: 52, y: 70, class: 't-ink' }, this.leg).textContent = 'ronco, vento, pisadas';
+    mk('text', { x: X1 - 6, y: Y0 - 14, 'text-anchor': 'end', class: 't-ink' }, svg).textContent = 'o resto passa igual';
+    mk('rect', { x: 280, y: 20, width: 214, height: 74, rx: 6, fill: C.bg1, stroke: '#3a4552', 'stroke-width': 1.5 }, svg);   // 12 px de folga em volta do texto
+    mk('text', { x: 296, y: 46, class: 't-mono' }, svg).textContent = 'Freq do corte';
+    this.read = mk('text', { x: 296, y: 82, class: 't-monob', style: 'font-size:30px;fill:#ff9a2e;letter-spacing:0' }, svg);
+    mk('text', { x: 26, y: 516, class: 't-ink' }, svg).textContent = 'liga/desliga + frequência ajustável';
+    this.fc = 100; this.render();
+  },
+  render() { gsap.set(this.g, { x: this.fx(this.fc) - this.fx(100) }); this.read.textContent = Math.round(this.fc) + ' Hz'; },   // visor e curva SEMPRE juntos
+  fcTo(f, dur = .7, ease = 'fader') { return gsap.to(this, { fc: f, duration: RM ? 0 : dur, ease, onUpdate: () => this.render() }); },
+  stop() { this.sweep?.kill(); this.sweep = null; gsap.killTweensOf(this); },   // mata varredura e qualquer tween de fc em curso
+  showBand(r) {
+    if (!r) return gsap.to(this.band, { autoAlpha: 0, duration: RM ? 0 : .25 });
+    const x = this.fx(r[0]), w = this.fx(r[1]) - x;
+    gsap.set(this.band, { attr: { x, width: w } });
+    return gsap.fromTo(this.band, { autoAlpha: 0, scaleX: .4, transformOrigin: '50% 50%' }, { autoAlpha: 1, scaleX: 1, duration: RM ? 0 : .45 });
+  },
+  enter(s, tl) {
+    this.stop(); this.fc = 20; this.render(); gsap.killTweensOf(this.band); gsap.set(this.band, { autoAlpha: 0 }); this.f = -2;
+    const fc0 = this.target(Reveal.getIndices().f ?? -1);   // voltando com fragments já abertos, a entrada já sobe até o valor certo
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04).add(rise($$('.th .chip', s), 10), .35)
+      .fromTo($('.hpf', s), { autoAlpha: .4, x: 24 }, { autoAlpha: 1, x: 0, duration: .6 }, 0)
+      .fromTo(this.curve, { drawSVG: '0%' }, { drawSVG: '100%', duration: 1.0, ease: 'power2.inOut' }, .5)   // desenha em 20 Hz (filtro quase aberto)...
+      .to(this, { fc: fc0, duration: 1.1, ease: 'fader', onUpdate: () => this.render() }, 1.5)                 // ...e o corte sobe até o alvo: visor e curva andam juntos
+      .fromTo(this.area, { autoAlpha: 0 }, { autoAlpha: 1, duration: .6 }, 1.5)
+      .fromTo(this.dot, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .4, ease: 'back.out(2)' }, 1.7);
+    bodyIn(s, tl, .2);
+  },
+  step(s, f) {   // o estado sai só de f: mata o que estiver rodando e vai ao alvo
+    if (f === this.f) return; const prev = this.f; this.f = f;
+    this.stop();
+    this.showBand(this.BAND[f]);
+    if (f === 0 && prev < 0 && !RM) gsap.fromTo(this.area, { autoAlpha: 1 }, { autoAlpha: .35, duration: .25, repeat: 3, yoyo: true, ease: 'sine.inOut' });
+    if (f >= 4) {   // método: sobe até "afinar", passa do ponto, volta um pouco
+      if (RM || prev < 3) return this.fcTo(this.target(f), 0);
+      this.sweep = gsap.timeline().add(this.fcTo(260, 1.1)).add(this.fcTo(170, .7, 'power2.inOut'), '+=.25');
+    } else this.fcTo(this.target(f));
+  }
+};
+
+/* ---------- QUIZ: gate ---------- */
+const quizgate = {
+  init(s) {
+    const svg = $('.gate', s), MID = 270, TH = 60, HITS = [4, 17, 30, 42], N = 50, X = i => 36 + i * 8.5;
+    mk('rect', { x: 1, y: 1, width: 478, height: 634, rx: 14, class: 'housing' }, svg);
+    mk('rect', { x: 16, y: 58, width: 448, height: 424, rx: 8, class: 'screen' }, svg);
+    mk('text', { x: 28, y: 40, class: 't-monob' }, svg).textContent = 'GATE';
+    this.inLbl = mk('text', { x: 452, y: 40, 'text-anchor': 'end', class: 't-mono' }, svg); this.inLbl.textContent = 'entrada';
+    this.bars = []; this.low = [];
+    for (let i = 0; i < N; i++) {
+      let a = 0; HITS.forEach(h => { if (i >= h) a = Math.max(a, 186 * Math.exp(-(i - h) * .42)); });
+      a = Math.max(a, 10 + 10 * Math.abs(Math.sin(i * 2.3)));   // vazamento entre as notas
+      const open = a > TH, r = mk('rect', { x: X(i), y: MID - a, width: 5, height: 2 * a, rx: 2, fill: open ? C.green : '#8a95a1' }, svg);
+      r.dataset.open = open ? 1 : 0; this.bars.push(r); if (!open) this.low.push(r);
+    }
+    gsap.set(this.bars, { transformOrigin: '50% 50%' });
+    this.thr = [mk('line', { x1: 28, y1: MID - TH, x2: 452, y2: MID - TH, class: 'ref' }, svg), mk('line', { x1: 28, y1: MID + TH, x2: 452, y2: MID + TH, class: 'ref' }, svg)];
+    this.ann = mk('g', {}, svg);
+    mk('line', { x1: 312, y1: 34, x2: 344, y2: 34, class: 'ref', style: 'stroke-dasharray:none;stroke-width:2.4' }, this.ann);   // rodada 5: amostra igual à linha do gráfico (contínua), não tracejado de texto
+    mk('text', { x: 452, y: 40, 'text-anchor': 'end', class: 't-mono t-acc' }, this.ann).textContent = 'threshold';
+    // faixa de estado do gate: sempre visível APAGADA (a pergunta), acende na resposta
+    this.bars.forEach((b, i) => mk('rect', { x: X(i), y: 498, width: 5, height: 36, rx: 1, fill: C.dim }, svg));   // pendência 1.6: faixa de saída alta, legível do fundo da sala
+    mk('text', { x: 28, y: 600, class: 't-mono' }, svg).textContent = 'SAÍDA DO GATE · quando ele abre?';
+    this.strip = mk('g', {}, svg);
+    this.bars.forEach((b, i) => mk('rect', { x: X(i), y: 498, width: 5, height: 36, rx: 1, fill: b.dataset.open === '1' ? C.green : '#3a1a17' }, this.strip));
+    mk('text', { x: X(4), y: 566, class: 't-lbl', style: 'fill:#2fe07b' }, this.strip).textContent = 'abre';
+    mk('text', { x: X(23.5), y: 566, 'text-anchor': 'middle', class: 't-lbl', style: 'fill:#ff8a80' }, this.strip).textContent = 'vazamento atenuado';
+    mk('path', { d: `M${X(23.5)} 546 v-8`, stroke: '#ff8a80', 'stroke-width': 2 }, this.strip);
+    this.head = mk('rect', { x: 32, y: 66, width: 2, height: 408, fill: '#eef2f5', 'fill-opacity': .7 }, svg);
+    this.reset();
+  },
+  reset() {   // diagrama no estado "pergunta"
+    const parts = [...this.thr, this.ann, this.strip, this.head];
+    gsap.killTweensOf([...this.bars, ...parts, this.inLbl]);
+    gsap.set(this.low, { scaleY: 1, fillOpacity: 1 }); gsap.set(parts, { autoAlpha: 0 }); gsap.set(this.inLbl, { autoAlpha: 1 });
+    gsap.set(this.thr, { drawSVG: '100%' });
+  },
+  clear(s) { clearOpts(s); this.xtl?.kill(); this.xtl = null; this.reset(); },   // zera o quiz (tecla R, ou ao sair do slide)
+  leave(s) { this.clear(s); },
+  enter(s, tl) {
+    this.clear(s);
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04)
+      .fromTo($$('.opts button', s), { autoAlpha: .3, x: -24 }, { autoAlpha: 1, x: 0, duration: .5, stagger: .08 }, .1)
+      .add(rise($('.reset', s), 10), .5)
+      .fromTo($('.gate', s), { autoAlpha: .4, x: 24 }, { autoAlpha: 1, x: 0, duration: .6 }, 0)
+      .fromTo(this.bars, { scaleY: 0 }, { scaleY: 1, duration: .35, stagger: { each: .008 }, ease: 'power2.out' }, .35);
+  },
+  explain() {   // a resposta "se desenha": threshold, agulha varre, vazamento é atenuado, faixa de LEDs acende
+    const tl = this.xtl = gsap.timeline();
+    tl.to(this.inLbl, { autoAlpha: 0, duration: .2 })
+      .set(this.thr, { autoAlpha: 1 }).fromTo(this.thr, { drawSVG: '0%' }, { drawSVG: '100%', duration: .6, ease: 'power2.inOut' })
+      .to(this.ann, { autoAlpha: 1, duration: .3 }, '-=.2')
+      .set(this.head, { autoAlpha: 1 })
+      .fromTo(this.head, { x: 0 }, { x: 424, duration: 1.6, ease: 'none' });
+    const t0 = tl.duration() - 1.6;
+    this.bars.forEach((b, i) => { if (b.dataset.open === '0') tl.to(b, { scaleY: .15, fillOpacity: .5, duration: .2, ease: 'power2.out' }, t0 + 1.6 * i / this.bars.length); });
+    tl.fromTo(this.strip, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .4 }, t0 + .4).to(this.head, { autoAlpha: 0, duration: .3 });
+    if (RM) tl.progress(1);
+  }
+};
+function clearOpts(s) {   // alternativas, explicação e dica voltam ao estado "pergunta"
+  const box = $('.opts', s); box.classList.remove('locked');
+  $$('button', box).forEach(b => { gsap.killTweensOf(b); b.classList.remove('ok', 'bad'); b.removeAttribute('aria-disabled'); $('.mk', b).innerHTML = ''; gsap.set(b, { clearProps: 'opacity,visibility,transform' }); });
+  $$('.fb, .reset', s).forEach(p => { gsap.killTweensOf(p); gsap.set(p, { clearProps: 'opacity,visibility,transform' }); });
+  const fb = $('.fb', s); fb.hidden = true; fb.textContent = fb.dataset.t; $('.reset', s).textContent = 'Clique em uma alternativa.';
+  const b = bxOf(s); b?.o.reset?.(b.x); emit(s, 'quiz:reset');   // painel sob medida volta ao estado PERGUNTA
+}
+const CHECK = '<svg viewBox="0 0 34 34" aria-hidden="true"><path d="M7 18 L14 25 L27 9"/></svg>', CROSS = '<svg viewBox="0 0 34 34" aria-hidden="true"><path d="M9 9 L25 25 M25 9 L9 25"/></svg>';
+function decorateQuiz(s) {
+  $$('.opts button', s).forEach((b, i) => { b.innerHTML = `<span class="k">${'ABC'[i]}</span><span>${b.innerHTML}</span><span class="mk"></span>`; });
+  const fb = $('.fb', s); fb.setAttribute('aria-live', 'polite'); fb.dataset.t = fb.textContent;   // explicação original (o veredito entra na frente)
+}
+function answer(btn) {   // 1 tentativa: a escolha revela a certa e TRAVA o quiz até R / saída do slide
+  const box = btn.parentElement, s = box.closest('section');
+  if (box.classList.contains('locked')) return;
+  box.classList.add('locked');
+  const ans = +box.dataset.ans, bs = [...box.children], pick = bs.indexOf(btn), ok = bs[ans];
+  bs.forEach(b => b.setAttribute('aria-disabled', 'true'));
+  $('.reset', s).textContent = 'Tecla R: zerar o quiz';
+  // veredito em palavras (não só cor e ícone): também é o que o leitor de tela anuncia (aria-live)
+  const fb = $('.fb', s), txt = b => $('span:nth-child(2)', b).textContent, L = i => 'ABC'[i];
+  fb.innerHTML = pick === ans ? `<span class="vd good">Certo, é a ${L(ans)}.</span> ` : `<span class="vd bad">Não é a ${L(pick)}. A certa é a ${L(ans)}.</span> `;
+  if (pick !== ans) { const sr = document.createElement('span'); sr.className = 'sr'; sr.textContent = txt(ok) + '. '; fb.append(sr); }
+  fb.append(fb.dataset.t);
+  const mark = (b, good) => {
+    b.classList.add(good ? 'ok' : 'bad');
+    const m = $('.mk', b); m.innerHTML = good ? CHECK : CROSS;
+    $('path', m).style.stroke = good ? C.green : C.red;
+    if (!RM) gsap.fromTo($('path', m), { drawSVG: '0%' }, { drawSVG: '100%', duration: .35, ease: 'power2.out' });
+  };
+  if (pick !== ans) {
+    mark(btn, false);
+    if (!RM) gsap.fromTo(btn, { x: 0 }, { keyframes: { x: [-12, 12, -8, 8, -4, 0] }, duration: .38, ease: 'power1.inOut' });
+  }
+  mark(ok, true);
+  if (!RM) gsap.fromTo(ok, { scale: 1 }, { keyframes: { scale: [1.035, 1] }, duration: .4, ease: 'back.out(3)', delay: pick !== ans ? .3 : 0 });
+  bs.forEach(b => { if (b !== ok && b !== btn) gsap.to(b, { autoAlpha: .6, duration: .3 }); });   // pendência 4.4: 0,45 sumia no fundo da sala
+  $$('.fb, .reset', s).forEach((p, i) => { p.hidden = false; gsap.fromTo(p, { autoAlpha: 0, y: RM ? 0 : 10 }, { autoAlpha: 1, y: 0, duration: RM ? .15 : .25, ease: 'power2.out', delay: RM ? 0 : .05 + i * .15 }); });   // rodada 3: o feedback chega em até 0,3 s
+  inst.get(s).explain();
+  const r = { ok: pick === ans, pick, ans }, b = bxOf(s); b?.o.answer?.(b.x, r); emit(s, 'quiz:answered', r);   // painel sob medida: estado RESPOSTA (certo/errado)
+}
+
+/* ---------- CAMINHO DO SINAL (interativo) ---------- */
+const flow = {
+  init(s) {
+    this.path = $('.flowpath', s); this.branch = $('.branchpath', s);
+    this.dot = $$('.sdot', s); this.blks = $$('.blk', s);
+    const L = this.path.getTotalLength(), pts = [];
+    for (let i = 0; i <= 800; i++) { const p = this.path.getPointAtLength(L * i / 800); pts.push([p.x, p.y]); }
+    this.blks.forEach(b => {   // fração do caminho mais próxima do centro de cada bloco
+      const x = +b.dataset.x, y = +b.dataset.y; let best = 0, bd = 1e9;
+      pts.forEach(([px, py], i) => { const d = (px - x) ** 2 + (py - y) ** 2; if (d < bd) { bd = d; best = i / 800; } });
+      b.dataset.p = best;
+    });
+    const fader = $('.blk[data-k="fader"]', s); this.blks.find(b => b.classList.contains('send')).dataset.p = fader.dataset.p;
+    this.pos = 0; this.in0 = $('.sfpanel .in', s).innerHTML;   // texto inicial do painel ("Clique em um bloco…"), para a reentrada
+  },
+  leds(upTo) { this.blks.forEach(b => gsap.to($('.led1', b), { autoAlpha: +b.dataset.p <= upTo + .001 ? 1 : 0, duration: .15 })); },
+  enter(s, tl) {
+    const order = [...this.blks].sort((a, b) => a.dataset.p - b.dataset.p).concat($('.pa', s));
+    gsap.set($$('.led1', s), { autoAlpha: 0 }); gsap.set(this.dot, { autoAlpha: 0 });
+    const pin = $('.sfpanel .in', s); gsap.killTweensOf([pin, ...$$('.halo, .box', s)]); pin.innerHTML = this.in0; gsap.set(pin, { autoAlpha: 1, y: 0 });   // reentrada: sem bloco escolhido
+    this.blks.forEach(b => b.classList.remove('on')); gsap.set([...$$('.halo', s), ...$$('.box', s)], { clearProps: 'opacity,visibility,transform' }); this.pos = 0;
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04).add(rise($$('.legend span', s), 10), .3)
+      .fromTo(this.path, { drawSVG: '0%' }, { drawSVG: '100%', duration: 1.4, ease: 'power2.inOut' }, .1)
+      .fromTo(order, { autoAlpha: .3, scale: .94, transformOrigin: '50% 50%' }, { autoAlpha: 1, scale: 1, duration: .45, stagger: 1.1 / order.length }, .1)
+      .fromTo($$('.chev', s), { autoAlpha: 0 }, { autoAlpha: 1, duration: .3, stagger: .05 }, .6)
+      .fromTo(this.branch, { drawSVG: '0%' }, { drawSVG: '100%', duration: .4 }, 1.2)
+      .fromTo($('.sfpanel', s), { autoAlpha: .4, y: 12 }, { autoAlpha: 1, y: 0, duration: .5 }, .2)
+      .add(this.travel(0, 1, 2.6), 1.8)
+      .set(this.dot, { autoAlpha: 1 }, 1.82);   // acende já no trajeto (nunca no canto 0,0)
+  },
+  travel(a, b, dur) {   // o sinal percorre o fluxo e acende o LED de cada bloco ao passar
+    const st = { p: a }, tl = gsap.timeline();
+    tl.to(this.dot, { motionPath: { path: this.path, align: this.path, alignOrigin: [.5, .5], start: a, end: b }, duration: RM ? 0 : dur, ease: 'sine.inOut' })
+      .to(st, { p: b, duration: RM ? 0 : dur, ease: 'sine.inOut', onUpdate: () => this.leds(st.p) }, 0);
+    this.pos = b; return tl;
+  },
+  pick(blk, s) {
+    if (cur?.s === s && cur.tl.isActive()) cur.tl.progress(1);   // clique durante a entrada: a entrada termina antes (os LEDs não ficam todos acesos)
+    const p = +blk.dataset.p;
+    this.blks.forEach(b => { b.classList.toggle('on', b === blk); gsap.to($('.halo', b), { autoAlpha: b === blk ? .3 : 0, duration: .25 }); });
+    gsap.killTweensOf(this.dot);
+    const tl = this.travel(this.pos, p, .35 + 1.2 * Math.abs(p - this.pos));
+    if (blk.classList.contains('send')) tl.to(this.dot, { motionPath: { path: this.branch, align: this.branch, alignOrigin: [.5, .5] }, duration: RM ? 0 : .4, ease: 'power2.out' });
+    const panel = $('.sfpanel', s), esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    const old = $('.in', panel);
+    gsap.to(old, { autoAlpha: 0, y: -10, duration: RM ? 0 : .15, ease: 'power1.in', overwrite: 'auto', onComplete: () => {
+      const dv = blk.dataset.dv ? `<span class="dvb">${$('.legend .dvl', s).innerHTML}</span>` : '';   // o mesmo selo da legenda
+      old.innerHTML = `${dv}<b>${esc(blk.dataset.t)}</b>: ${esc(blk.dataset.d)} <a href="#/cap-${blk.dataset.c}">Ver capítulo ${blk.dataset.c} ${ARR}</a>`;
+      gsap.fromTo(old, { autoAlpha: 0, y: RM ? 0 : 12 }, { autoAlpha: 1, y: 0, duration: .35 });
+    } });
+    if (!RM) gsap.fromTo($('.box', blk), { scale: 1, transformOrigin: '50% 50%' }, { keyframes: { scale: [1.05, 1] }, duration: .3, ease: 'power2.out' });
+  }
+};
+
+/* ---------- TÓPICO COM DIAGRAMA DO slides_viz.py (os 204 "topic hv") ----------
+   O SVG chega com elementos soltos (rect/text/line). Os grupos que cada fragment acende são FAIXAS DE Y:
+   ordena os filhos pelo topo do getBBox e junta quem se sobrepõe ou fica a menos de GAP unidades.
+   Tópico: cada peça com data-step="k" acende junto com o k-ésimo bullet da seção (o gerador marca isso no slides_viz.py); sem data-step, o desenho é um só e acende na entrada. */
+const GAP = 6;
+const op = e => +(e.getAttribute('opacity') || 1);
+const solid = e => getComputedStyle(e).strokeDasharray === 'none';   // traço contínuo: pode ser desenhado com drawSVG   // opacidade própria do elemento (ex.: zona de corte com opacity=.35) é respeitada
+const diag = {
+  init(s) {
+    this.s = s; this.svg = $('.vscreen svg', s); this.keys = $$('.vsteps li', s); this.cnt = $('.vcount', s);
+    this.fr = $$('.body .fragment', s); this.n = this.keys.length;
+    this.base = this.fr.length ? +(this.fr[0].dataset.i || 1) : 1;   // nº (1..) do 1º bullet deste slide na seção: a continuação começa já com o que veio antes
+    this.bx = BESPOKE[s.id.replace(/-c\d+$/, '')];   // sob medida: mesmo objeto para o slide e a continuação; o estado fica em this.x (um por slide)
+    if (this.bx) this.x = { s, svg: this.svg, uid: this.uid, cont: s.classList.contains('cont') };   // bx.init roda na 1ª entrada (enter): com o slide escondido, getBBox dá 0 e transformOrigin '50% 100%' virava a origem do SVG (barras em escada, rodada 3)
+  },
+  leave(s) { this.bx?.leave?.(this.x); },
+  cur(f) { return f >= 0 && this.fr[f] ? +(this.fr[f].dataset.i || f + 1) : this.base - 1; },   // até que bullet da seção o slide já mostrou
+  bands() {   // calculado na 1ª entrada: getBBox precisa do slide visível
+    if (this.B) return this.B;
+    const els = [...this.svg.children].filter(e => !/^(defs|title|desc|style)$/.test(e.tagName) && !e.hasAttribute('data-own'));   // data-own: peça só do JS sob medida
+    let B = [];
+    if (!this.yBands) {
+      // tópico: data-step="k" diz com que bullet (1..) a peça acende; sem data-step a peça faz parte do desenho principal.
+      // Diagrama sem data-step fica inteiro aceso: acender por ordem de linha não acompanhava o conteúdo do bullet.
+      // data-only: destaque que só aparece enquanto o seu bullet é o atual (rodada 3: o passo N acende a peça N do desenho)
+      // data-first: peça só do 1º slide da seção (a continuação desenha outra coisa no mesmo SVG, ex.: 8.2.3)
+      const isCont = this.s.classList.contains('cont');
+      els.forEach(e => { const k = +(e.dataset.step || 0), o = e.hasAttribute('data-only'), j = isCont && e.hasAttribute('data-first') ? 2000 : o ? 1000 + k : k;
+        (B[j] ||= { k, only: o, hide: j === 2000, els: [] }).els.push(e); }); B = B.filter(Boolean);
+      // peça de um bullet que não está neste slide (rodada 3, 16/12): se a seção continua no slide seguinte, ela some aqui (nada de 0,2 ilegível);
+      // se a seção acaba aqui (bullet cortado do slide), ela acende com o último bullet
+      const last = this.fr.length ? +(this.fr[this.fr.length - 1].dataset.i || this.fr.length) : this.base - 1, nx = this.s.nextElementSibling;
+      const cont = nx && nx.classList.contains('cont') && nx.id.replace(/-c\d+$/, '') === this.s.id.replace(/-c\d+$/, '');
+      B.forEach(b => { if (b.k > last) { if (cont) b.hide = true; else b.k = last; } });
+    } else {
+      // quiz: 1) caixas, textos e formas formam faixas de Y; 2) cada linha/seta entra na faixa para onde ela APONTA; faixa 0 acesa, o resto acende com a resposta
+      const isConn = e => e.matches('line, polyline') || (e.matches('path') && getComputedStyle(e).fill === 'none' && !e.matches('.curve, .curve2, .curve3, .curve4'));
+      els.filter(e => !isConn(e)).map(el => { const b = el.getBBox(); return { el, y0: b.y, y1: b.y + b.height }; }).sort((a, b) => a.y0 - b.y0).forEach(o => {
+        const l = B[B.length - 1];
+        if (l && o.y0 <= l.y1 + GAP) { l.els.push(o.el); l.y1 = Math.max(l.y1, o.y1); } else B.push({ y0: o.y0, y1: o.y1, els: [o.el] });
+      });
+      const H = B.length ? B[B.length - 1].y1 - B[0].y0 : 0;
+      while (B.length > 1 && B[0].y1 - B[0].y0 < H * .25) { const [x, y] = B.splice(0, 2); B.unshift({ y0: x.y0, y1: y.y1, els: [...x.els, ...y.els] }); }   // faixa 0 nunca é só um rótulo
+      els.filter(isConn).forEach(e => {
+        const y = e.matches('line') ? +e.getAttribute('y2') : e.getPointAtLength ? e.getPointAtLength(e.getTotalLength()).y : e.getBBox().y;
+        const d = b => y < b.y0 - GAP ? b.y0 - y : y > b.y1 + GAP ? y - b.y1 : 0;
+        (B.length ? B.reduce((m, b) => d(b) < d(m) ? b : m) : (B[0] = { y0: y, y1: y, els: [] })).els.push(e);
+      });
+      B.forEach((b, j) => { b.k = j ? 1 : 0; });
+    }
+    gsap.set(B.flatMap(b => b.els), { transformOrigin: '50% 50%' });
+    this.fit(B);
+    return this.B = B;
+  },
+  fit(B) {   // viewBox = caixa do conteúdo + 8 (o .vt já saiu), sem as peças que este slide esconde; a sobra de altura vai para as teclas (84 a 120 px)
+    let b = this.svg.getBBox(); const m = 8;
+    if (B && B.some(x => x.hide)) {
+      const bb = B.filter(x => !x.hide).flatMap(x => x.els).map(e => e.getBBox()).filter(r => r.width || r.height);
+      const x0 = Math.min(...bb.map(r => r.x)), y0 = Math.min(...bb.map(r => r.y)), x1 = Math.max(...bb.map(r => r.x + r.width)), y1 = Math.max(...bb.map(r => r.y + r.height));
+      b = { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
+    }
+    const w = b.width + 2 * m, h = b.height + 2 * m;
+    this.svg.setAttribute('viewBox', `${(b.x - m).toFixed(1)} ${(b.y - m).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+    // rodada 5: a sobra de altura vai primeiro para as teclas (até +36 px); o resto encolhe o painel, que fica centrado na altura do slide (nada de 100+ px vazios em cima e embaixo do desenho)
+    const scr = this.svg.parentElement, steps = scr.nextElementSibling, viz = scr.parentElement, hasSteps = this.n && steps && steps.matches('.vsteps');
+    viz.style.height = ''; if (hasSteps) steps.style.height = '';
+    const need = (scr.clientWidth - 16) * h / w + 16; let spare = scr.clientHeight - need;
+    if (hasSteps) { const g = Math.round(Math.min(36, Math.max(0, spare))); steps.style.height = 84 + g + 'px'; spare -= g; }
+    if (spare > 16 && viz.matches('.vz3')) viz.style.height = Math.round(viz.offsetHeight - spare + 8) + 'px';
+  },
+  ignite(els, tl, at, tAt = .12) {   // rodada 3: texto chega junto com a caixa; a figura fica legível antes de 900 ms   // o desenho "liga": caixas assentam, linhas se desenham, medidores sobem, textos chegam por último
+    const isLine = e => e.matches('line, polyline') || (e.matches('path') && getComputedStyle(e).fill === 'none');
+    const meters = els.filter(e => e.matches('.zg, .zy, .zr, .bar, .bara, .barr, .barb'));
+    const all = els.filter(isLine), lines = all.filter(solid), dashed = all.filter(e => !solid(e)), texts = els.filter(e => e.matches('text'));
+    const shapes = els.filter(e => !isLine(e) && !texts.includes(e) && !meters.includes(e)).concat(dashed);
+    tl.fromTo(shapes, { opacity: 0, scale: .94 }, { opacity: (i, e) => op(e), scale: 1, duration: .28, stagger: { amount: Math.min(.18, shapes.length * .03) } }, at)
+      .fromTo(meters, { opacity: (i, e) => op(e), scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: .3, ease: 'power2.out', stagger: { amount: Math.min(.18, meters.length * .02) } }, at + .06)
+      .fromTo(lines, { opacity: 0, drawSVG: '0%' }, { opacity: (i, e) => op(e), drawSVG: '100%', duration: .35, ease: 'power2.inOut', stagger: { amount: Math.min(.18, lines.length * .03) }, clearProps: 'strokeDasharray,strokeDashoffset' }, at + .08)
+      .fromTo(texts, { opacity: 0, y: 6 }, { opacity: (i, e) => op(e), y: 0, duration: .25, stagger: { amount: Math.min(.18, texts.length * .015) } }, at + tAt);
+  },
+  enter(s, tl) {
+    if (this.bx && !this.x.ok) { this.x.ok = 1; this.bx.init?.(this.x); }
+    const B = this.bands(), c0 = this.cur(-1), want = (b, c) => !b.hide && (b.only ? b.k === c : b.k <= c);
+    const on = B.filter(b => want(b, c0)).flatMap(b => b.els), off = B.filter(b => !want(b, c0) && !b.hide && !b.only).flatMap(b => b.els);
+    gsap.set(B.filter(b => b.only && !want(b, c0)).flatMap(b => b.els), { opacity: 0 });
+    gsap.killTweensOf(B.flatMap(b => b.els)); gsap.set(this.keys, { clearProps: 'all' }); gsap.set(B.filter(b => b.hide).flatMap(b => b.els), { opacity: 0 });
+    this.lit = B.map(b => want(b, c0)); this.f = null;
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04).add(rise($('.th .chips', s), 12), .35)
+      .fromTo($('.viz', s), { autoAlpha: .4, x: 24 }, { autoAlpha: 1, x: 0, duration: .4 }, 0)
+      .fromTo(this.keys, { autoAlpha: .3, y: 8 }, { autoAlpha: 1, y: 0, duration: .3, stagger: .03 }, .2)
+      .fromTo(off, { opacity: 0 }, { opacity: (i, e) => this.dim(e), duration: .3 }, .1);
+    this.ignite(on, tl, .08);   // o desenho começa a ligar já no 1º décimo de segundo: a troca de slide não "pisca"
+    bodyIn(s, tl, .08);
+    this.count(-1);
+    this.bx?.enter?.(this.x, tl);
+    // rodada 6: entrar direto num fragment adiantado (voltar com a seta, sumário, folhas de contato): as entradas do JS sob medida
+    // ainda rodam depois do step dos 250 ms e podiam sobrescrever o estado (onda do 9.1.2 sumia). No fim da entrada, o estado é reaplicado.
+    if (this.bx?.step && (Reveal.getIndices().f ?? -1) >= 0) tl.add(() => {   // só quando a entrada já começa com fragments à mostra
+      if (Reveal.getCurrentSlide() !== s) return;
+      const f = Reveal.getIndices().f ?? -1, c = this.cur(f);
+      if (c > 0) { this.x.k = undefined; this.x.b = undefined; this.bx.step(this.x, c, f); }
+    }, tl.duration());
+  },
+  dim(e) { return op(e) * .2; },   // peça de um bullet ainda não mostrado: esqueleto a 0,2
+  count(f) { if (this.cnt) this.cnt.textContent = this.n ? `PASSO ${f + 1}/${this.n}` : ''; },
+  step(s, f) {
+    if (f === this.f) return; this.f = f;
+    const B = this.bands(), c = this.cur(f);
+    B.forEach((b, j) => {
+      if (!b.k || b.hide) return;
+      const want = b.only ? b.k === c : b.k <= c; if (want === this.lit[j]) return; this.lit[j] = want;
+      if (!want) return gsap.to(b.els, { opacity: (i, e) => b.only ? 0 : this.dim(e), duration: RM ? 0 : .2, overwrite: 'auto' });
+      gsap.to(b.els, { opacity: (i, e) => op(e), duration: RM ? 0 : .35, overwrite: 'auto' });
+      if (!RM) {
+        const ln = b.els.filter(e => e.matches('line, polyline, path') && getComputedStyle(e).fill === 'none' && solid(e));
+        if (ln.length) gsap.fromTo(ln, { drawSVG: '0%' }, { drawSVG: '100%', duration: .5, ease: 'power2.out', clearProps: 'strokeDasharray,strokeDashoffset' });
+        gsap.fromTo(b.els.filter(e => e.matches('text')), { y: 8 }, { y: 0, duration: .45 });
+      }
+    });
+    this.keys.forEach((k, i) => { k.classList.toggle('on', i === f); k.classList.toggle('seen', i < f); });
+    if (f >= 0 && this.keys[f] && !RM) gsap.fromTo($('i', this.keys[f]), { scale: .3 }, { scale: 1, duration: .35, ease: 'back.out(3)' });
+    this.count(f);
+    this.bx?.step?.(this.x, c, f);   // c = até que bullet da seção (1..) o slide já mostrou; 0 = nenhum
+  }
+};
+
+/* ---------- SUMÁRIO / LISTA DE CANAIS ---------- */
+const toc = {
+  enter(s, tl) {
+    const rows = $$('.chlist a', s);
+    rows.forEach(r => r.classList.remove('lit'));
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h2, h3', s)), .04)
+      .fromTo($$('.chlist .actl', s), { autoAlpha: .3 }, { autoAlpha: 1, duration: .3, stagger: .06 }, .1)
+      .fromTo(rows, { autoAlpha: .3, y: 14 }, { autoAlpha: 1, y: 0, duration: .45, stagger: .03 }, .1)
+      .add(() => rows.forEach((r, i) => gsap.delayedCall(RM ? 0 : i * .02, () => r.classList.add('lit'))), .6);
+  }
+};
+
+/* ---------- GLOSSÁRIO: matriz de teclas + visor ---------- */
+const gloss = {
+  enter(s, tl) {
+    this.show(s, $('.gterm', s));   // rodada 3: o 1º termo já entra selecionado (o visor não fica vazio)
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04).add(rise($('.th .chips', s), 12), .35)
+      .fromTo($('.gvisor', s), { autoAlpha: .4, y: 16 }, { autoAlpha: 1, y: 0, duration: .6 }, 0)
+      .fromTo($$('.gterm', s), { autoAlpha: .3, scale: .96 }, { autoAlpha: 1, scale: 1, duration: .35, stagger: { each: .03, grid: 'auto', from: 'start' } }, .1);
+  },
+  clear(s) { $$('.gterm', s).forEach(b => b.classList.remove('on')); $('.gv-t', s).textContent = 'Escolha um termo'; $('.gv-d', s).textContent = 'Clique numa tecla ao lado: a definição aparece aqui.'; },
+  show(s, btn) {
+    if (!btn) return this.clear(s);
+    $$('.gterm', s).forEach(b => b.classList.toggle('on', b === btn));
+    gsap.set([$('.gv-t', s), $('.gv-d', s)], { autoAlpha: 1, y: 0 });
+    $('.gv-t', s).textContent = btn.textContent; $('.gv-d', s).textContent = btn.dataset.d;
+  },
+  pick(btn, s) {
+    if (btn.matches('.gtab')) {   // aba A–F / G–P / Q–Z: mostra só as teclas dela e seleciona a primeira
+      $$('.gtab', s).forEach(b => b.classList.toggle('on', b === btn));
+      const ks = $$('.gterm', s); ks.forEach(k => { k.hidden = k.dataset.g !== btn.dataset.g; });
+      if (!RM) gsap.fromTo(ks.filter(k => !k.hidden), { autoAlpha: .3, scale: .96 }, { autoAlpha: 1, scale: 1, duration: .3, stagger: .02 });
+      return this.show(s, ks.find(k => !k.hidden));
+    }
+    $$('.gterm', s).forEach(b => b.classList.toggle('on', b === btn));
+    const v = [$('.gv-t', s), $('.gv-d', s)];
+    gsap.to(v, { autoAlpha: 0, y: -8, duration: RM ? 0 : .15, ease: 'power1.in', overwrite: 'auto', onComplete: () => {
+      v[0].textContent = btn.textContent; v[1].textContent = btn.dataset.d;
+      gsap.fromTo(v, { autoAlpha: 0, y: RM ? 0 : 10 }, { autoAlpha: 1, y: 0, duration: .35, stagger: .06 });
+    } });
+    if (!RM) gsap.fromTo(btn, { scale: .97 }, { scale: 1, duration: .25, ease: 'power2.out' });
+  }
+};
+
+/* ---------- COMO USAR: cada amostra "carimba" ---------- */
+const howto = {
+  enter(s, tl) {
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h2', s)), .04)
+      .fromTo($$('.hlegend .sw', s), { autoAlpha: .3, scale: .96 }, { autoAlpha: 1, scale: 1, duration: .3, stagger: .06 }, .2)
+      .fromTo($$('.hlegend .lg > div', s), { autoAlpha: .3, y: 12 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .06 }, .26);
+  }
+};
+
+/* ---------- QUIZ: pergunta e alternativas em largura cheia; a explicação e o botão do próximo capítulo entram com a resposta ---------- */
+const quizw = {
+  enter(s, tl) {
+    clearOpts(s);
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04)
+      .fromTo($$('.opts button', s), { autoAlpha: .3, x: -24 }, { autoAlpha: 1, x: 0, duration: .5, stagger: .08 }, .1)
+      .fromTo($('.viz', s), { autoAlpha: .4, x: 24 }, { autoAlpha: 1, x: 0, duration: .6 }, 0)   // quiz-N.svg: carcaça do painel (DESIGN.md 3.2)
+      .add(rise($$('.qfoot > *', s), 10), .5);
+  },
+  explain() {}, clear(s) { clearOpts(s); }, leave(s) { clearOpts(s); }
+};
+
+/* ---------- EXPLORADOR DE MESAS: clique numa fita, o visor mostra a ficha ---------- */
+const escH = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const explorer = {
+  init(s) { this.data = JSON.parse($('.exdata', s).textContent); this.btns = $$('.exm', s); },
+  enter(s, tl) {
+    tl.add(rise($('.kicker', s), 12), 0).add(titleIn($('h3', s)), .04)
+      .fromTo($$('.exrow', s), { autoAlpha: .3, y: 10 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .06 }, .1)
+      .fromTo($('.expanel', s), { autoAlpha: .4, y: 16 }, { autoAlpha: 1, y: 0, duration: .6 }, 0);
+    this.pick($('.exm.on', s) || this.btns[0], s, tl, .3);
+  },
+  pick(btn, s, tl, at) {
+    this.btns.forEach(b => { b.classList.toggle('on', b === btn); b.setAttribute('aria-pressed', b === btn); });
+    const m = btn.dataset.m, rows = this.data[m], grid = $('.exgrid', s);
+    $('.ex-t', s).textContent = m;
+    $('.ex-k', s).textContent = `${btn.classList.contains('xa') ? 'Família X AIR / M AIR' : 'Família X32 / M32'} · ${rows.length} itens` + (rows.some(([, v]) => /\*$/.test(v)) ? ' · * confira na sua mesa' : '');
+    grid.style.setProperty('--c', rows.length > 15 ? 5 : 4);   // 19 itens (X32/M32) em 5 colunas, 15 (X AIR) em 4: 4 linhas, dentro do painel
+    grid.innerHTML = rows.map(([k, v]) => `<div><dt>${escH(k)}</dt><dd>${escH(v || '—')}</dd></div>`).join('');
+    const t = gsap.fromTo(grid.children, { autoAlpha: 0, y: RM ? 0 : 10 }, { autoAlpha: 1, y: 0, duration: RM ? .2 : .35, stagger: RM ? 0 : .02 });
+    if (tl) tl.add(t, at); else if (!RM) gsap.fromTo(btn, { scale: .94 }, { scale: 1, duration: .3, ease: 'back.out(3)' });
+  }
+};
+
+/* ---------- PREPARO (antes do reveal): título que não cabe encolhe; tópico que ainda não cabe vira "(continuação)" ---------- */
+function buildKeys(s) {   // um ponto por fragment do corpo (depois da divisão em continuação), no cabeçalho do diagrama
+  const ol = $('.vsteps', s), fr = $$('.body .fragment', s), one = fr.length <= 1;
+  ol.innerHTML = one ? '' : fr.map(() => '<li><i></i></li>').join('');
+  ol.classList.toggle('legend', one); ol.dataset.n = fr.length;
+  $('.vh', s).append(ol);
+}
+const FLOWSEL = 'li, p, h1, h2, h3, td, button, a, pre, .ask, .cena, .acts > div, .lg, .exgrid > div, .term, .note, .vsteps, .vfoot, .tbl';
+function over(s) {   // algum texto passa da margem de baixo (40 px), com 6 px de folga?
+  const top = s.getBoundingClientRect().top, lim = top + (s.matches('.opener, .fecha') ? 626 : 666);   // abertura e fechamento: a linha de sinal ocupa a base
+  const limc = top + 656;   // coluna de texto do tópico: para acima do contador "N / 383" (y ~ 678-694), com 20 px de respiro
+  for (const el of s.querySelectorAll(FLOWSEL)) {
+    if (el.closest('aside, svg, .nextcap')) continue;   // o botão do próximo capítulo fica fora da área útil, de propósito
+    const r = el.getBoundingClientRect();
+    if (r.height && r.bottom > (el.closest('.topic .lc') ? limc : lim)) return true;
+  }
+  return false;
+}
+function figText(s) {   // figura: recorte fino do viewBox e letra mínima de 18 px na tela (o SVG do PDF foi desenhado para papel)
+  const svg = $('.fscreen svg', s); if (!svg) return;
+  const cut = () => { const b = svg.getBBox(), m = 8; svg.setAttribute('viewBox', `${(b.x - m).toFixed(1)} ${(b.y - m).toFixed(1)} ${(b.width + 2 * m).toFixed(1)} ${(b.height + 2 * m).toFixed(1)}`); };
+  cut();
+  const texts = $$('text', svg), fs = texts.map(t => parseFloat(getComputedStyle(t).fontSize));
+  for (let n = 0, f = 1; n < 4; n++) {   // todos os textos crescem na mesma proporção (mantém a hierarquia da figura); o recorte depois do aumento muda a escala: repete até assentar
+    const k = 18.4 / (Math.min(...fs) * f * svg.getScreenCTM().a);
+    if (k <= 1.002) break;
+    f *= k; texts.forEach((t, i) => { t.style.fontSize = (fs[i] * f).toFixed(2) + 'px'; }); cut();
+  }
+  const rects = $$('rect', svg).map(r => [r, r.getBBox()]), grow = new Map();
+  texts.forEach(t => {   // texto que passou da caixa: a CAIXA alarga (centro fixo), 10 px de respiro de cada lado; a letra nunca é comprimida (pendência 0.1/0.2: textLength deixava 18 px lendo como 14)
+    const b = t.getBBox(), cx = b.x + b.width / 2, cy = b.y + b.height / 2;
+    const h = rects.filter(([, q]) => cx > q.x && cx < q.x + q.width && cy > q.y && cy < q.y + q.height).sort(([, a], [, c]) => a.width * a.height - c.width * c.height)[0];
+    if (h && b.width > h[1].width - 20) grow.set(h, Math.max(grow.get(h) || 0, b.width + 20 - h[1].width));
+  });
+  grow.forEach((d, [r, q]) => { r.setAttribute('x', (q.x - d / 2).toFixed(1)); r.setAttribute('width', (q.width + d).toFixed(1)); r.dataset.grown = d.toFixed(0); });
+  if (grow.size) cut();
+}
+const FLOOR = [['opener', 'h2', 64], ['hook', 'h2', 60], ['fecha', '.fbox p', 28], ['quiz', 'h3', 44], ['toc', 'h2', 48], ['howto', 'h2', 48], ['cover', 'h1', 56], ['', 'h1, h2, h3', 40]];
+function fitTitle(s, floor) {   // floor: piso desta passada (o tópico tenta 52 px antes de virar "(continuação)")
+  const [, sel, fl0] = FLOOR.find(([c]) => !c || s.classList.contains(c)), h = $(sel, s), fl = floor || fl0;
+  if (!h || s.classList.contains('dwide')) return;   // rodada 2 (motion): tópico largo fica com o título de 56 px da série (o painel tem max-height 360 px e cabe)
+  let fs = parseFloat(getComputedStyle(h).fontSize);
+  while (over(s) && fs - 4 >= fl) { fs -= 4; h.style.fontSize = fs + 'px'; }
+}
+function splitTopic(s, n) {
+  const b = $('.body', s);
+  if (!b || !over(s)) return;
+  const endsColon = el => el && (el.matches('p.lbl') || (el.tagName === 'UL' && el.lastElementChild?.textContent.trim().endsWith(':')));
+  const moved = [];
+  const take = () => {   // move o último item do corpo para a lista "moved"
+    const l = b.lastElementChild;
+    if (l.tagName === 'UL' && l.children.length > 1) {
+      let u = moved[0];
+      if (!(u && u.dataset.split)) { u = document.createElement('ul'); u.className = l.className; u.dataset.split = 1; moved.unshift(u); }
+      u.prepend(l.lastElementChild);
+    } else if (l.tagName === 'UL' && moved[0]?.dataset.split) { moved[0].prepend(...l.children); l.remove(); }
+    else { l.remove(); moved.unshift(l); }
+  };
+  const cnt = els => els.reduce((n, e) => n + (e.tagName === 'UL' ? e.children.length : 1), 0);
+  const tb = $(':scope > .tscroll', b);
+  if (tb && tb !== b.lastElementChild) {   // tabela no meio e 2+ itens de texto: a tabela vai para a continuação (antes, o último bullet ia sozinho)
+    const cap = tb.nextElementSibling?.matches('p.figcap') ? tb.nextElementSibling : null;
+    if (cnt([...b.children].filter(e => e !== tb && e !== cap)) >= 2) { moved.push(tb); tb.remove(); if (cap) { moved.push(cap); cap.remove(); } }
+  }
+  while (over(s)) {
+    const l = b.lastElementChild;
+    if (!l) break;
+    if (l.classList.contains('tscroll')) {   // tabela: encolhe a caixa e deixa rolar
+      const room = l.clientHeight - (s.scrollHeight - s.clientHeight) - 30;
+      if (room >= 160 || b.children.length === 1) { l.style.maxHeight = Math.max(room, 160) + 'px'; l.classList.add('rolar'); break; }
+    }
+    if (b.children.length === 1 && !(l.tagName === 'UL' && l.children.length > 1)) break;
+    take();
+  }
+  if (!moved.length) return;
+  while (!moved.includes(tb) && cnt(moved) < Math.floor((cnt(moved) + cnt([...b.children])) / 2) && (b.children.length > 1 || b.lastElementChild?.children.length > 1)) take();   // divide ao meio: nada de slide com um item só
+  while (b.children.length > 1 && endsColon(b.lastElementChild)) {
+    const l = b.lastElementChild;
+    if (l.tagName === 'UL' && l.children.length > 1) { const u = document.createElement('ul'); u.className = l.className; u.append(l.lastElementChild); moved.unshift(u); }
+    else take();
+  }
+  const c = document.createElement('section'), base = $('h3', s).textContent.replace(/ \(continuação\)$/, '');
+  c.className = s.className.replace(/ cont$/, '') + ' cont'; c.dataset.anim = s.dataset.anim; c.id = s.id.replace(/-c\d+$/, '') + '-c' + n;
+  const lc = document.createElement('div'), th = $('.th', s).cloneNode(true), nb = document.createElement('div');
+  lc.className = 'lc'; nb.className = 'body'; nb.append(...moved);
+  $('h3', th).textContent = base + ' (continuação)'; $('h3', th).style.fontSize = '';
+  lc.append(th, nb); c.append(lc, $('.viz', s).cloneNode(true));
+  // nota curta: o texto completo da seção fica só no 1º slide, para não ser lido duas vezes
+  const an = document.createElement('aside'), ap = document.createElement('p');
+  an.className = 'notes'; ap.textContent = `Continuação de "${base}": os pontos restantes. O que falar está na nota do slide anterior.`;
+  an.append(ap); c.append(an);
+  // N23: o selo de abordagens divergentes foi para a continuação: o bloco .divn das notas vai junto (cópia), para o apresentador ter as opções na tela em que o selo aparece
+  const dn = nb.querySelector('.divg') ? $$(':scope > aside.notes .divn', s) : [];
+  if (dn.length) { ap.textContent += ' As abordagens do selo estão abaixo.'; dn.forEach(d => an.append(d.cloneNode(true))); }
+  s.after(c);
+  splitTopic(c, n + 1); fitTitle(c); roomy(c);
+}
+function roomy(s) {   // rodada 4: tópico de corpo curto (texto acaba antes de y 520, quase 1/3 da coluna vazio): a letra do corpo cresce para 32 e 36 px
+  const b = $('.body', s); if (!b || !b.lastElementChild) return;
+  const top = s.getBoundingClientRect().top, end = () => b.lastElementChild.getBoundingClientRect().bottom - top;
+  for (const c of ['roomy', 'roomy2']) {
+    if (end() >= 520) return;
+    b.classList.add(c);
+    if (over(s)) { b.classList.remove(c); return; }
+  }
+}
+function prep() {
+  const box = $('.reveal .slides');
+  box.style.cssText = 'width:1280px;height:720px;display:block';
+  $$('.slides > section').forEach(st => { st.style.display = 'block'; });
+  $$('.slides section').filter(s => !s.querySelector(':scope > section')).forEach(s => {
+    s.style.display = 'block';
+    if (s.classList.contains('topic')) { fitTitle(s, 52); if (over(s)) { $('.body', s)?.classList.add('tight'); fitTitle(s, 44); } splitTopic(s, 2); }   // N24: corpo justo e título até 44 px antes de virar "(continuação)"
+    fitTitle(s);
+    if (s.classList.contains('topic')) roomy(s);
+    if (s.classList.contains('figslide')) figText(s);
+    $$('.strips', s).forEach(g => {   // rodada 3: títulos das fitas com a mesma altura: os trilhos dos faders começam na mesma linha
+      const st = $$('.st', g), h = Math.max(...st.map(e => e.offsetHeight)); st.forEach(e => { e.style.minHeight = h + 'px'; });
+    });
+  });
+  $$('.slides section').forEach(s => { s.style.display = ''; });
+  $$('.topic .vz3').forEach(v => buildKeys(v.closest('section')));
+  box.style.cssText = '';
+}
+
+/* =========================================================
+   ORQUESTRAÇÃO
+   ========================================================= */
+const CTRL = { cover, opener, hpf, quizw, quizgate, flow, explorer, diag, toc, gloss, howto };
+const inst = new Map();   // section -> instância do controlador (estado por slide)
+const loops = []; let cur = null;
+const ctrlOf = s => inst.get(s);
+
+function buildRail() { const r = $('.chrome .rail'); for (let i = 0; i < 30; i++) r.insertAdjacentHTML('beforeend', '<i><b></b></i>'); }
+function updateChrome() {   // régua = nível de uma cor só (luz de serviço): quanto do curso já passou
+  const segs = $$('.rail b'), n = Reveal.getSlidePastCount() + 1, tot = Reveal.getTotalSlides(), lit = Math.max(1, Math.round(n / tot * segs.length));
+  segs.forEach((b, i) => gsap.to(b, { autoAlpha: i < lit ? 1 : 0, duration: RM ? 0 : .12, delay: RM ? 0 : Math.abs(i - lit) * .015, overwrite: 'auto' }));
+  $('.chrome .num').textContent = `${n} / ${tot}`;
+}
+function setInert(s) { $$('.slides section').forEach(x => { x.inert = !(x === s || x.contains(s)); }); }   // fora de cena = fora do Tab e do clique
+function enter(s) {
+  if (cur) { cur.tl.progress(1).kill(); if (cur.s !== s) { ctrlOf(cur.s)?.leave?.(cur.s); const b = bxOf(cur.s); b?.o.leave?.(b.x); emit(cur.s, 'slide:leave'); } }
+  loops.splice(0).forEach(l => l.kill());
+  setInert(s);
+  const c = ctrlOf(s), tl = gsap.timeline();
+  cur = { s, tl };
+  if (c) {
+    c.enter(s, tl);
+    if (c.step) tl.add(() => { if (Reveal.getCurrentSlide() === s) c.step(s, Reveal.getIndices().f ?? -1); }, Math.min(.25, tl.duration()));   // f lido NA HORA; rodada 4: aos 250 ms (antes, só no fim da entrada: o diagrama assentava perto de 2,5 s)
+  }
+  const b = bxOf(s);
+  if (b) {
+    b.o.enter?.(b.x, tl);
+    if (b.o.step) tl.add(() => { if (Reveal.getCurrentSlide() === s) { const f = Reveal.getIndices().f ?? -1; b.o.step(b.x, f + 1, f); } }, Math.min(.25, tl.duration()));
+  }
+  emit(s, 'slide:enter', { tl });
+  if (RM) tl.progress(1);
+  updateChrome();
+}
+/* selo "Abordagens divergentes": a bifurcação se desenha (tronco e depois os dois ramos) e as opções entram uma a uma, na mesma altura; nenhuma ganha destaque */
+function divgIn(el) {
+  const p = $$('.dvi path', el), o = $$('.dvo', el);
+  gsap.killTweensOf(p.concat(o));
+  gsap.timeline().fromTo(p, { drawSVG: '0%' }, { drawSVG: '100%', duration: .32, stagger: .07, ease: 'power2.inOut' }, 0)
+    .fromTo(o, { autoAlpha: .2, x: -12 }, { autoAlpha: 1, x: 0, duration: .4, stagger: .09, ease: 'stage' }, .18);
+}
+function onFragment(e, shown) {
+  const s = Reveal.getCurrentSlide(), c = ctrlOf(s), f = Reveal.getIndices().f ?? -1;
+  e.fragments.forEach(el => {
+    const row = el.classList.contains('trow'), kids = row ? $$(':scope > div', el) : [el];
+    const from = row || el.matches(GHOST) ? .2 : 0;   // ghost acende a partir de 0,2
+    gsap.killTweensOf(kids);
+    if (shown) RM ? gsap.set(kids, { autoAlpha: 1, x: 0, y: 0 }) : gsap.fromTo(kids, { autoAlpha: from, x: row ? -16 : 0, y: !row ? 18 : 0 }, { autoAlpha: 1, x: 0, y: 0, duration: .5 });   // rodada 2: com RM vai direto ao final (fromTo de .2 s deixava as .efrow do s24-2-1 em 0)
+    else gsap.set(kids, { clearProps: 'opacity,visibility,transform' });
+  });
+  if (shown && !RM) e.fragments.forEach(el => el.matches('.divg') && divgIn(el));   // selo de abordagens divergentes: entrada própria
+  if (cur?.s === s && cur.tl.isActive()) cur.tl.progress(1);   // 'próximo' logo depois de entrar: a entrada termina primeiro
+  if (c?.step && cur?.s === s) c.step(s, f);   // pulo direto para outro slide: o fragment chega antes do slidechanged; a entrada chama step no fim
+  if (cur?.s === s) { const b = bxOf(s); b?.o.step?.(b.x, f + 1, f); }   // fora do diag, k = fragments já mostrados (f + 1)
+  emit(s, shown ? 'fragment:shown' : 'fragment:hidden', { f, fragments: e.fragments });
+}
+const ACT = '.opts button, .blk, .gterm, .gtab, .exm';   // elementos que respondem a clique, Enter e Espaço
+const act = t => t.matches('.opts button') ? answer(t) : ctrlOf(t.closest('section')).pick(t, t.closest('section'));
+
+Promise.all([
+  document.fonts.load('800 60px "Barlow Condensed"'), document.fonts.load('600 28px "Barlow Condensed"'), document.fonts.load('400 28px "Barlow"'),
+  document.fonts.load('600 28px "Barlow"'), document.fonts.load('500 18px "JetBrains Mono"'), document.fonts.load('700 18px "JetBrains Mono"')
+]).then(() => document.fonts.ready).then(() => document.readyState === 'loading' && new Promise(r => document.addEventListener('DOMContentLoaded', r))).then(() => {   // espera os <script> sob medida do fim do arquivo
+  prep();   // medidas com as fontes certas, antes do reveal contar os slides
+  return Reveal.initialize({ hash: true, width: 1280, height: 720, margin: 0, center: false, slideNumber: false, progress: false, transition: 'none', backgroundTransition: 'none', plugins: [RevealNotes] });
+}).then(() => {
+  buildRail();
+  $$('.slides section').forEach((s, i) => {
+    if (s.querySelector(':scope > section')) return;   // pilha vertical: só agrupa
+    if (s.classList.contains('quiz')) decorateQuiz(s);
+    const c = Object.create(CTRL[s.dataset.anim] || base); c.uid = i; inst.set(s, c); c.init?.(s);
+  });
+  if (!RM) $$('.haze i').forEach((h, i) => gsap.to(h, { x: i ? 60 : -80, y: i ? -40 : 50, duration: 16 + i * 5, ease: 'sine.inOut', repeat: -1, yoyo: true }));
+  Reveal.on('slidechanged', e => enter(e.currentSlide));
+  Reveal.on('fragmentshown', e => onFragment(e, true));
+  Reveal.on('fragmenthidden', e => onFragment(e, false));
+  enter(Reveal.getCurrentSlide());
+  document.addEventListener('click', e => { const t = e.target.closest(ACT); if (t) act(t); });
+  document.addEventListener('keydown', e => {   // em captura: chega antes do teclado do reveal
+    if (e.key === 'Enter' || e.key === ' ') {
+      const t = e.target.closest?.(ACT); if (t) { e.preventDefault(); e.stopPropagation(); act(t); }
+    } else if (e.key === 'Escape' && $('.figbox.zoom')) {
+      e.preventDefault(); e.stopPropagation(); const s = Reveal.getCurrentSlide(); ctrlOf(s).zoom(s, false);
+    } else if ((e.key === 'r' || e.key === 'R') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const s = Reveal.getCurrentSlide(); ctrlOf(s)?.clear?.(s);
+    }
+  }, true);
+  window.__deckReady = true;
+});
+</script>
+<!--BESPOKE-->
+</body>
+</html>

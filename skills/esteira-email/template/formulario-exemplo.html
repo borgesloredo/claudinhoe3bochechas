@@ -1,0 +1,25 @@
+<!-- Formulário mínimo que põe a pessoa na esteira. Cole na sua página e troque SEU-PROJETO e meu-produto.
+     O domínio da página precisa estar em ESTEIRA_ORIGENS (secret do Supabase), senão a função responde 403. -->
+<form id="esteira" novalidate>
+  <label>Nome <input name="nome" autocomplete="given-name" required></label>
+  <label>E-mail <input name="email" type="email" autocomplete="email" required></label>
+  <input type="hidden" name="produto" value="meu-produto">
+  <button type="submit">Quero receber</button>
+  <p id="esteira-msg" role="status"></p>
+</form>
+<script>
+document.getElementById("esteira").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const f = ev.target, msg = document.getElementById("esteira-msg");
+  const dados = Object.fromEntries(new FormData(f));
+  f.querySelector("button").disabled = true;
+  try {
+    const r = await fetch("https://SEU-PROJETO.supabase.co/functions/v1/esteira-lead", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(dados),
+    });
+    msg.textContent = r.ok ? "Pronto! Confira o seu e-mail (veja também a caixa de spam)."
+      : r.status === 400 ? "Confira o e-mail digitado." : "Não deu certo agora. Tente de novo em alguns minutos.";
+  } catch { msg.textContent = "Sem conexão. Tente de novo."; }
+  f.querySelector("button").disabled = false;
+});
+</script>

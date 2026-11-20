@@ -1,0 +1,9 @@
+{
+  "leo":    {"pele": "#8D5A3B", "cabelo": "curto",    "cor_cabelo": "#1b1410", "camisa": "#2F6FDE", "calca": "#2b2f3a", "extras": ["bone", "fone_pescoco"], "cor_extra": "#FF8A00"},
+  "ze":     {"pele": "#C98E6B", "cabelo": "careca",   "cor_cabelo": "#bdbdbd", "camisa": "#5b6b3a", "calca": "#2b2f3a", "extras": ["barba", "colete", "oculos"], "cor_extra": "#3a3a3a"},
+  "duda":   {"pele": "#6B4226", "cabelo": "cacheado", "cor_cabelo": "#22140c", "camisa": "#D93F7E", "calca": "#1f1f2e", "extras": []},
+  "ivo":    {"pele": "#E0B08A", "cabelo": "curto",    "cor_cabelo": "#8a8a8a", "camisa": "#8B2E2E", "calca": "#2b2f3a", "extras": ["bigode"], "largura": 1.2},
+  "nico":   {"pele": "#D9A27E", "cabelo": "espetado", "cor_cabelo": "#3b2a1a", "camisa": "#4B4F5C", "calca": "#22252e", "extras": ["oculos"]},
+  "tonhao": {"pele": "#A86B47", "cabelo": "careca",   "cor_cabelo": "#2a1a10", "camisa": "#C62828", "calca": "#22252e", "extras": ["bigode"], "largura": 1.3},
+  "bia":    {"pele": "#F1C7A5", "cabelo": "coque",    "cor_cabelo": "#E04F9F", "camisa": "#1E63D6", "calca": "#22252e", "extras": ["fone"], "cor_extra": "#13213B"}
+}

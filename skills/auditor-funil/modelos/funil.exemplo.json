@@ -1,0 +1,64 @@
+{
+  "nome": "Curso Exemplo",
+  "painel_url": "https://seusite.com.br/painel/saude/",
+  "pasta_saida": "saude",
+
+  "servidor": [
+    {
+      "nome": "Auditor do servidor (e-mails, acessos, tarefas)",
+      "url": "https://SEU-PROJETO.supabase.co/functions/v1/funil-auditor",
+      "cabecalhos": { "Authorization": "Bearer $AUDITOR_TOKEN" },
+      "tempo_s": 90
+    }
+  ],
+
+  "paginas": [
+    {
+      "nome": "Página de venda",
+      "url": "https://seusite.com.br/curso-exemplo/",
+      "precisa_ter": ["Curso Exemplo", "Garantia de 7 dias"],
+      "nao_pode_ter": ["widget.min.js", "Lorem ipsum", "R$ 0,00"],
+      "preco": "97,00",
+      "botoes": [
+        { "texto": "Quero o curso", "link_contem": "/curso-exemplo/checkout" }
+      ],
+      "pixels": {
+        "Meta": "000000000000000",
+        "GA4": "G-XXXXXXXXXX",
+        "Google Ads": "AW-00000000000"
+      },
+      "previa": true,
+      "lenta_s": 8
+    },
+    {
+      "nome": "Checkout do site",
+      "url": "https://seusite.com.br/curso-exemplo/checkout.html",
+      "precisa_ter": ["E-mail", "Pagar"],
+      "nao_pode_ter": ["widget.min.js"],
+      "preco": "97,00",
+      "botoes": [
+        { "texto": "Pagar com cartão ou Pix" },
+        { "texto": "Comprar pela plataforma", "link_contem": "pay.plataforma.com" }
+      ],
+      "previa": true,
+      "proxima": {
+        "botao": "Comprar pela plataforma",
+        "nome": "Checkout da plataforma",
+        "precisa_ter": ["Curso Exemplo", "Seu Nome de Autor"],
+        "nao_pode_ter": ["Nome antigo da conta"],
+        "preco": "97,00"
+      }
+    },
+    {
+      "nome": "Página de acesso do comprador",
+      "url": "https://seusite.com.br/acesso/",
+      "precisa_ter": ["Acessar"]
+    }
+  ],
+
+  "funcoes": [
+    { "nome": "criar pagamento", "url": "https://SEU-PROJETO.supabase.co/functions/v1/pagar" },
+    { "nome": "captura de lead", "url": "https://SEU-PROJETO.supabase.co/functions/v1/lead" },
+    { "nome": "webhook do gateway", "url": "https://SEU-PROJETO.supabase.co/functions/v1/webhook" }
+  ]
+}

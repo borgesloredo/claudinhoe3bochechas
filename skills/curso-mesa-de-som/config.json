@@ -1,0 +1,8 @@
+{
+  "cta_texto": "Para mais manuais interativos de outras mesas, cursos completos em vídeo, cursos completos presenciais, turmas, mentorias individuais e muito mais, acesse loredoborges.com.br ou entre em contato pelo número: (31) 97318-0752.",
+  "cta_site": "loredoborges.com.br",
+  "cta_telefone": "(31) 97318-0752",
+  "pasta_base": "/Users/SEU-USUARIO/SEU-PROJETO",
+  "voz_tts": "Gemini TTS gemini-3.8-flash-tts, voz Puck, estilo reels2 (a dos videos de venda), chaves GEMINI_API_KEY_* no cofre",
+  "meta_slides": 150
+}

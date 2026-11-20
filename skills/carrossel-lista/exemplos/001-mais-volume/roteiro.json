@@ -1,0 +1,108 @@
+{
+  "id": "001",
+  "formato": "F1",
+  "tipo": "info",
+  "tom": "negativo",
+  "titulo_capa": "Pediram “mais volume”? Antes de subir o master, confira isto",
+  "imagens": [
+    {
+      "ref": "IMG1",
+      "uso": "capa",
+      "prompt": "A stern elderly judge in black robes and white collar sits behind a generic unbranded digital mixing console instead of a courtroom bench, holding a wooden gavel above the master fader, staring at the camera with raised eyebrows as if about to deliver a verdict, warm stage lights behind him, waist-up framing, lower third of the frame dark and clean for a title."
+    },
+    {
+      "ref": "IMG2",
+      "uso": "fundo",
+      "prompt": "Dim live event venue seen from behind a generic unbranded mixing console, soft out-of-focus stage lights and an audience silhouette far away, deep dark tones, same warm palette as IMG1, large calm dark area covering most of the frame for text, no people in focus."
+    }
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "imagem": "IMG1",
+      "titulo": "Pediram *“mais volume”?*",
+      "texto": "Antes de subir o master, confira isto",
+      "grafico": null
+    },
+    {
+      "n": 2,
+      "imagem": "IMG2",
+      "titulo": "“Mais volume” quase nunca é o pedido",
+      "texto": "Na maioria das vezes a pessoa quer entender melhor. Subir o master só deixa o problema mais alto.",
+      "grafico": "Ícone de master com um X e, ao lado, um ouvido com ponto de interrogação."
+    },
+    {
+      "n": 3,
+      "imagem": "IMG2",
+      "titulo": "Pergunte: mais volume de quê?",
+      "texto": "Voz? Violão? Retorno? Quem pede quase nunca quer tudo. Ajuste o canal certo, não a mix inteira.",
+      "grafico": "Balão de pergunta com três setas saindo para três faders: voz, violão, retorno.",
+      "rotulo": "Passo 1"
+    },
+    {
+      "n": 4,
+      "imagem": "IMG2",
+      "titulo": "Vá ouvir de onde o público ouve",
+      "texto": "Da mesa você escuta outra coisa. Dê uma volta: o fundo e as laterais da sala costumam ouvir bem diferente.",
+      "grafico": "Planta simples da sala com a mesa e três pontos de escuta marcados com um ouvido.",
+      "rotulo": "Passo 2"
+    },
+    {
+      "n": 5,
+      "imagem": "IMG2",
+      "titulo": "Confira se a voz está clara",
+      "texto": "Grave sobrando, por volta de 200 a 400 Hz, tampa a voz. Um corte leve ali pode resolver sem subir nada. Ponto de partida: confirme no ouvido.",
+      "grafico": "Curva de EQ com um corte suave e largo centrado perto de 300 Hz.",
+      "rotulo": "Passo 3"
+    },
+    {
+      "n": 6,
+      "imagem": "IMG2",
+      "titulo": "Abaixe o que está tampando",
+      "texto": "Guitarra ou teclado por cima da voz? Baixar uns 2 a 3 dB deles abre espaço e a voz aparece sem esforço.",
+      "grafico": "Dois faders: guitarra descendo com seta para baixo, voz parada no lugar.",
+      "rotulo": "Passo 4"
+    },
+    {
+      "n": 7,
+      "imagem": "IMG2",
+      "titulo": "Olhe o medidor antes do master",
+      "texto": "Se o master já bate perto do vermelho, subir mais traz distorção e cansa o ouvido. Ali o limite é do sistema, não seu.",
+      "grafico": "Medidor vertical com faixas verde, amarela e vermelha; seta indicando o topo do amarelo.",
+      "rotulo": "Passo 5"
+    },
+    {
+      "n": 8,
+      "imagem": "IMG2",
+      "titulo": "Só então, suba aos poucos",
+      "texto": "Passou por tudo e ainda falta? Suba o master 1 ou 2 dB e espere uma música inteira antes de mexer de novo.",
+      "grafico": "Botão giratório com seta curta indicando +1 dB.",
+      "rotulo": "Passo 6"
+    },
+    {
+      "n": 9,
+      "imagem": "IMG2",
+      "titulo": "Antes de subir o master",
+      "texto": "1. Pergunte: mais volume de quê?\n2. Ouça de onde o público ouve.\n3. Limpe o grave.\n4. Abaixe o que tampa.\n5. Olhe o medidor.\n6. Suba devagar.",
+      "grafico": null,
+      "rotulo": "Resumo"
+    },
+    {
+      "n": 10,
+      "imagem": "IMG2",
+      "titulo": "Salve e envie para a equipe",
+      "texto": "Da próxima vez que pedirem mais volume, vocês já sabem por onde começar.",
+      "grafico": null,
+      "rotulo": "Antes do próximo evento"
+    }
+  ],
+  "legenda": "Pediram “mais volume”? Antes de subir o master, confira isto.\nNa maioria das vezes o problema é clareza, não volume.\nNo carrossel: 6 passos para descobrir o que está faltando de verdade, do pedido ao medidor.\nSalve para o próximo evento e envie para quem opera com você.",
+  "hashtags": [
+    "#somaovivo",
+    "#tecnicodesom",
+    "#mesadesom",
+    "#mixagem",
+    "#audio",
+    "#mesadigital"
+  ]
+}

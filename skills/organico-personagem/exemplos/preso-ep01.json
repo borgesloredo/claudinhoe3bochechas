@@ -1,0 +1,247 @@
+{
+ "serie": "PRESO NA MESA",
+ "ep": "EP. 1",
+ "musica": "calma",
+ "legenda": "Preso na Mesa · Parte 1: A comporta 🎚️\n\nO Nico dormiu em cima da mesa de som e acordou dentro dela. Pra sair, precisa chegar ao master. Primeiro obstáculo: o ganho, e o monstro Clip.\n\nQual caminho o Nico pega?\nA) Baixa o ganho e acalma o Clip\nB) Passa correndo, o fader resolve depois\n\nComenta A ou B 👇 A mais votada decide a parte 2.",
+ "hashtags": "#somaovivo #tecnicodesom #mesadesom #ganho #historiaanimada",
+ "cenas": [
+  {
+   "fala": "E se você dormisse em cima da mesa de som depois do evento... e acordasse dentro dela?",
+   "fundo": "cabine_noite",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1820,
+     "s": 1.25,
+     "exp": "dormindo",
+     "pose": "parado"
+    }
+   ],
+   "props": [
+    {
+     "t": "zzz",
+     "x": 720,
+     "y": 820
+    }
+   ],
+   "cam": "zoom:540,1150,1.15",
+   "destaque": [
+    "DENTRO"
+   ]
+  },
+  {
+   "fala": "O Nico fechou o último evento às duas da manhã. Encostou a cabeça do lado dos faders. Só por um minuto.",
+   "fundo": "cabine_noite",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1820,
+     "s": 1.25,
+     "exp": "dormindo",
+     "pose": "parado"
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "02:00",
+     "y": 470,
+     "tam": 150
+    },
+    {
+     "t": "zzz",
+     "x": 720,
+     "y": 820
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "NICO",
+    "MINUTO."
+   ]
+  },
+  {
+   "fala": "Quando abriu o olho, tava tudo gigante. Um corredor de metal, luzes verdes piscando, e um rio de luz correndo debaixo dos pés.",
+   "fundo": "dentro_mesa",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1700,
+     "s": 0.75,
+     "exp": "susto",
+     "pose": "maos_cabeca",
+     "entra": "baixo"
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 560,
+   "destaque": [
+    "GIGANTE.",
+    "RIO"
+   ]
+  },
+  {
+   "fala": "Aquele rio era o sinal. O som de um microfone, viajando por dentro da mesa, do canal até a saída.",
+   "fundo": "dentro_mesa",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 300,
+     "y": 1700,
+     "s": 0.7,
+     "exp": "neutro",
+     "pose": "aponta"
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "SINAL",
+     "x": 640,
+     "y": 1300,
+     "tam": 110,
+     "cor": "#7ff0ff",
+     "quando": "sinal."
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 560,
+   "destaque": [
+    "SINAL."
+   ]
+  },
+  {
+   "fala": "No fim do corredor, uma placa: Master. A saída. Se o Nico chegar lá antes de alguém desligar a mesa, ele volta.",
+   "fundo": "dentro_mesa",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1720,
+     "s": 0.7,
+     "exp": "confiante",
+     "pose": "aponta",
+     "flip": true
+    }
+   ],
+   "props": [
+    {
+     "t": "placa",
+     "texto": "MASTER",
+     "x": 540,
+     "y": 800,
+     "quando": "placa:"
+    }
+   ],
+   "cam": "zoom:540,800,1.25",
+   "legenda_y": 1250,
+   "destaque": [
+    "MASTER.",
+    "VOLTA."
+   ]
+  },
+  {
+   "fala": "Mas o primeiro obstáculo já tava ali. Uma comporta gigante, escrita Ganho, que decide quanto sinal passa pro resto do caminho.",
+   "fundo": "comporta",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1820,
+     "s": 0.75,
+     "exp": "preocupado",
+     "pose": "parado"
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 420,
+   "destaque": [
+    "COMPORTA",
+    "GANHO,"
+   ]
+  },
+  {
+   "fala": "Atrás dela, a luz transbordava vermelha, rachando as paredes. E lá dentro, alguma coisa rosnava. No crachá: Clipe.",
+   "fundo": "comporta_vermelha",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 250,
+     "y": 1820,
+     "s": 0.7,
+     "exp": "susto",
+     "pose": "bracos_cima"
+    }
+   ],
+   "props": [
+    {
+     "t": "monstro",
+     "x": 650,
+     "y": 1000,
+     "s": 1.15,
+     "quando": "rosnava."
+    }
+   ],
+   "cam": "tremer:rosnava.",
+   "legenda_y": 420,
+   "destaque": [
+    "VERMELHA,",
+    "CLIP."
+   ]
+  },
+  {
+   "fala": "O Nico tem duas escolhas. A: fechar um pouco a comporta, baixar o ganho, e acalmar o monstro antes de passar. bê: passar correndo, porque o fader lá na frente resolve o volume depois.",
+   "fundo": "comporta_vermelha",
+   "pers": [
+    {
+     "id": "nico",
+     "x": 540,
+     "y": 1920,
+     "s": 0.75,
+     "exp": "preocupado",
+     "pose": "pensando"
+    }
+   ],
+   "props": [
+    {
+     "t": "opcoes",
+     "a": "BAIXA O GANHO E ACALMA O CLIP",
+     "b": "PASSA CORRENDO: O FADER RESOLVE",
+     "y": 260,
+     "quando": "A:",
+     "quando_b": "bê:"
+    }
+   ],
+   "cam": "fixa",
+   "legenda_y": 1250,
+   "destaque": [
+    "GANHO,",
+    "FADER"
+   ]
+  },
+  {
+   "tipo": "escolha",
+   "fala": "Qual caminho o Nico pega? Comenta A ou bê. A mais votada decide a parte dois.",
+   "a": "BAIXA O GANHO E ACALMA O CLIP",
+   "b": "PASSA CORRENDO: O FADER RESOLVE",
+   "destaque": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "tipo": "segue",
+   "fala": "Segue pra não perder o Nico lá dentro.",
+   "proximo": "PARTE 2 EM BREVE",
+   "destaque": [
+    "SEGUE"
+   ]
+  }
+ ],
+ "legenda_troca": {
+  "Clipe": "Clip"
+ }
+}

@@ -1,0 +1,239 @@
+{
+ "serie": "O NOVATO DA MESA",
+ "ep": "EP. 1",
+ "musica": "calma",
+ "legenda": "O Novato da Mesa · Parte 1: Vinte minutos 🎚️\n\nO técnico ficou preso no trânsito, o Léo caiu sozinho na mesa e o retorno começou a apitar.\n\nO que o Léo faz?\nA) Abaixa o master\nB) Corta só a frequência que apita\n\nComenta A ou B 👇 A mais votada vira a parte 2.\nSegue pra ver o que acontece com ele.",
+ "hashtags": "#somaovivo #tecnicodesom #mesadesom #microfonia #historiaanimada",
+ "cenas": [
+  {
+   "fala": "Vinte minutos pro evento começar. E o único técnico de som do lugar acabou de mandar um áudio: tô preso no trânsito.",
+   "fundo": "palco",
+   "pers": [
+    {
+     "id": "leo",
+     "x": 540,
+     "y": 1700,
+     "s": 1.25,
+     "exp": "susto",
+     "pose": "celular"
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "20 MIN",
+     "y": 470,
+     "tam": 150
+    },
+    {
+     "t": "bolha",
+     "texto": "tô preso no trânsito...",
+     "x": 540,
+     "y": 560,
+     "quando": "preso"
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "VINTE",
+    "TRÂNSITO."
+   ]
+  },
+  {
+   "fala": "Esse é o Léo. Dezenove anos, primeira semana de ajudante. Até hoje, ele só carregava cabo.",
+   "fundo": "cabine",
+   "pers": [
+    {
+     "id": "leo",
+     "x": 540,
+     "y": 1800,
+     "s": 1.3,
+     "exp": "neutro",
+     "pose": "parado",
+     "entra": "baixo",
+     "exp2": "preocupado",
+     "quando2": "cabo"
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "LÉO · 19 ANOS",
+     "y": 300,
+     "tam": 90
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "LÉO.",
+    "CABO."
+   ]
+  },
+  {
+   "fala": "No palco, a Duda, a vocalista, pega o microfone e pede: sobe minha voz no retorno, que eu não tô me ouvindo!",
+   "fundo": "palco",
+   "pers": [
+    {
+     "id": "duda",
+     "x": 420,
+     "y": 1720,
+     "s": 1.25,
+     "exp": "bravo",
+     "pose": "aponta",
+     "entra": "esq"
+    }
+   ],
+   "props": [
+    {
+     "t": "bolha",
+     "texto": "sobe minha voz no retorno!",
+     "x": 540,
+     "y": 380,
+     "quando": "sobe"
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "DUDA,",
+    "RETORNO,"
+   ]
+  },
+  {
+   "fala": "O Léo acha o botão do retorno dela e sobe. Sobe mais um pouco.",
+   "fundo": "cabine",
+   "pers": [
+    {
+     "id": "leo",
+     "x": 380,
+     "y": 1800,
+     "s": 1.25,
+     "exp": "confiante",
+     "pose": "mexe_mesa"
+    }
+   ],
+   "props": [
+    {
+     "t": "fader_sobe",
+     "x": 860,
+     "y": 420,
+     "label": "RETORNO",
+     "quando": "sobe."
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "SOBE.",
+    "SOBE"
+   ]
+  },
+  {
+   "fala": "E aí acontece. Um apito agudo, alto, que corta o salão inteiro. Microfonia.",
+   "fundo": "palco",
+   "pers": [
+    {
+     "id": "duda",
+     "x": 400,
+     "y": 1720,
+     "s": 1.25,
+     "exp": "susto",
+     "pose": "maos_cabeca"
+    }
+   ],
+   "props": [
+    {
+     "t": "microfonia",
+     "x": 800,
+     "y": 1420,
+     "quando": "apito"
+    }
+   ],
+   "cam": "tremer:apito",
+   "destaque": [
+    "APITO",
+    "MICROFONIA."
+   ]
+  },
+  {
+   "fala": "Microfonia é um ciclo: o som sai da caixa de retorno, entra de novo no microfone, volta pra caixa mais alto, e vira esse grito.",
+   "fundo": "quadro",
+   "props": [
+    {
+     "t": "ciclo"
+    }
+   ],
+   "cam": "fixa",
+   "legenda_y": 1560,
+   "destaque": [
+    "CICLO:",
+    "GRITO."
+   ]
+  },
+  {
+   "fala": "O dono do espaço olha direto pra cabine. E a plateia já tá entrando.",
+   "fundo": "plateia",
+   "pers": [
+    {
+     "id": "ivo",
+     "x": 540,
+     "y": 1560,
+     "s": 1.15,
+     "exp": "bravo",
+     "pose": "cruzado"
+    }
+   ],
+   "cam": "zoom:540,900,1.18",
+   "destaque": [
+    "DONO",
+    "PLATEIA"
+   ]
+  },
+  {
+   "fala": "O Léo tem duas saídas. A: abaixar o volume geral, o master, e o apito some na hora. bê: achar a frequência que tá apitando e cortar só ela no equalizador do retorno.",
+   "fundo": "cabine",
+   "pers": [
+    {
+     "id": "leo",
+     "x": 540,
+     "y": 1800,
+     "s": 1.1,
+     "exp": "preocupado",
+     "pose": "pensando"
+    }
+   ],
+   "props": [
+    {
+     "t": "opcoes",
+     "a": "ABAIXA O MASTER",
+     "b": "CORTA SÓ A FREQUÊNCIA QUE APITA",
+     "y": 260,
+     "quando": "A:",
+     "quando_b": "bê:"
+    }
+   ],
+   "cam": "fixa",
+   "legenda_y": 1330,
+   "destaque": [
+    "MASTER,",
+    "FREQUÊNCIA"
+   ]
+  },
+  {
+   "tipo": "escolha",
+   "fala": "E agora? O que o Léo faz? Comenta A ou bê. A resposta mais votada vira a parte dois.",
+   "a": "ABAIXA O MASTER",
+   "b": "CORTA SÓ A FREQUÊNCIA QUE APITA",
+   "destaque": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "tipo": "segue",
+   "fala": "Segue o perfil pra ver o que acontece com ele.",
+   "proximo": "PARTE 2 EM BREVE",
+   "destaque": [
+    "SEGUE"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+# Cole no fim do supabase/config.toml do projeto. As três funções recebem chamadas de fora sem o token do Supabase:
+# esteira-seq (pg_cron, só envia o que venceu), esteira-lead (formulário do site com CORS + links assinados do
+# e-mail) e esteira-volta (Resend, com assinatura Svix conferida no código).
+[functions.esteira-seq]
+verify_jwt = false
+
+[functions.esteira-lead]
+verify_jwt = false
+
+[functions.esteira-volta]
+verify_jwt = false

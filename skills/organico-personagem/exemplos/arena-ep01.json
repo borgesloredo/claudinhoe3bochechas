@@ -1,0 +1,240 @@
+{
+ "serie": "ARENA DO SOM",
+ "ep": "LUTA 1",
+ "musica": "energica",
+ "legenda": "Arena do Som · Luta 1: a voz sumiu na banda ⚔️\n\nTonhão do Fader (sobe tudo) contra Bia da EQ (abre espaço). Bia vence 7 de 10: dois sons na mesma faixa brigam, e abrir espaço vence volume.\n\nDiscorda? Comenta o porquê 👇\nE vota no próximo duelo:\nA) Compressor x fader na mão\nB) Mixar no fone x mixar na caixa\n\nManda pro amigo que só sobe fader.",
+ "hashtags": "#somaovivo #tecnicodesom #mesadesom #mixagem #equalizacao",
+ "cenas": [
+  {
+   "fala": "A voz sumiu no meio da banda. Dois técnicos, uma mesa. Só um resolve.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "tonhao",
+     "x": 280,
+     "y": 1720,
+     "s": 0.95,
+     "exp": "confiante",
+     "pose": "cruzado",
+     "entra": "esq"
+    },
+    {
+     "id": "bia",
+     "x": 800,
+     "y": 1720,
+     "s": 0.95,
+     "exp": "confiante",
+     "pose": "cruzado",
+     "entra": "dir"
+    }
+   ],
+   "props": [
+    {
+     "t": "duelo",
+     "a": "TONHÃO",
+     "b": "BIA",
+     "quando": "dois"
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 760,
+   "destaque": [
+    "VOZ",
+    "UM"
+   ]
+  },
+  {
+   "fala": "No canto vermelho: Tonhão do Fader. Vinte anos de estrada. A regra dele: não tá ouvindo? Sobe.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "tonhao",
+     "x": 540,
+     "y": 1760,
+     "s": 1.25,
+     "exp": "confiante",
+     "pose": "cruzado",
+     "exp2": "feliz",
+     "quando2": "sobe."
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "TONHÃO DO FADER",
+     "y": 330,
+     "tam": 110,
+     "cor": "#FF4D4D"
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "TONHÃO",
+    "SOBE."
+   ]
+  },
+  {
+   "fala": "No canto azul: Bia da EQ. Ela não sobe nada. Ela tira o que tá na frente.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "bia",
+     "x": 540,
+     "y": 1760,
+     "s": 1.25,
+     "exp": "confiante",
+     "pose": "aponta"
+    }
+   ],
+   "props": [
+    {
+     "t": "rotulo",
+     "texto": "BIA DA EQ",
+     "y": 330,
+     "tam": 130,
+     "cor": "#2F8CFF"
+    }
+   ],
+   "cam": "push",
+   "destaque": [
+    "BIA",
+    "TIRA"
+   ]
+  },
+  {
+   "fala": "Tonhão ataca primeiro. Sobe o fader da voz. Funciona... por dez segundos. O guitarrista aumenta o amplificador, e a voz some de novo. Só que agora tá tudo mais alto.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "tonhao",
+     "x": 360,
+     "y": 1760,
+     "s": 1.1,
+     "exp": "confiante",
+     "pose": "mexe_mesa",
+     "exp2": "preocupado",
+     "quando2": "guitarrista"
+    }
+   ],
+   "props": [
+    {
+     "t": "fader_sobe",
+     "x": 860,
+     "y": 380,
+     "label": "VOZ",
+     "quando": "sobe"
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 1330,
+   "destaque": [
+    "SOBE",
+    "ALTO."
+   ]
+  },
+  {
+   "fala": "A Bia responde. Corta um pouco dos médios do violão e do teclado, bem na faixa onde mora a voz. E liga o corte de graves em tudo que não precisa de grave.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "bia",
+     "x": 540,
+     "y": 1780,
+     "s": 1.1,
+     "exp": "confiante",
+     "pose": "mexe_mesa"
+    }
+   ],
+   "props": [
+    {
+     "t": "eq",
+     "modo": "medios",
+     "y": 280,
+     "label": "VIOLÃO E TECLADO",
+     "quando": "corta"
+    }
+   ],
+   "cam": "push",
+   "legenda_y": 1330,
+   "destaque": [
+    "MÉDIOS",
+    "GRAVES"
+   ]
+  },
+  {
+   "fala": "Isso tem nome: mascaramento. Dois sons na mesma faixa brigam, e o mais forte esconde o outro. Abrir espaço vence volume.",
+   "fundo": "quadro",
+   "props": [
+    {
+     "t": "circulos",
+     "a": "VOZ",
+     "b": "BANDA"
+    }
+   ],
+   "cam": "fixa",
+   "legenda_y": 1450,
+   "destaque": [
+    "MASCARAMENTO.",
+    "ESPAÇO"
+   ]
+  },
+  {
+   "fala": "Resultado: Bia vence sete de dez. Mas o Tonhão leva três: quando a voz tá baixa de verdade, o fader resolve rápido.",
+   "fundo": "arena",
+   "pers": [
+    {
+     "id": "bia",
+     "x": 300,
+     "y": 1780,
+     "s": 0.9,
+     "exp": "feliz",
+     "pose": "comemora"
+    },
+    {
+     "id": "tonhao",
+     "x": 790,
+     "y": 1780,
+     "s": 0.9,
+     "exp": "triste",
+     "pose": "cruzado",
+     "exp2": "confiante",
+     "quando2": "três:"
+    }
+   ],
+   "props": [
+    {
+     "t": "placar",
+     "a": "BIA",
+     "na": 7,
+     "b": "TONHÃO",
+     "nb": 3
+    }
+   ],
+   "cam": "fixa",
+   "legenda_y": 870,
+   "destaque": [
+    "SETE",
+    "TRÊS:"
+   ]
+  },
+  {
+   "tipo": "escolha",
+   "fala": "Discorda? Comenta o porquê. E vota no próximo duelo. A: compressor contra fader na mão. Ou bê: mixar no fone contra mixar na caixa.",
+   "a": "COMPRESSOR X FADER NA MÃO",
+   "b": "FONE X CAIXA PRA MIXAR",
+   "chamada": "PRÓXIMA LUTA: A OU B",
+   "destaque": [
+    "A:",
+    "B:"
+   ]
+  },
+  {
+   "tipo": "segue",
+   "fala": "Manda pro amigo que só sobe fader. E segue pra ver a próxima luta.",
+   "proximo": "LUTA 2 EM BREVE",
+   "destaque": [
+    "SEGUE"
+   ]
+  }
+ ]
+}

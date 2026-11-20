@@ -1,0 +1,30 @@
+{
+  "perfil": "@seuperfil",
+  "nicho": "som ao vivo (técnicos iniciantes e voluntários, músicos que cuidam do som)",
+  "cores": {
+    "fundo": "#16110E",
+    "destaque": "#F5A623",
+    "texto": "#FBF3E8",
+    "texto_suave": "#D8CCBE"
+  },
+  "link": "https://seusite.com.br/",
+  "link_oferta": "https://seusite.com.br/cursos/",
+  "palavra_ponte": "curso",
+  "proibidas": [
+    "behringer",
+    "midas",
+    "yamaha",
+    "allen",
+    "heath",
+    "soundcraft",
+    "presonus",
+    "shure",
+    "sennheiser",
+    "akg",
+    "jbl",
+    "qsc",
+    "mackie",
+    "waves"
+  ],
+  "estilo_imagem": "STYLE: semi-realistic editorial digital painting with a subtle colored-pencil texture, warm saturated colors, dramatic cinematic lighting, realistic anatomy; not a cartoon, not a photo. Any audio equipment (mixing console, microphones, speakers, cables) is generic and unbranded."
+}

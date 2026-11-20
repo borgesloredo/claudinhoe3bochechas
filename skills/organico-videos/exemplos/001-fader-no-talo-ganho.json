@@ -1,0 +1,112 @@
+{
+ "id": "001-fader-no-talo-ganho",
+ "nome": "Fader no talo e a voz baixa: é o ganho",
+ "lote": "A",
+ "mesa": "genérica",
+ "dor": [
+  7
+ ],
+ "abordagem": "analogia",
+ "cta_tipo": "comenta",
+ "capitulo": null,
+ "duracao_s": 46.3,
+ "legenda_post": "Fader lá em cima e a voz continua baixa? O problema nasce antes do fader, no ganho. Pensa num carro: ganho é a marcha, fader é o acelerador. Na marcha errada, pisar fundo não resolve. Abaixa o fader, pede o volume de verdade e sobe o ganho até o medidor andar firme, longe do vermelho. Depois leva o fader pra perto do 0 e mixa. Vale em qualquer mesa. Comenta o modelo da sua mesa que eu te mando o curso dela.\n\n#mesadesom #somaovivo #tecnicodesom #mixagem #audio",
+ "cenas": [
+  {
+   "t_ini": 0.0,
+   "t_fim": 3.6,
+   "texto_tela": "Fader no talo e a voz baixa?",
+   "fala": "Fader lá no alto e a voz ainda baixa?",
+   "visual": "CANAL no centro: FADER no topo e MEDIDOR quase apagado",
+   "motion": "fader sobe até o topo; medidor mal acende"
+  },
+  {
+   "t_ini": 3.6,
+   "t_fim": 7.2,
+   "texto_tela": "O problema mora antes do fader",
+   "fala": "O problema tá antes do fader. Tá no ganho.",
+   "visual": "CAMINHO: MIC → GAIN → LOW CUT → EQ → FADER, com o bloco GAIN pulsando em amarelo",
+   "motion": "linha ciano percorre os blocos e para no GAIN"
+  },
+  {
+   "t_ini": 7.2,
+   "t_fim": 11.5,
+   "texto_tela": "GANHO = marcha · FADER = acelerador",
+   "fala": "Pensa num carro: ganho é a marcha, fader é o acelerador.",
+   "visual": "KNOB GAIN à esquerda e FADER à direita, cada um com SETA-RÓTULO ('Marcha' / 'Acelerador')",
+   "motion": "knob gira um pouco; fader desliza"
+  },
+  {
+   "t_ini": 11.5,
+   "t_fim": 14.4,
+   "texto_tela": "Marcha errada: pé no fundo não adianta",
+   "fala": "Na marcha errada, pisar fundo não resolve.",
+   "visual": "KNOB GAIN quase zerado e FADER no topo; PÍLULA vermelha 'VOZ BAIXA'",
+   "motion": "PÍLULA treme (shake) duas vezes"
+  },
+  {
+   "t_ini": 14.4,
+   "t_fim": 18.7,
+   "texto_tela": "Pouco ganho = chiado",
+   "fala": "Pouco ganho? Você sobe o fader e sobe o chiado junto.",
+   "visual": "FADER subindo e, ao lado do MEDIDOR, uma faixa cinza de ruído engrossando",
+   "motion": "ruído engrossa conforme o fader sobe"
+  },
+  {
+   "t_ini": 18.7,
+   "t_fim": 23.2,
+   "texto_tela": "Ganho demais = vermelho e distorção",
+   "fala": "Com ganho demais, o medidor bate no vermelho e o som distorce.",
+   "visual": "MEDIDOR grande com o LED CLIP vermelho aceso; onda achatada no topo",
+   "motion": "LED vermelho pisca; onda se achata"
+  },
+  {
+   "t_ini": 23.2,
+   "t_fim": 26.8,
+   "texto_tela": "Fader embaixo · canta no volume real",
+   "fala": "Abaixa o fader e manda o músico cantar no volume real.",
+   "visual": "CANAL com o FADER descendo; microfone do PALCO ao lado com ondas saindo",
+   "motion": "fader desce; ondas do microfone crescem"
+  },
+  {
+   "t_ini": 26.8,
+   "t_fim": 31.1,
+   "texto_tela": "Ganho até o medidor andar firme",
+   "fala": "Sobe o ganho até o medidor andar firme, longe do vermelho.",
+   "visual": "KNOB GAIN girando e MEDIDOR subindo até o meio da escala, verde e amarelo",
+   "motion": "knob gira; barra para antes do vermelho"
+  },
+  {
+   "t_ini": 31.1,
+   "t_fim": 34.4,
+   "texto_tela": "Depois: fader perto do 0",
+   "fala": "Aí sim, fader perto do zero, e mixa.",
+   "visual": "FADER grande com a escala, encaixando na marca 0",
+   "motion": "fader sobe e encaixa no 0 com pop"
+  },
+  {
+   "t_ini": 34.4,
+   "t_fim": 37.3,
+   "texto_tela": "Primeiro a marcha. Depois o acelerador.",
+   "fala": "Primeiro a marcha certa. Depois o acelerador.",
+   "visual": "KNOB GAIN e FADER lado a lado, os dois em verde",
+   "motion": "os dois acendem em sequência"
+  },
+  {
+   "t_ini": 37.3,
+   "t_fim": 41.8,
+   "texto_tela": "Cada mesa esconde o ganho num lugar",
+   "fala": "Cada mesa esconde o ganho num lugar. O curso da sua mostra onde.",
+   "visual": "PRODUTO no centro: pilha de PDF e tela do autoestudo com o botão (i) aceso e um quiz; grade de 20 mini-capas em contorno em volta",
+   "motion": "mini-capas acendem uma a uma; botão (i) pulsa"
+  },
+  {
+   "t_ini": 41.8,
+   "t_fim": 46.3,
+   "texto_tela": "Comenta o modelo da sua mesa · Curso independente · seuperfil",
+   "fala": "Comenta o modelo da sua mesa que eu te mando o curso dela.",
+   "visual": "PRODUTO menor no centro e o CANAL do vídeo atrás, apagado; LEGENDA com o CTA",
+   "motion": "palavra do CTA pulsa; selo 'Curso independente' entra embaixo"
+  }
+ ]
+}

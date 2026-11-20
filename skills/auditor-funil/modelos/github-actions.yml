@@ -1,0 +1,35 @@
+# Auditor do funil a cada 2 horas no GitHub Actions (grátis em repositório privado dentro da cota mensal).
+# Copie para .github/workflows/auditor-funil.yml num repositório que tenha auditar.py e funil.json na raiz.
+# Segredos: Settings > Secrets and variables > Actions > New repository secret
+#   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (e TELEGRAM_THREAD_ID, AUDITOR_TOKEN se usar)
+# O GitHub pode atrasar o agendamento alguns minutos e desliga agendamentos de repositório parado há 60 dias.
+name: auditor-funil
+on:
+  schedule:
+    - cron: "7 */2 * * *"   # minuto 7 de cada 2 h, em UTC
+  workflow_dispatch: {}     # botão "Run workflow" para conferir agora
+permissions:
+  contents: read
+jobs:
+  auditar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Conferir o funil
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+          AUDITOR_TOKEN: ${{ secrets.AUDITOR_TOKEN }}
+        run: python3 auditar.py funil.json
+      - name: Guardar o painel desta rodada
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saude
+          path: saude/
+          retention-days: 7

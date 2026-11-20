@@ -1,0 +1,112 @@
+{
+ "id": "051-da-analogica-para-a-digital",
+ "nome": "Da analógica para a digital: as mesmas funções em outro lugar",
+ "lote": "C",
+ "mesa": "genérica",
+ "dor": [
+  13
+ ],
+ "abordagem": "analogia",
+ "cta_tipo": "marca",
+ "capitulo": null,
+ "legenda_post": "Anos de mesa analógica não foram jogados fora. Ir pra digital é mudar de casa com os mesmos móveis: o canal segue a mesma lógica (ganho, gate, equalizador, compressor, fader). O que muda é onde cada coisa mora. Quase sempre uma seção só edita o canal selecionado, e a fita crepe vira o nome no visor. Cuidado: no digital, passou do topo, distorce feio. Deixa folga. #mesadesom #somaovivo #mixagem #tecnicodesom #audio\nMarca aquele amigo que veio da analógica.",
+ "duracao_s": 45.1,
+ "cenas": [
+  {
+   "t_ini": 0.0,
+   "t_fim": 3.0,
+   "texto_tela": "Anos de analógica valem",
+   "fala": "Anos de mesa analógica não foram jogados fora.",
+   "visual": "MESA analógica desenhada à esquerda, CANAL cheio de knobs",
+   "motion": "knobs piscam"
+  },
+  {
+   "t_ini": 3.0,
+   "t_fim": 7.2,
+   "texto_tela": "Mudar de casa, mesmos móveis",
+   "fala": "Ir pra digital é mudar de casa com os mesmos móveis.",
+   "visual": "caixas de mudança com ícones de GAIN, EQ e FADER indo para uma MESA digital",
+   "motion": "caixas deslizam para a direita"
+  },
+  {
+   "t_ini": 7.2,
+   "t_fim": 11.4,
+   "texto_tela": "GAIN · GATE · EQ · COMP · FADER",
+   "fala": "O canal segue a mesma lógica: ganho, gate, equalizador, compressor, fader.",
+   "visual": "CAMINHO: GAIN, GATE, EQ, COMP e FADER em blocos ciano",
+   "motion": "blocos acendem em sequência"
+  },
+  {
+   "t_ini": 11.4,
+   "t_fim": 14.6,
+   "texto_tela": "Muda onde cada coisa mora",
+   "fala": "O que muda é onde cada coisa mora.",
+   "visual": "MESA digital com a seção de edição destacada em amarelo",
+   "motion": "destaque pulsa"
+  },
+  {
+   "t_ini": 14.6,
+   "t_fim": 18.1,
+   "texto_tela": "Uma seção edita todos",
+   "fala": "Na digital, quase sempre, uma seção só edita todos.",
+   "visual": "MESA com um bloco de knobs único ligado a todos os CANAIS por linhas",
+   "motion": "linhas acendem uma a uma"
+  },
+  {
+   "t_ini": 18.1,
+   "t_fim": 22.5,
+   "texto_tela": "SELECT diz qual",
+   "fala": "Ela edita o canal que tá com a tecla de seleção acesa.",
+   "visual": "CANAL com SELECT aceso e a TELA mostrando o nome dele",
+   "motion": "luz corre até a TELA"
+  },
+  {
+   "t_ini": 22.5,
+   "t_fim": 25.7,
+   "texto_tela": "Fita crepe vira visor",
+   "fala": "A fita crepe vira o nome no visor.",
+   "visual": "fita crepe se transforma no visor de nome do CANAL",
+   "motion": "transição com pop"
+  },
+  {
+   "t_ini": 25.7,
+   "t_fim": 29.9,
+   "texto_tela": "Digital: passou do topo, distorce",
+   "fala": "Cuidado com um hábito: no digital, passou do topo, distorce feio.",
+   "visual": "MEDIDOR batendo no CLIP; PÍLULA vermelha 'DISTORCEU'",
+   "motion": "shake vermelho"
+  },
+  {
+   "t_ini": 29.9,
+   "t_fim": 33.7,
+   "texto_tela": "Deixa folga no medidor",
+   "fala": "Mira o medidor no meio, com folga até o vermelho.",
+   "visual": "MEDIDOR parado no meio, CLIP apagado; PÍLULA verde 'COM FOLGA'",
+   "motion": "PÍLULA dá pop"
+  },
+  {
+   "t_ini": 33.7,
+   "t_fim": 37.9,
+   "texto_tela": "Você já sabe mixar",
+   "fala": "Você já sabe mixar. Só falta a planta da casa nova.",
+   "visual": "MESA digital com uma planta baixa por cima",
+   "motion": "planta se desenha"
+  },
+  {
+   "t_ini": 37.9,
+   "t_fim": 42.3,
+   "texto_tela": "A planta da sua mesa",
+   "fala": "A planta da sua tá no curso: tem curso pra vinte mesas digitais.",
+   "visual": "PRODUTO no centro: pilha do PDF e tela do autoestudo com o botão (i) aceso e um QUIZ; grade de 20 mini-capas em contorno em volta",
+   "motion": "mini-capas acendem uma a uma e a do centro dá pop"
+  },
+  {
+   "t_ini": 42.3,
+   "t_fim": 45.1,
+   "texto_tela": "Marca quem veio da analógica · Curso independente · seuperfil",
+   "fala": "Marca aquele amigo que veio da analógica.",
+   "visual": "MESA pequena ao fundo; ícone de marcar pessoa em destaque no centro e selo 'Curso independente'",
+   "motion": "destaque pulsa a cada 1 s"
+  }
+ ]
+}

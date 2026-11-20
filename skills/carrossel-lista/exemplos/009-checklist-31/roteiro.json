@@ -1,0 +1,84 @@
+{
+  "id": "009",
+  "formato": "F9",
+  "tipo": "info",
+  "tom": "neutro",
+  "titulo_capa": "31 coisas para conferir antes de qualquer evento",
+  "imagens": [
+    {
+      "ref": "IMG1",
+      "uso": "capa",
+      "prompt": "A commercial airline pilot in a crisp uniform with captain stripes and a headset sits at a generic unbranded mixing console as if it were a cockpit, holding a clipboard checklist and pen, looking at the camera with a calm professional face, warm stage lights behind, waist-up framing, lower third dark and clean for a title."
+    },
+    {
+      "ref": "IMG2",
+      "uso": "fundo",
+      "prompt": "Close view of a generic unbranded mixing console at a dim live venue with a clipboard and pen resting beside the faders, soft glowing channel lights, out-of-focus stage behind, same palette as IMG1, no people, most of the frame calm and dark for text."
+    }
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "imagem": "IMG1",
+      "titulo": "*31 coisas* para conferir",
+      "texto": "antes de qualquer evento",
+      "grafico": null
+    },
+    {
+      "n": 2,
+      "imagem": "IMG2",
+      "titulo": "Piloto não decola sem checklist",
+      "texto": "Técnico também não deveria. Salve esta lista e use antes do próximo culto, show, casamento ou festa.",
+      "grafico": null
+    },
+    {
+      "n": 3,
+      "imagem": "IMG2",
+      "titulo": "Energia e cabos",
+      "texto": "1. Tomadas com aterramento conferido\n2. Som em circuito separado da luz, se der\n3. Extensão de força desenrolada\n4. Cabos de microfone testados um a um\n5. Cabos reserva no case\n6. Fita para prender cabo no chão\n7. Pilhas novas nos sem fio\n8. Ordem: liga a mesa antes, as caixas por último",
+      "grafico": null,
+      "rotulo": "Itens 1 a 8"
+    },
+    {
+      "n": 4,
+      "imagem": "IMG2",
+      "titulo": "Mesa",
+      "texto": "9. Cena do evento carregada\n10. Cópia da cena salva\n11. Nome em cada canal\n12. Ganho conferido canal a canal\n13. HPF nos canais que não precisam de grave\n14. Saídas e auxiliares no lugar certo\n15. Gravação com espaço livre, se houver\n16. Phantom só onde precisa",
+      "grafico": null,
+      "rotulo": "Itens 9 a 16"
+    },
+    {
+      "n": 5,
+      "imagem": "IMG2",
+      "titulo": "Palco e microfones",
+      "texto": "17. Mapa de canais anotado\n18. Pedestais firmes\n19. Microfones atrás da linha das caixas\n20. Sem fio sem interferência\n21. Direct box no violão e no teclado\n22. Microfone reserva pronto\n23. Instrumentos afinados antes da passagem\n24. Volume de palco combinado com a banda",
+      "grafico": null,
+      "rotulo": "Itens 17 a 24"
+    },
+    {
+      "n": 6,
+      "imagem": "IMG2",
+      "titulo": "Retorno, sala e roteiro",
+      "texto": "25. Cada músico ouve o que precisa\n26. Retorno apontado para quem usa\n27. Teste de microfonia no volume real\n28. Volume conferido do fundo da sala\n29. Música ambiente para os intervalos\n30. Roteiro do evento na mesa\n31. Água e lanterna ao alcance",
+      "grafico": null,
+      "rotulo": "Itens 25 a 31"
+    },
+    {
+      "n": 7,
+      "imagem": "IMG2",
+      "titulo": "Salve para usar no próximo evento",
+      "texto": "E envie para quem monta o som com você.",
+      "grafico": null
+    }
+  ],
+  "legenda": "31 coisas para conferir antes de qualquer evento.\nEnergia e cabos, mesa, palco e microfones, retorno e roteiro: tudo numa lista só.\nPiloto não decola sem checklist, técnico também não deveria.\nSalve para usar no próximo evento e envie para a equipe.",
+  "hashtags": [
+    "#somaovivo",
+    "#tecnicodesom",
+    "#checklist",
+    "#mesadesom",
+    "#passagemdesom",
+    "#audio",
+    "#eventos"
+  ]
+}
