@@ -56,20 +56,48 @@ O Matheus usa estas, mas não lembra de onde vieram e a licença é desconhecida
 | `founder-pricing` | Preço que o comprador paga | ✅ | | |
 | `storytelling` | Narrativa, roteiro e personagens | ✅ | | |
 
-## Pacotes ZIP (Lucas)
 
-Baixe o `.zip`, descompacte em `~/.claude/skills/` e reabra o Claude Code. Cada zip foi auditado e testado pelo Klaus antes de subir.
+## Adicionadas por Lucas (código neste repo)
+
+Skills auditadas e testadas pelo Klaus. Cada uma está na mesma estrutura das demais, em `skills/<nome>/`.
 
 | Skill | Área | O que faz | Origem | Licença | Matheus | Arthur | Lucas |
 |---|---|---|---|---|:-:|:-:|:-:|
-| [`untangle-codebase`](zip/dev/untangle-codebase.zip) | dev | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
-| [`claude-shorts`](zip/video/claude-shorts.zip) | video | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
-| [`hallmark`](zip/frontend/hallmark.zip) | frontend | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
-| [`security-audit`](zip/seguranca/security-audit.zip) | seguranca | Auditoria de segurança de app, API e código, com relatório | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
-| [`vercel-react-best-practices`](zip/frontend/vercel-react-best-practices.zip) | frontend | 72 regras de performance para React e Next.js | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | a conferir | | | ✅ |
-| [`first-customer-finder`](zip/marketing-vendas/first-customer-finder.zip) | marketing-vendas | Acha leads que reclamam em público e rascunha a abordagem | [Kappaemme-git/codex-first-customer-finder-skill](https://github.com/Kappaemme-git/codex-first-customer-finder-skill) | MIT | | | ✅ |
-| [`gsap-skills`](zip/animacao-web/gsap-skills.zip) | animacao-web | Animação web profissional com GSAP, ScrollTrigger, React, timeline e performance | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
-| [`animejs`](zip/animacao-web/animejs.zip) | animacao-web | Animação web leve com Anime.js 4, timeline, SVG, stagger e interação | [bowtiedswan/animejs-skills](https://github.com/bowtiedswan/animejs-skills) | MIT | | | ✅ |
-| [`gsap-scroll-parallax`](zip/animacao-web/gsap-scroll-parallax.zip) | animacao-web | Scroll, parallax e páginas cinematográficas com GSAP e Framer Motion | [github/awesome-copilot](https://github.com/github/awesome-copilot) | MIT | | | ✅ |
-| [`remotion-skills`](zip/animacao-web/remotion-skills.zip) | animacao-web | Cria, edita, visualiza e renderiza vídeos em React com Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
-| [`hyperframes-skills`](zip/animacao-web/hyperframes-skills.zip) | animacao-web | Cria vídeos e animações em HTML, CSS e JavaScript com HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`untangle-codebase`](skills/untangle-codebase/) | dev | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
+| [`claude-shorts`](skills/claude-shorts/) | vídeo | Corta vídeo longo em shorts verticais com legenda animada | [AgriciDaniel/claude-shorts](https://github.com/AgriciDaniel/claude-shorts) | MIT | | | ✅ |
+| [`hallmark`](skills/hallmark/) | frontend | Faz site sem cara de feito por IA | [nutlope/hallmark](https://github.com/nutlope/hallmark) | MIT | | | ✅ |
+| [`security-audit`](skills/security-audit/) | segurança | Auditoria de segurança de app, API e código | [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) | MIT | | | ✅ |
+| [`vercel-react-best-practices`](skills/vercel-react-best-practices/) | frontend | 72 regras de performance para React e Next.js | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | a conferir | | | ✅ |
+| [`first-customer-finder`](skills/first-customer-finder/) | marketing | Acha leads que reclamam em público e rascunha a abordagem | [Kappaemme-git/codex-first-customer-finder-skill](https://github.com/Kappaemme-git/codex-first-customer-finder-skill) | MIT | | | ✅ |
+| [`gsap-core`](skills/gsap-core/) | animação web | Fundamentos, tweens, easing, stagger e responsividade no GSAP | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-frameworks`](skills/gsap-frameworks/) | animação web | GSAP em Vue, Svelte e outros frameworks | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-performance`](skills/gsap-performance/) | animação web | Performance e animação fluida com GSAP | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-plugins`](skills/gsap-plugins/) | animação web | Plugins oficiais do GSAP | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-react`](skills/gsap-react/) | animação web | GSAP em React e Next.js com limpeza correta | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-scrolltrigger`](skills/gsap-scrolltrigger/) | animação web | ScrollTrigger, parallax, pinning e animação por rolagem | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-timeline`](skills/gsap-timeline/) | animação web | Sequenciamento e timelines no GSAP | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`gsap-utils`](skills/gsap-utils/) | animação web | Utilitários de interpolação, clamp, snap e arrays no GSAP | [greensock/gsap-skills](https://github.com/greensock/gsap-skills) | MIT | | | ✅ |
+| [`animejs`](skills/animejs/) | animação web | Anime.js 4 com timeline, SVG, stagger e interação | [bowtiedswan/animejs-skills](https://github.com/bowtiedswan/animejs-skills) | MIT | | | ✅ |
+| [`gsap-scroll-parallax`](skills/gsap-scroll-parallax/) | animação web | Scroll, parallax e páginas cinematográficas com GSAP e Framer Motion | [github/awesome-copilot](https://github.com/github/awesome-copilot) | MIT | | | ✅ |
+| [`remotion-best-practices`](skills/remotion-best-practices/) | vídeo e animação | Roteador das skills oficiais do Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-captions`](skills/remotion-captions/) | vídeo e animação | Transcrição e legendas animadas | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-create`](skills/remotion-create/) | vídeo e animação | Cria um projeto de vídeo no Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-docs`](skills/remotion-docs/) | vídeo e animação | Consulta a documentação do Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-interactivity`](skills/remotion-interactivity/) | vídeo e animação | Estrutura camadas editáveis no Remotion Studio | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-license`](skills/remotion-license/) | vídeo e animação | Explica licença e termos do Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-maps`](skills/remotion-maps/) | vídeo e animação | Anima mapas em vídeos Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-markup`](skills/remotion-markup/) | vídeo e animação | Boas práticas de conteúdo, animação e efeitos | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-multimedia`](skills/remotion-multimedia/) | vídeo e animação | Trabalha mídia com Mediabunny | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-render`](skills/remotion-render/) | vídeo e animação | Renderiza vídeos, imagens e timelines | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-saas`](skills/remotion-saas/) | vídeo e animação | Constrói apps e SaaS com Remotion | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-studio`](skills/remotion-studio/) | vídeo e animação | Visualiza vídeos no Remotion Studio | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`remotion-upgrade`](skills/remotion-upgrade/) | vídeo e animação | Atualiza Remotion e dependências | [remotion-dev/skills](https://github.com/remotion-dev/skills) | Remotion license | | | ✅ |
+| [`figma`](skills/figma/) | vídeo e animação | Leva designs do Figma para vídeos HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`hyperframes`](skills/hyperframes/) | vídeo e animação | Cria e renderiza vídeos com HTML, CSS e JavaScript | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`hyperframes-cli`](skills/hyperframes-cli/) | vídeo e animação | Opera o CLI do HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`hyperframes-registry`](skills/hyperframes-registry/) | vídeo e animação | Busca componentes prontos do HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`media-use`](skills/media-use/) | vídeo e animação | Busca, cria e trata mídia para vídeos | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`remotion-to-hyperframes`](skills/remotion-to-hyperframes/) | vídeo e animação | Converte projetos Remotion e outras animações para HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`reverse-any-video`](skills/reverse-any-video/) | vídeo e animação | Reconstrói vídeos como projetos editáveis | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`slideshow`](skills/slideshow/) | vídeo e animação | Cria apresentações interativas no HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`style-sampling`](skills/style-sampling/) | vídeo e animação | Replica estilos visuais aprovados em novos vídeos | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |

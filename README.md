@@ -14,4 +14,4 @@ Lista geral do que Arthur, Lucas e Matheus usam no Claude Code. Tudo junto, por 
 3. Fez uma skill sua? Ponha a pasta em `skills/<nome>/` (com `SKILL.md`) e liste em "Criadas por nós", com o seu nome em Autor.
 4. Não suba chaves, tokens, e-mails ou dados de cliente.
 
-Skills e plugins de terceiros não são copiados: a lista traz o link de origem e o comando de instalação.
+Skills de terceiros normalmente ficam só como link. As auditadas e testadas pelo Klaus podem ficar completas em `skills/<nome>/`, sempre com a origem indicada em `skills.md`.
