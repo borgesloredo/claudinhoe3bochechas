@@ -36,6 +36,7 @@ Instalar: `npx skills add <dono/repo>`.
 | `motion-design` | Princípios de motion design | [LottieFiles/motion-design-skill](https://github.com/LottieFiles/motion-design-skill) | MIT | ✅ | | |
 | `superset` | Paradev/Superset: agentes e workspaces | [paradevai/paradev](https://github.com/paradevai/paradev) | MIT | ✅ | | |
 | `editonny` | Edição de vídeo | [soumatheusgomes/editonny](https://github.com/soumatheusgomes/editonny) | a conferir | ✅ | | |
+| `untangle-codebase` | Refatora um código bagunçado inteiro de uma vez | [caldoai/skills](https://github.com/caldoai/skills) | MIT | | | ✅ |
 
 ## Sem origem conhecida (sem cópia aqui)
 
