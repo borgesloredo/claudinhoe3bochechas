@@ -1,0 +1,24 @@
+:root { --fora: #0b0e11; --tinta: #eef2f5; --destaque: #ffb454; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fora); }
+.reveal-viewport { background: var(--fora); }
+.reveal { color: var(--tinta); }
+.reveal .slides { text-align: left; }
+.reveal .controls { color: var(--destaque); }
+.reveal .slides > section, .reveal .slides > section > section { padding: 0; }
+.reveal .slides section.tela { box-sizing: border-box; width: 1280px; height: 720px; overflow: hidden; }
+.reveal .slides section.tela * { box-sizing: border-box; }
+.reveal [data-quiz] [data-retorno] { visibility: hidden; }
+.reveal [data-quiz][data-resposta="certa"] [data-retorno="certa"],
+.reveal [data-quiz][data-resposta="errada"] [data-retorno="errada"] { visibility: visible; }
+.reveal [data-quiz] button { cursor: pointer; font: inherit; }
+.reveal [data-quiz] button.escolhida { outline: 4px solid var(--destaque); }
+#eb-num { position: fixed; z-index: 30; left: 14px; bottom: 10px; color: var(--tinta); font: 600 14px/1 system-ui, sans-serif; mix-blend-mode: difference; }
+#eb-botoes { position: fixed; z-index: 31; top: 12px; right: 12px; display: flex; gap: 10px; }
+#eb-botoes button { width: 44px; height: 44px; border: 2px solid var(--destaque); border-radius: 50%; background: rgba(0,0,0,.72); color: #fff; font: 700 19px/1 system-ui, sans-serif; cursor: pointer; }
+#eb-botoes button:disabled { opacity: .35; cursor: default; }
+#eb-botoes button:focus-visible, #eb-pop button:focus-visible { outline: 3px solid var(--destaque); outline-offset: 3px; }
+#eb-pop { box-sizing: border-box; width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 32px; border: 1px solid #56616c; border-radius: 14px; background: #14191f; color: #eef2f5; font: 20px/1.55 system-ui, sans-serif; text-align: left; }
+#eb-pop::backdrop { background: rgba(0,0,0,.65); }
+#eb-pop .eb-x { float: right; width: 44px; height: 44px; border: 0; background: none; color: inherit; font-size: 22px; cursor: pointer; }
+#eb-pop .gl { display: inline; padding: 0; border: 0; border-bottom: 1px dashed #ffc67d; background: none; color: #ffc67d; font: inherit; cursor: pointer; }
+#eb-pop .eb-def:not(:empty) { position: sticky; bottom: 0; padding: 12px 16px; border-radius: 8px; background: #26303a; }

@@ -21,6 +21,7 @@ Origem: pasta = código está neste repo; link = instale da fonte (não copiamos
 | [`traqueamento-organico`](skills/traqueamento-organico/) | Base de leads orgânica | Matheus | ✅ | | |
 | [`auditor-funil`](skills/auditor-funil/) | Confere o funil de venda a cada 2 horas | Matheus | ✅ | | |
 | [`curso-mesa-de-som`](skills/curso-mesa-de-som/) | Monta curso completo de mesa de som (PDF, slides, autoestudo) | Matheus | ✅ | | |
+| [`construcao-de-ebooks`](skills/construcao-de-ebooks/) | Pesquisa as dores do nicho e monta e-book animado: slides, PDF e autoestudo com áudio (chave Gemini própria; áudio só em Mac com chip Apple) | Matheus | ✅ | | |
 
 ## De terceiros (só link)
 

@@ -1,0 +1,8 @@
+@page { size: A4; margin: 0; }
+body { font-family: Helvetica, Arial, sans-serif; }
+html, body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.pagina { box-sizing: border-box; position: relative; width: 210mm; height: 296.9mm; padding: 18mm 16mm 20mm; overflow: hidden; break-after: page; }
+.pagina:last-of-type { break-after: auto; }
+.pagina * { box-sizing: border-box; }
+.pagina h1, .pagina h2 { white-space: pre-wrap; } /* sem isto o marcador do PDF cola as palavras da quebra de linha */
+.pagina .folio { position: absolute; right: 16mm; bottom: 9mm; font: 10pt/1 Helvetica, Arial, sans-serif; }
