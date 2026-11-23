@@ -102,3 +102,4 @@ Skills auditadas e testadas pelo Klaus. Cada uma está na mesma estrutura das de
 | [`reverse-any-video`](skills/reverse-any-video/) | vídeo e animação | Reconstrói vídeos como projetos editáveis | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
 | [`slideshow`](skills/slideshow/) | vídeo e animação | Cria apresentações interativas no HyperFrames | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
 | [`style-sampling`](skills/style-sampling/) | vídeo e animação | Replica estilos visuais aprovados em novos vídeos | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | Apache-2.0 | | | ✅ |
+| [`reanimate`](skills/reanimate/) | animacao | Recriar animacoes de video GIF ou site com comparacao quadro a quadro | [NiazMorshed2007/reanimate](https://github.com/NiazMorshed2007/reanimate) | MIT | | | ✅ |
