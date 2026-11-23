@@ -28,3 +28,11 @@ Instalar: `/plugin marketplace add <dono/repo>` e depois `/plugin install <plugi
 | `understand-anything` | Grafo e guia de um código | [Egonex-AI/Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) | ✅ | | |
 | `hyperframes` | Vídeo em HTML/código | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) | ✅ | | |
 | `aia-harness` | Estrutura e auditoria de projetos | [leandrosilvaferreira/claude-plugins-registry](https://github.com/leandrosilvaferreira/claude-plugins-registry) | ✅ | | |
+
+## Ferramentas externas
+
+Ferramentas investigadas e compartilhadas, mas que não são skills/plugins instaláveis pelo marketplace.
+
+| Ferramenta | O que faz | Origem | Status |
+|---|---|---|---|
+| `G0DM0D3` | Interface de red team que disputa respostas entre dezenas de modelos usando prompts de jailbreak | [elder-plinius/G0DM0D3](https://github.com/elder-plinius/G0DM0D3) | Não instalado. Exige OpenRouter/Venice ou modelos locais, guarda chave no navegador e ativa telemetria de metadados por padrão |
