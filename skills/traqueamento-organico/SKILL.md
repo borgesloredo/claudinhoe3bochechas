@@ -21,6 +21,7 @@ Tudo saiu de um projeto real (cursos de áudio ao vivo vendidos pelo Instagram e
 | `references/buscar-leads.md` | Como baixar a base de cada rede, WhatsApp, nota, união, grupo Pessoal, painel, LGPD |
 | `references/perfis.md` | Criação e rebranding rede a rede, bio, destaques, fixados, verificação, só-no-app |
 | `references/publicar.md` | Publicador diário, texto por rede, agenda e horários, tokens da Meta, automação não oficial |
+| `references/publicar-na-pratica.md` | Caminho REAL que roda hoje (Hermes, `publicador_diario.py`): como cada uma das 6 redes é postada, estados, regras de repetição, jobs irmãos |
 
 Caminho da skill: `K=~/.claude/skills/traqueamento-organico`. Os scripts só usam Python 3.9+ do próprio Mac (sem instalar nada).
 
@@ -56,7 +57,7 @@ Leia `references/buscar-leads.md` antes. Em resumo:
 Leia `references/perfis.md`. Faça um quadro por rede (o que está, o que muda, quem faz: você no navegador dela ou ela no app) e siga essa ordem: @ e nome iguais em todas as redes (anotar quando cada rede deixa mudar de novo), foto igual, bio na fórmula (frase de impacto / autoridade / oferta como benefício + CTA, até 3 linhas), link, conteúdo antigo de outro assunto **escondido** (privado ou arquivado, nunca apagado sem pedido), destaques, fixados, verificação. No fim, confira cada perfil aberto como visitante e acerte os links do site para os perfis (um @ errado no rodapé do site leva para o perfil de outra pessoa).
 
 ## Passo 4: Publicar orgânico (parte 3)
-Leia `references/publicar.md`.
+Leia `references/publicar.md` e, no projeto Borges Loredo, também `references/publicar-na-pratica.md` (o caminho que de fato roda).
 1. Para cada peça (vídeo, carrossel), um texto base `NNN.txt` (TÍTULO, TEXTO, CTA, HASHTAGS, LINK) e `python3 "$K/scripts/textos_por_rede.py" NNN.txt [--auto-dm] [--tag-tiktok "#aprendanotiktok"]` -> `NNN.redes.txt` com o bloco de cada rede. `--auto-dm` só se o Instagram dela tem resposta automática no direct.
 2. Agenda: 1 a 2 posts por dia, sempre nos mesmos horários (padrão 12:00 e 19:00 no fuso dela). Não poste o mesmo vídeo no mesmo dia em perfis que se cruzam (Instagram e Facebook da mesma pessoa) sem querer: o composer web do Instagram compartilha no Facebook por padrão.
 3. Publicador (opcional, só se ela pedir publicação automática): tokens da Meta salvos pelo Terminal (abaixo), vídeos num link público, `publicar.py planejar ...`, conferir `agenda.json` com ela, `publicar.py rodar --seco`, e só então ligar o `rodar` a cada 10 min (launchd/cron). TikTok, YouTube, Kwai e Pinterest chegam como lembrete "postar à mão" com o texto pronto.
