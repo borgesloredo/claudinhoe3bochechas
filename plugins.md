@@ -12,7 +12,7 @@ Instalar: `/plugin marketplace add <dono/repo>` e depois `/plugin install <plugi
 | `hookify` | Cria regras/hooks a partir de erros | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
 | `pr-review-toolkit` | Revisão de PR com vários agentes | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
 | `commit-commands` | Comandos de commit e PR | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
-| `claude-code-setup` | Recomenda automações para o projeto | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
+| `claude-code-setup` | Analisa o projeto e recomenda hooks, skills, MCPs e subagentes, sem alterar arquivos | [Anthropic](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup) | ✅ | | |
 | `feature-dev` | Desenvolvimento guiado de funcionalidade | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
 | `code-review` | Revisão de código | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
 | `claude-md-management` | Mantém o CLAUDE.md | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | ✅ | | |
@@ -31,8 +31,12 @@ Instalar: `/plugin marketplace add <dono/repo>` e depois `/plugin install <plugi
 
 ## Ferramentas externas
 
-Ferramentas investigadas e compartilhadas, mas que não são skills/plugins instaláveis pelo marketplace.
+Ferramentas e plugins de terceiros catalogados por referência. Registro aqui não significa instalação nem aprovação para produção.
 
 | Ferramenta | O que faz | Origem | Status |
 |---|---|---|---|
 | `G0DM0D3` | Interface de red team que disputa respostas entre dezenas de modelos usando prompts de jailbreak | [elder-plinius/G0DM0D3](https://github.com/elder-plinius/G0DM0D3) | Não instalado. Exige OpenRouter/Venice ou modelos locais, guarda chave no navegador e ativa telemetria de metadados por padrão |
+| `OmniRoute` | Gateway de modelos com troca de provedor quando uma rota falha ou atinge a cota | [cheaper-inference/OmniRoute](https://github.com/cheaper-inference/OmniRoute) | MIT. Não instalado. O gateway recebe as requisições e gerencia credenciais de provedores. As cotas gratuitas são de terceiros, não uma franquia garantida. |
+| `Claude-Mem` | Registra atividade do agente e recupera contexto em sessões futuras | [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | Apache-2.0. Não instalado. Adiciona outro registro de atividade além da memória do Hermes. O observador comercial tem teste com meio de pagamento e assinatura opcional. |
+| `Headroom` | Reduz o volume de logs, arquivos e saídas de ferramentas enviado ao modelo | [headroomlabs-ai/headroom](https://github.com/headroomlabs-ai/headroom) | Apache-2.0. Não instalado. Precisa de teste com dados sintéticos antes de intermediar o contexto real; economia e qualidade variam por tarefa. |
+| `Task Observer` | Registra correções recorrentes e prepara atualizações de skills para revisão | [rebelytics/one-skill-to-rule-them-all](https://github.com/rebelytics/one-skill-to-rule-them-all/blob/main/skills/task-observer/SKILL.md) | CC BY 4.0. Não ativado. Cria registros persistentes de sessão; as propostas não alteram as skills ativas sem aprovação. |
